@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using FormsColorDialog = System.Windows.Forms.ColorDialog;
+using FormsDialogResult = System.Windows.Forms.DialogResult;
 using JetBrains.Annotations;
 using Livet;
 using Livet.EventListeners;
@@ -44,7 +46,17 @@ namespace SylphyHorn.UI.Bindings
 
 		public IReadOnlyCollection<DisplayViewModel<HorizontalAlignment>> NotificationTextAlignments { get; }
 
-		public IReadOnlyCollection<DisplayViewModel<string>> TrayIconFontFamilies { get; }
+		public IReadOnlyCollection<DisplayViewModel<string>> FontFamilies { get; }
+
+		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandModes { get; }
+
+		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandPositions { get; }
+
+		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandDisplayModes { get; }
+
+		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandNumberWrappers { get; }
+
+		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandTooltipWindowStyles { get; }
 
 		public bool IsDisplayEnabled { get; }
 
@@ -255,48 +267,6 @@ namespace SylphyHorn.UI.Bindings
 		}
 
 		#endregion
-
-		#region TrayFontFamily notification property
-
-		public string TrayFontFamily
-		{
-			get => Settings.General.TrayFontFamily.Value;
-			set
-			{
-				if (Settings.General.TrayFontFamily.Value != value)
-				{
-					Settings.General.TrayFontFamily.Value = value ?? GeneralSettings.TrayFontFamilyDefaultValue;
-
-					this.RaisePropertyChanged();
-				}
-			}
-		}
-
-		#endregion
-
-		#region TrayFontSize notification property
-
-		public int? TrayFontSize
-		{
-			get => Settings.General.TrayFontSize.Value;
-			set
-			{
-				var param = value ?? GeneralSettings.TrayFontSizeDefaultValue;
-				if (param < 4) param = 4;
-				if (param > 24) param = 24;
-
-				if (Settings.General.TrayFontSize.Value != param)
-				{
-					Settings.General.TrayFontSize.Value = param;
-
-					this.RaisePropertyChanged();
-				}
-			}
-		}
-
-		#endregion
-
-		public bool IsTrayIconFontSelectorEnabled => Settings.General.TrayShowDesktop && Settings.General.TrayUseCustomFont;
 
 		#region NotificationWindowStyle notification property
 
@@ -869,12 +839,54 @@ namespace SylphyHorn.UI.Bindings
 				new DisplayViewModel<HorizontalAlignment> { Display = Resources.Settings_NotificationTextAlignment_Right, Value = HorizontalAlignment.Right, },
 			}.ToList();
 
-			this.TrayIconFontFamilies = new[] { GeneralSettings.TrayFontFamilyDefaultValue }
-				.Concat(Fonts.SystemFontFamilies.Select(font => font.Source))
-				.Distinct(StringComparer.CurrentCultureIgnoreCase)
-				.OrderBy(font => font)
-				.Select(font => new DisplayViewModel<string> { Display = font, Value = font, })
+			this.FontFamilies = Fonts.SystemFontFamilies
+				.Select(x => x.Source)
+				.Distinct(StringComparer.OrdinalIgnoreCase)
+				.OrderBy(x => x)
+				.Select(x => new DisplayViewModel<string> { Display = x, Value = x, })
 				.ToList();
+
+			this.TaskbarDeskbandModes = new[]
+			{
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Mode_Disabled, Value = GeneralSettings.TaskbarDeskbandModeDisabledValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Mode_ModernTaskbar, Value = GeneralSettings.TaskbarDeskbandModeModernTaskbarValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Mode_LegacyTaskbar, Value = GeneralSettings.TaskbarDeskbandModeLegacyTaskbarValue, },
+			}.ToList();
+
+			this.TaskbarDeskbandPositions = new[]
+			{
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Position_Right, Value = GeneralSettings.TaskbarDeskbandPositionRightValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Position_Left, Value = GeneralSettings.TaskbarDeskbandPositionLeftValue, },
+			}.ToList();
+
+			this.TaskbarDeskbandDisplayModes = new[]
+			{
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Display_NumberOnly, Value = GeneralSettings.TaskbarDeskbandDisplayModeNumberOnlyValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Display_DesktopNumber, Value = GeneralSettings.TaskbarDeskbandDisplayModeDesktopNumberValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Display_NameOnly, Value = GeneralSettings.TaskbarDeskbandDisplayModeNameOnlyValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Display_NameWithNumber, Value = GeneralSettings.TaskbarDeskbandDisplayModeNameWithNumberValue, },
+			}.ToList();
+
+			this.TaskbarDeskbandNumberWrappers = new[]
+			{
+				new DisplayViewModel<uint> { Display = "num", Value = GeneralSettings.TaskbarDeskbandNumberWrapperNoneValue, },
+				new DisplayViewModel<uint> { Display = "[num]", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSquareValue, },
+				new DisplayViewModel<uint> { Display = "(num)", Value = GeneralSettings.TaskbarDeskbandNumberWrapperRoundValue, },
+				new DisplayViewModel<uint> { Display = "{num}", Value = GeneralSettings.TaskbarDeskbandNumberWrapperCurlyValue, },
+				new DisplayViewModel<uint> { Display = "<num>", Value = GeneralSettings.TaskbarDeskbandNumberWrapperAngleValue, },
+				new DisplayViewModel<uint> { Display = "'num'", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSingleQuoteValue, },
+				new DisplayViewModel<uint> { Display = "\"num\"", Value = GeneralSettings.TaskbarDeskbandNumberWrapperDoubleQuoteValue, },
+				new DisplayViewModel<uint> { Display = "|num|", Value = GeneralSettings.TaskbarDeskbandNumberWrapperPipeValue, },
+				new DisplayViewModel<uint> { Display = "/num/", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSlashValue, },
+			}.ToList();
+
+			this.TaskbarDeskbandTooltipWindowStyles = new[]
+			{
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_Title, Value = GeneralSettings.TaskbarDeskbandTooltipWindowStyleTitleValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationName, Value = GeneralSettings.TaskbarDeskbandTooltipWindowStyleApplicationNameValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameColonTitle, Value = GeneralSettings.TaskbarDeskbandTooltipWindowStyleApplicationNameColonTitleValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameDashTitle, Value = GeneralSettings.TaskbarDeskbandTooltipWindowStyleApplicationNameDashTitleValue, },
+			}.ToList();
 
 			this.Displays = new[] { new DisplayViewModel<uint> { Display = Resources.Settings_MultipleDisplays_CurrentDisplay, Value = 0, } }
 				.Concat(MonitorService.GetMonitors()
@@ -957,31 +969,6 @@ namespace SylphyHorn.UI.Bindings
 			Settings.General.LoopDesktop
 				.Subscribe(_ => this._hookService.Reload())
 				.AddTo(this);
-			Settings.General.TrayShowDesktop
-				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.IsTrayIconFontSelectorEnabled)))
-				.AddTo(this);
-			Settings.General.TrayUseCustomFont
-				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.IsTrayIconFontSelectorEnabled)))
-				.AddTo(this);
-			Settings.General.TrayUseCustomFont
-				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
-				.AddTo(this);
-			Settings.General.TrayFontFamily
-				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
-				.AddTo(this);
-			Settings.General.TrayFontSize
-				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
-				.AddTo(this);
-			Settings.General.TrayFontBold
-				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
-				.AddTo(this);
-			Settings.General.TrayFontItalic
-				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
-				.AddTo(this);
-			Settings.General.TrayFontUnderline
-				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
-				.AddTo(this);
-
 			Settings.General.SimpleNotification
 				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.PreviewNotificationText)))
 				.AddTo(this);
@@ -996,6 +983,24 @@ namespace SylphyHorn.UI.Bindings
 				.AddTo(this);
 			Settings.General.NotificationCornerStyle
 				.Subscribe(mode => this.UpdateNotificationCornerRadius((BlurWindowCornerMode)mode))
+				.AddTo(this);
+			Settings.General.TaskbarDeskbandFontColor
+				.Subscribe(_ =>
+				{
+					this.RaisePropertyChanged(nameof(this.TaskbarDeskbandFontColor));
+					this.RaisePropertyChanged(nameof(this.TaskbarDeskbandFontColorBrush));
+				})
+				.AddTo(this);
+			Settings.General.TaskbarDeskbandDisplayMode
+				.Subscribe(_ =>
+				{
+					this.RaisePropertyChanged(nameof(this.TaskbarDeskbandDisplayMode));
+					this.RaisePropertyChanged(nameof(this.IsTaskbarDeskbandNameWithNumber));
+					this.RaisePropertyChanged(nameof(this.IsTaskbarDeskbandNumberBeforeNameEnabled));
+				})
+				.AddTo(this);
+			Settings.General.TaskbarDeskbandCustomNumberStyleEnabled
+				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.IsTaskbarDeskbandNumberBeforeNameEnabled)))
 				.AddTo(this);
 
 			Settings.ShortcutKey.SwitchToIndices
@@ -1058,6 +1063,112 @@ namespace SylphyHorn.UI.Bindings
 					MouseShortcutBox.HookService = null;
 				})
 				.AddTo(this);
+		}
+
+		[UsedImplicitly]
+		public void OpenTaskbarDeskbandFontColorDialog()
+		{
+			using (var dialog = new FormsColorDialog { FullOpen = true })
+			{
+				if (TryGetDrawingColor(this.TaskbarDeskbandFontColor, out var currentColor))
+				{
+					dialog.Color = currentColor;
+				}
+
+				if (dialog.ShowDialog() == FormsDialogResult.OK)
+				{
+					this.TaskbarDeskbandFontColor = $"#{dialog.Color.R:X2}{dialog.Color.G:X2}{dialog.Color.B:X2}";
+				}
+			}
+		}
+
+		public string TaskbarDeskbandFontColor
+		{
+			get => Settings.General.TaskbarDeskbandFontColor.Value;
+			set
+			{
+				if (Settings.General.TaskbarDeskbandFontColor.Value != value)
+				{
+					Settings.General.TaskbarDeskbandFontColor.Value = value;
+					this.RaisePropertyChanged();
+					this.RaisePropertyChanged(nameof(this.TaskbarDeskbandFontColorBrush));
+				}
+			}
+		}
+
+		public int TaskbarDeskbandFontSize
+		{
+			get => Settings.General.TaskbarDeskbandFontSize.Value;
+			set
+			{
+				var fontSize = Math.Max(4, Math.Min(72, value));
+				if (Settings.General.TaskbarDeskbandFontSize.Value != fontSize)
+				{
+					Settings.General.TaskbarDeskbandFontSize.Value = fontSize;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+
+		[UsedImplicitly]
+		public void IncreaseTaskbarDeskbandFontSize()
+		{
+			this.TaskbarDeskbandFontSize++;
+		}
+
+		[UsedImplicitly]
+		public void DecreaseTaskbarDeskbandFontSize()
+		{
+			this.TaskbarDeskbandFontSize--;
+		}
+
+		public Brush TaskbarDeskbandFontColorBrush
+		{
+			get
+			{
+				if (!TryGetDrawingColor(this.TaskbarDeskbandFontColor, out var color))
+				{
+					color = System.Drawing.ColorTranslator.FromHtml(GeneralSettings.TaskbarDeskbandFontColorDefaultValue);
+				}
+
+				return new SolidColorBrush(Color.FromRgb(color.R, color.G, color.B));
+			}
+		}
+
+		public uint TaskbarDeskbandDisplayMode
+		{
+			get => Settings.General.TaskbarDeskbandDisplayMode.Value;
+			set
+			{
+				if (Settings.General.TaskbarDeskbandDisplayMode.Value != value)
+				{
+					Settings.General.TaskbarDeskbandDisplayMode.Value = value;
+					this.RaisePropertyChanged();
+					this.RaisePropertyChanged(nameof(this.IsTaskbarDeskbandNameWithNumber));
+				}
+			}
+		}
+
+		public bool IsTaskbarDeskbandNameWithNumber
+			=> Settings.General.TaskbarDeskbandDisplayMode.Value == GeneralSettings.TaskbarDeskbandDisplayModeNameWithNumberValue;
+
+		public bool IsTaskbarDeskbandNumberBeforeNameEnabled
+			=> Settings.General.TaskbarDeskbandCustomNumberStyleEnabled.Value && this.IsTaskbarDeskbandNameWithNumber;
+
+		private static bool TryGetDrawingColor(string value, out System.Drawing.Color color)
+		{
+			color = System.Drawing.Color.Empty;
+			if (string.IsNullOrWhiteSpace(value)) return false;
+
+			try
+			{
+				color = System.Drawing.ColorTranslator.FromHtml(value);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		[UsedImplicitly]

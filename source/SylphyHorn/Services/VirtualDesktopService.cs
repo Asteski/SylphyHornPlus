@@ -46,6 +46,18 @@ namespace SylphyHorn.Services
 			return right;
 		}
 
+		public static void SwitchByMouseWheelDelta(int delta)
+		{
+			if (delta > 0)
+			{
+				GetLeft()?.Switch();
+			}
+			else if (delta < 0)
+			{
+				GetRight()?.Switch();
+			}
+		}
+
 		public static VirtualDesktop GetPrevious()
 		{
 			return VirtualDesktop.History.Previous;

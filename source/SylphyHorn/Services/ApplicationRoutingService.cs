@@ -100,18 +100,41 @@ namespace SylphyHorn.Services
 		{
 			var desktops = VirtualDesktop.AllDesktops;
 			var configuredProcessNames = Settings.General.DesktopProcessNames.Value;
-			var count = Math.Min(desktops.Length, configuredProcessNames.Count);
+			var count = Settings.General.DesktopProcessNamesCreateMissingDesktop.Value
+				? configuredProcessNames.Count
+				: Math.Min(desktops.Length, configuredProcessNames.Count);
 
 			for (var index = 0; index < count; ++index)
 			{
 				var configuredNames = configuredProcessNames[index].Value;
 				if (MatchesProcessName(configuredNames, processName))
 				{
+					if (index >= desktops.Length)
+					{
+						desktops = this.CreateDesktopsThrough(index);
+						if (index >= desktops.Length) return null;
+					}
+
 					return desktops[index];
 				}
 			}
 
 			return null;
+		}
+
+		private VirtualDesktop[] CreateDesktopsThrough(int index)
+		{
+			lock (this._syncRoot)
+			{
+				var desktops = VirtualDesktop.AllDesktops;
+				while (desktops.Length <= index)
+				{
+					if (VirtualDesktop.Create() == null) break;
+					desktops = VirtualDesktop.AllDesktops;
+				}
+
+				return desktops;
+			}
 		}
 
 		private static bool IsTopLevelVisibleWindow(IntPtr hwnd)

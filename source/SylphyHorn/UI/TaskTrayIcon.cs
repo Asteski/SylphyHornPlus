@@ -40,19 +40,16 @@ namespace SylphyHorn.UI
 		{
 			if (this._notifyIcon != null) return;
 
-			var menus = this._items
-				.Where(x => x.CanDisplay())
-				.Select(x => new MenuItem(x.Text, (sender, args) => x.ClickAction()))
-				.ToArray();
-
 			this._notifyIcon = new NotifyIcon()
 			{
 				Text = ProductInfo.Title,
 				Icon = this._icon,
 				Visible = true,
-				ContextMenu = new ContextMenu(menus),
+				ContextMenu = new ContextMenu(),
 			};
 
+			this.RebuildContextMenu();
+			this._notifyIcon.ContextMenu.Popup += this.OnContextMenuPopup;
 			this._notifyIcon.MouseClick += this.OnIconClick;
 		}
 
@@ -101,48 +98,11 @@ namespace SylphyHorn.UI
 			{
 				this._infoIcon = new DynamicInfoTrayIcon(
 					WindowsTheme.SystemTheme.Current,
-					WindowsTheme.ColorPrevalence.Current,
-					fontFamilyName: GetTrayIconFontFamily(),
-					fontSize: GetTrayIconFontSize(),
-					fontBold: GetTrayIconFontBold(),
-					fontItalic: GetTrayIconFontItalic(),
-					fontUnderline: GetTrayIconFontUnderline());
+					WindowsTheme.ColorPrevalence.Current);
 			}
 
-			this._infoIcon.UpdateFont(GetTrayIconFontFamily(), GetTrayIconFontSize(), GetTrayIconFontBold(), GetTrayIconFontItalic(), GetTrayIconFontUnderline());
+			this._infoIcon.UpdateFont();
 			this.ChangeIcon(this._infoIcon.GetDesktopInfoIcon(currentDesktopIndex, Settings.General.TrayShowOnlyCurrentNumber ? 0 : totalDesktopCount));
-		}
-
-		private static string GetTrayIconFontFamily()
-		{
-			return Settings.General.TrayUseCustomFont
-				? Settings.General.TrayFontFamily.Value
-				: null;
-		}
-
-		private static double? GetTrayIconFontSize()
-		{
-			return Settings.General.TrayUseCustomFont
-				? Settings.General.TrayFontSize.Value
-				: (double?)null;
-		}
-
-		private static bool GetTrayIconFontBold()
-		{
-			return Settings.General.TrayUseCustomFont
-				&& Settings.General.TrayFontBold.Value;
-		}
-
-		private static bool GetTrayIconFontItalic()
-		{
-			return Settings.General.TrayUseCustomFont
-				&& Settings.General.TrayFontItalic.Value;
-		}
-
-		private static bool GetTrayIconFontUnderline()
-		{
-			return Settings.General.TrayUseCustomFont
-				&& Settings.General.TrayFontUnderline.Value;
 		}
 
 		private void OnCurrentDesktopChanged(object sender, VirtualDesktopChangedEventArgs e)
@@ -200,6 +160,24 @@ namespace SylphyHorn.UI
 			}
 		}
 
+		private void OnContextMenuPopup(object sender, EventArgs e)
+		{
+			this.RebuildContextMenu();
+		}
+
+		private void RebuildContextMenu()
+		{
+			var contextMenu = this._notifyIcon?.ContextMenu;
+			if (contextMenu == null) return;
+
+			contextMenu.MenuItems.Clear();
+			foreach (var item in this._items.Where(x => x.CanDisplay()))
+			{
+				var menuItem = item;
+				contextMenu.MenuItems.Add(new MenuItem(menuItem.Text, (sender, args) => menuItem.ClickAction()));
+			}
+		}
+
 		private void ChangeText(string newText)
 		{
 			this._notifyIcon.Text = newText;
@@ -225,6 +203,7 @@ namespace SylphyHorn.UI
 			VirtualDesktop.Destroyed -= this.OnDesktopDestroyed;
 			if (this._notifyIcon != null)
 			{
+				this._notifyIcon.ContextMenu.Popup -= this.OnContextMenuPopup;
 				this._notifyIcon.MouseClick -= this.OnIconClick;
 			}
 
@@ -236,7 +215,9 @@ namespace SylphyHorn.UI
 
 	public class TaskTrayIconItem
 	{
-		public string Text { get; }
+		private readonly Func<string> _textProvider;
+
+		public string Text => this._textProvider();
 
 		public Action ClickAction { get; }
 
@@ -245,8 +226,13 @@ namespace SylphyHorn.UI
 		public TaskTrayIconItem(string text, Action clickAction) : this(text, clickAction, () => true) { }
 
 		public TaskTrayIconItem(string text, Action clickAction, Func<bool> canDisplay)
+			: this(() => text, clickAction, canDisplay) { }
+
+		public TaskTrayIconItem(Func<string> textProvider, Action clickAction) : this(textProvider, clickAction, () => true) { }
+
+		public TaskTrayIconItem(Func<string> textProvider, Action clickAction, Func<bool> canDisplay)
 		{
-			this.Text = text;
+			this._textProvider = textProvider;
 			this.ClickAction = clickAction;
 			this.CanDisplay = canDisplay;
 		}

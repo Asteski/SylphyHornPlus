@@ -189,8 +189,131 @@
   <data name="Settings_Desktop_AppRouting" xml:space="preserve">
     <value>Open apps/windows on specified desktop</value>
   </data>
+  <data name="Settings_Desktop_AppRouting_CreateMissingDesktop" xml:space="preserve">
+    <value>Create missing desktop when matching app opens</value>
+  </data>
   <data name="Settings_Desktop_AppRouting_ProcessName" xml:space="preserve">
     <value>Process or executable name</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband" xml:space="preserve">
+    <value>Taskbar deskband</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Enable" xml:space="preserve">
+    <value>Show current desktop number in Windows 10 taskbar</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode" xml:space="preserve">
+    <value>Mode:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode_Disabled" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode_ModernTaskbar" xml:space="preserve">
+    <value>Modern Taskbar (Windows 11)</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode_LegacyTaskbar" xml:space="preserve">
+    <value>Legacy Taskbar (Windows 10)</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_PlaceOnLeft" xml:space="preserve">
+    <value>Place deskband on the left side of the taskbar</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Position" xml:space="preserve">
+    <value>Position:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Position_Right" xml:space="preserve">
+    <value>Right side</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Position_Left" xml:space="preserve">
+    <value>Left side</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display" xml:space="preserve">
+    <value>Display:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_NumberOnly" xml:space="preserve">
+    <value>Desktop number</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_RomanNumber" xml:space="preserve">
+    <value>Roman desktop number</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_DesktopNumber" xml:space="preserve">
+    <value>Desktop + number</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_NameOnly" xml:space="preserve">
+    <value>Desktop name</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_NameWithNumber" xml:space="preserve">
+    <value>Desktop name with number</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_CustomNumberStyle" xml:space="preserve">
+    <value>Use custom desktop number style</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_NumberWrapper" xml:space="preserve">
+    <value>Wrapper:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_NumberWrapperSpaces" xml:space="preserve">
+    <value>Add spaces inside wrapper</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_RomanNumber" xml:space="preserve">
+    <value>Use Roman numerals</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_ShowTotalDesktopCount" xml:space="preserve">
+    <value>Show total desktop count</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_NumberBeforeName" xml:space="preserve">
+    <value>Show number before name</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_CustomAppearance" xml:space="preserve">
+    <value>Use custom font</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Font" xml:space="preserve">
+    <value>Font:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Size" xml:space="preserve">
+    <value>Size:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Style" xml:space="preserve">
+    <value>Style:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Bold" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Italic" xml:space="preserve">
+    <value>Italic</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Underline" xml:space="preserve">
+    <value>Underline</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Color" xml:space="preserve">
+    <value>Color:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_SelectColor" xml:space="preserve">
+    <value>Select...</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Tooltip" xml:space="preserve">
+    <value>Show mouse tooltip</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipNumberOnly" xml:space="preserve">
+    <value>Show desktop number only</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipListWindows" xml:space="preserve">
+    <value>List opened windows on desktop</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle" xml:space="preserve">
+    <value>List style:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_Title" xml:space="preserve">
+    <value>Window title</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationName" xml:space="preserve">
+    <value>Application name</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameColonTitle" xml:space="preserve">
+    <value>Application name: window title</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameDashTitle" xml:space="preserve">
+    <value>Application name - window title</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_MouseWheelSwitch" xml:space="preserve">
+    <value>Switch desktops with mouse wheel over deskband</value>
   </data>
   <data name="Settings_DesktopNames" xml:space="preserve">
     <value>Desktop names</value>
@@ -567,6 +690,9 @@
   <data name="Settings_SwitchSpecifiedDesktop_ResizeToFit" xml:space="preserve">
     <value>Resize to fit desktops</value>
   </data>
+  <data name="Settings_Taskbar" xml:space="preserve">
+    <value>Taskbar</value>
+  </data>
   <data name="Settings_TaskView" xml:space="preserve">
     <value>Task View</value>
   </data>
@@ -588,27 +714,6 @@
   <data name="Settings_TrayIcon" xml:space="preserve">
     <value>Tray Icon</value>
   </data>
-  <data name="Settings_TrayIcon_FontFamily" xml:space="preserve">
-    <value>Font:</value>
-  </data>
-  <data name="Settings_TrayIcon_FontBold" xml:space="preserve">
-    <value>Bold</value>
-  </data>
-  <data name="Settings_TrayIcon_FontItalic" xml:space="preserve">
-    <value>Italic</value>
-  </data>
-  <data name="Settings_TrayIcon_FontSize" xml:space="preserve">
-    <value>Size:</value>
-  </data>
-  <data name="Settings_TrayIcon_FontSize_Pixels" xml:space="preserve">
-    <value>px</value>
-  </data>
-  <data name="Settings_TrayIcon_FontUnderline" xml:space="preserve">
-    <value>Underline</value>
-  </data>
-  <data name="Settings_TrayIcon_UseCustomFont" xml:space="preserve">
-    <value>Use specific font for tray numbers</value>
-  </data>
   <data name="Settings_Unpin" xml:space="preserve">
     <value>Unpin window:</value>
   </data>
@@ -619,10 +724,16 @@
     <value>Application is running in the background.</value>
   </data>
   <data name="TaskTray_Menu_Exit" xml:space="preserve">
-    <value>E&amp;xit (X)</value>
+    <value>Exit</value>
+  </data>
+  <data name="TaskTray_Menu_HideDeskband" xml:space="preserve">
+    <value>Hide taskbar deskband</value>
   </data>
   <data name="TaskTray_Menu_Settings" xml:space="preserve">
-    <value>&amp;Settings (S)</value>
+    <value>Settings</value>
+  </data>
+  <data name="TaskTray_Menu_ShowDeskband" xml:space="preserve">
+    <value>Show taskbar deskband</value>
   </data>
   <data name="TaskTray_TooltipText_DesktopCount" xml:space="preserve">
     <value>Desktop {0}/{1}</value>

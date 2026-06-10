@@ -62,6 +62,7 @@ namespace SylphyHorn
 				var menus = new[]
 				{
 					new TaskTrayIconItem(Resources.TaskTray_Menu_Settings, this.ShowSettings, () => Application.Args.CanSettings),
+					new TaskTrayIconItem(this.GetTaskbarDeskbandMenuText, TaskbarDeskbandService.ToggleDeskbandMode),
 					new TaskTrayIconItem(Resources.TaskTray_Menu_Exit, this._shutdownAction),
 #if DEBUG
 					new TaskTrayIconItem("Tasktray Icon Test", () => new TaskTrayTestWindow().Show()),
@@ -73,6 +74,11 @@ namespace SylphyHorn
 
 			return this._taskTrayIcon;
 		}
+
+		private string GetTaskbarDeskbandMenuText()
+			=> TaskbarDeskbandService.IsDeskbandModeEnabled
+				? Resources.TaskTray_Menu_HideDeskband
+				: Resources.TaskTray_Menu_ShowDeskband;
 
 		private void ShowSettings()
 		{
@@ -178,11 +184,6 @@ namespace SylphyHorn
 					{
 						positionSettings.Value[i].Value = positionSettings.Value[i + 1].Value;
 					}
-					var processNameSettings = Settings.General.DesktopProcessNames;
-					for (var i = destroyedIndex; i + 1 < processNameSettings.Count; ++i)
-					{
-						processNameSettings.Value[i].Value = processNameSettings.Value[i + 1].Value;
-					}
 					SettingsService.ResizeListIfNeeded();
 
 					LocalSettingsProvider.Instance.SaveAsync().Wait();
@@ -209,11 +210,6 @@ namespace SylphyHorn
 					for (var i = destroyedIndex; i + 1 < positionSettings.Count; ++i)
 					{
 						positionSettings.Value[i].Value = positionSettings.Value[i + 1].Value;
-					}
-					var processNameSettings = Settings.General.DesktopProcessNames;
-					for (var i = destroyedIndex; i + 1 < processNameSettings.Count; ++i)
-					{
-						processNameSettings.Value[i].Value = processNameSettings.Value[i + 1].Value;
 					}
 					SettingsService.ResizeListIfNeeded();
 

@@ -189,8 +189,131 @@
   <data name="Settings_Desktop_AppRouting" xml:space="preserve">
     <value>指定したデスクトップでアプリ/ウィンドウを開く</value>
   </data>
+  <data name="Settings_Desktop_AppRouting_CreateMissingDesktop" xml:space="preserve">
+    <value>一致するアプリを開いたときに不足しているデスクトップを作成する</value>
+  </data>
   <data name="Settings_Desktop_AppRouting_ProcessName" xml:space="preserve">
     <value>プロセス名または実行ファイル名</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband" xml:space="preserve">
+    <value>タスクバー デスクバンド</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Enable" xml:space="preserve">
+    <value>Windows 10 タスクバーに現在のデスクトップ番号を表示する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode" xml:space="preserve">
+    <value>モード:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode_Disabled" xml:space="preserve">
+    <value>無効</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode_ModernTaskbar" xml:space="preserve">
+    <value>モダン タスクバー (Windows 11)</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode_LegacyTaskbar" xml:space="preserve">
+    <value>従来のタスクバー (Windows 10)</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_PlaceOnLeft" xml:space="preserve">
+    <value>デスクバンドをタスクバーの左側に配置する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Position" xml:space="preserve">
+    <value>位置:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Position_Right" xml:space="preserve">
+    <value>右側</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Position_Left" xml:space="preserve">
+    <value>左側</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display" xml:space="preserve">
+    <value>表示:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_NumberOnly" xml:space="preserve">
+    <value>デスクトップ番号</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_RomanNumber" xml:space="preserve">
+    <value>ローマ数字のデスクトップ番号</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_DesktopNumber" xml:space="preserve">
+    <value>デスクトップ + 番号</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_NameOnly" xml:space="preserve">
+    <value>デスクトップ名</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_NameWithNumber" xml:space="preserve">
+    <value>番号付きデスクトップ名</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_CustomNumberStyle" xml:space="preserve">
+    <value>カスタム デスクトップ番号スタイルを使用する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_NumberWrapper" xml:space="preserve">
+    <value>囲み:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_NumberWrapperSpaces" xml:space="preserve">
+    <value>囲みの内側にスペースを追加する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_RomanNumber" xml:space="preserve">
+    <value>ローマ数字を使用する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_ShowTotalDesktopCount" xml:space="preserve">
+    <value>デスクトップの総数を表示する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_NumberBeforeName" xml:space="preserve">
+    <value>番号を名前の前に表示する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_CustomAppearance" xml:space="preserve">
+    <value>カスタムフォントを使用する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Font" xml:space="preserve">
+    <value>フォント:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Size" xml:space="preserve">
+    <value>サイズ:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Style" xml:space="preserve">
+    <value>スタイル:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Bold" xml:space="preserve">
+    <value>太字</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Italic" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Underline" xml:space="preserve">
+    <value>下線</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Color" xml:space="preserve">
+    <value>色:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_SelectColor" xml:space="preserve">
+    <value>選択...</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Tooltip" xml:space="preserve">
+    <value>マウス ツールチップを表示する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipNumberOnly" xml:space="preserve">
+    <value>デスクトップ番号のみ表示する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipListWindows" xml:space="preserve">
+    <value>デスクトップ上の開いているウィンドウを一覧表示する</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle" xml:space="preserve">
+    <value>一覧スタイル:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_Title" xml:space="preserve">
+    <value>ウィンドウ タイトル</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationName" xml:space="preserve">
+    <value>アプリケーション名</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameColonTitle" xml:space="preserve">
+    <value>アプリケーション名: ウィンドウ タイトル</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameDashTitle" xml:space="preserve">
+    <value>アプリケーション名 - ウィンドウ タイトル</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_MouseWheelSwitch" xml:space="preserve">
+    <value>デスクバンド上のマウス ホイールでデスクトップを切り替える</value>
   </data>
   <data name="Settings_DesktopNames" xml:space="preserve">
     <value>デスクトップ名</value>
@@ -567,6 +690,9 @@
   <data name="Settings_SwitchSpecifiedDesktop_ResizeToFit" xml:space="preserve">
     <value>デスクトップの数に合わせる</value>
   </data>
+  <data name="Settings_Taskbar" xml:space="preserve">
+    <value>タスクバー</value>
+  </data>
   <data name="Settings_TaskView" xml:space="preserve">
     <value>タスク ビュー</value>
   </data>
@@ -588,27 +714,6 @@
   <data name="Settings_TrayIcon" xml:space="preserve">
     <value>トレイ アイコン</value>
   </data>
-  <data name="Settings_TrayIcon_FontFamily" xml:space="preserve">
-    <value>フォント:</value>
-  </data>
-  <data name="Settings_TrayIcon_FontBold" xml:space="preserve">
-    <value>太字</value>
-  </data>
-  <data name="Settings_TrayIcon_FontItalic" xml:space="preserve">
-    <value>斜体</value>
-  </data>
-  <data name="Settings_TrayIcon_FontSize" xml:space="preserve">
-    <value>サイズ:</value>
-  </data>
-  <data name="Settings_TrayIcon_FontSize_Pixels" xml:space="preserve">
-    <value>px</value>
-  </data>
-  <data name="Settings_TrayIcon_FontUnderline" xml:space="preserve">
-    <value>下線</value>
-  </data>
-  <data name="Settings_TrayIcon_UseCustomFont" xml:space="preserve">
-    <value>トレイ番号に指定したフォントを使用する</value>
-  </data>
   <data name="Settings_Unpin" xml:space="preserve">
     <value>ピン留めを外す:</value>
   </data>
@@ -621,8 +726,14 @@
   <data name="TaskTray_Menu_Exit" xml:space="preserve">
     <value>終了</value>
   </data>
+  <data name="TaskTray_Menu_HideDeskband" xml:space="preserve">
+    <value>タスクバー デスクバンドを非表示</value>
+  </data>
   <data name="TaskTray_Menu_Settings" xml:space="preserve">
     <value>設定</value>
+  </data>
+  <data name="TaskTray_Menu_ShowDeskband" xml:space="preserve">
+    <value>タスクバー デスクバンドを表示</value>
   </data>
   <data name="TaskTray_TooltipText_DesktopCount" xml:space="preserve">
     <value>デスクトップ {0}/{1}</value>

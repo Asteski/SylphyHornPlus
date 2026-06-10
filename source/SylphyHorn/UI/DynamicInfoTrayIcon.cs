@@ -28,13 +28,12 @@ namespace SylphyHorn.UI
 		private double _horizontalFontSize;
 		private double _verticalFontSize;
 		private double _simpleFontSize;
-		private bool _underline;
 		private Dpi? _dpi;
 
-		public DynamicInfoTrayIcon(Theme theme, bool colorPrevalence, Dpi? dpi = null, string fontFamilyName = null, double? fontSize = null, bool fontBold = false, bool fontItalic = false, bool fontUnderline = false)
+		public DynamicInfoTrayIcon(Theme theme, bool colorPrevalence, Dpi? dpi = null)
 		{
 			this._foregroundBrush = GetThemeBrush(theme, colorPrevalence);
-			this.UpdateFont(fontFamilyName, fontSize, fontBold, fontItalic, fontUnderline);
+			this.UpdateFont();
 			this._dpi = dpi;
 		}
 
@@ -51,22 +50,13 @@ namespace SylphyHorn.UI
 			this._foregroundBrush = GetThemeBrush(theme, colorPrevalence);
 		}
 
-		public void UpdateFont(string fontFamilyName, double? fontSize = null, bool fontBold = false, bool fontItalic = false, bool fontUnderline = false)
+		public void UpdateFont()
 		{
-			var useCustomFont = !string.IsNullOrWhiteSpace(fontFamilyName) || fontSize.HasValue || fontBold || fontItalic || fontUnderline;
-			var familyName = string.IsNullOrWhiteSpace(fontFamilyName)
-				? _defaultFontFamilyName
-				: $"{fontFamilyName}, {_defaultFontFamilyName}";
-			var fontFamily = new FontFamily(familyName);
-			var fontStyle = fontItalic ? FontStyles.Italic : FontStyles.Normal;
-			var fontWeight = useCustomFont
-				? fontBold ? FontWeights.Bold : FontWeights.Normal
-				: FontWeights.SemiBold;
-			this._defaultFont = new Typeface(fontFamily, fontStyle, fontWeight, FontStretches.Normal);
-			this._simpleFont = new Typeface(fontFamily, fontStyle, fontWeight, FontStretches.Normal);
-			this._underline = fontUnderline;
+			var fontFamily = new FontFamily(_defaultFontFamilyName);
+			this._defaultFont = new Typeface(fontFamily, FontStyles.Normal, FontWeights.SemiBold, FontStretches.Normal);
+			this._simpleFont = new Typeface(fontFamily, FontStyles.Normal, FontWeights.SemiBold, FontStretches.Normal);
 
-			this._horizontalFontSize = fontSize ?? _defaultHorizontalFontSize;
+			this._horizontalFontSize = _defaultHorizontalFontSize;
 			this._verticalFontSize = this._horizontalFontSize * _defaultVerticalFontSize / _defaultHorizontalFontSize;
 			this._simpleFontSize = this._horizontalFontSize * _defaultSimpleFontSize / _defaultHorizontalFontSize;
 		}
@@ -170,10 +160,6 @@ namespace SylphyHorn.UI
 			formattedText.MaxTextWidth = size.Width;
 			formattedText.TextAlignment = TextAlignment.Center;
 			formattedText.Trimming = TextTrimming.None;
-			if (this._underline)
-			{
-				formattedText.SetTextDecorations(TextDecorations.Underline);
-			}
 			return formattedText;
 		}
 

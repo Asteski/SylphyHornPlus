@@ -31,6 +31,8 @@ namespace SylphyHorn
 
 		internal TaskTrayIcon TaskTrayIcon { get; private set; }
 
+		internal TaskbarDeskbandService TaskbarDeskbandService { get; private set; }
+
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			Args = new CommandLineArgs(e.Args);
@@ -69,6 +71,7 @@ namespace SylphyHorn
 
 					var preparation = new ApplicationPreparation(this.HookService, this.Shutdown, this);
 					this.TaskTrayIcon = preparation.CreateTaskTrayIcon().AddTo(this);
+					this.TaskbarDeskbandService = new TaskbarDeskbandService().AddTo(this);
 
 					if (Settings.General.FirstTime)
 					{
@@ -81,6 +84,7 @@ namespace SylphyHorn
 					preparation.VirtualDesktopInitialized += () =>
 					{
 						ApplicationRoutingService.Instance.Start();
+						this.TaskbarDeskbandService.Start();
 						this.TaskTrayIcon.Show();
 						this.TaskTrayIcon.Reload();
 						if (Settings.General.AlwaysShowDesktopNotification)

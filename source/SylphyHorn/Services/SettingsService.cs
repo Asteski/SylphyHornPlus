@@ -108,7 +108,7 @@ namespace SylphyHorn.Services
 			Settings.General.DesktopNames.Resize(desktopCount);
 			Settings.General.DesktopBackgroundImagePaths.Resize(desktopCount);
 			Settings.General.DesktopBackgroundPositions.Resize(desktopCount);
-			Settings.General.DesktopProcessNames.Resize(desktopCount);
+			Settings.General.DesktopProcessNames.StretchTo(desktopCount);
 
 			foreach (var name in Settings.General.DesktopNames.Value)
 			{

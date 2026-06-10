@@ -277,11 +277,380 @@ namespace SylphyHorn.Properties {
         }
 
         /// <summary>
+        ///   Create missing desktop when matching app opens に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_AppRouting_CreateMissingDesktop {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_AppRouting_CreateMissingDesktop", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Process or executable name に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Desktop_AppRouting_ProcessName {
             get {
                 return ResourceManager.GetString("Settings_Desktop_AppRouting_ProcessName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Taskbar deskband に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Show current desktop number in Windows 10 taskbar に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Enable {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Enable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Mode: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Mode {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Mode", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Disable に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Mode_Disabled {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Mode_Disabled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Modern Taskbar (Windows 11) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Mode_ModernTaskbar {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Mode_ModernTaskbar", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Legacy Taskbar (Windows 10) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Mode_LegacyTaskbar {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Mode_LegacyTaskbar", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Place deskband on the left side of the taskbar に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_PlaceOnLeft {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_PlaceOnLeft", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Position: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Position {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Position", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Right side に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Position_Right {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Position_Right", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Left side に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Position_Left {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Position_Left", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Display: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Display {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Display", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Desktop number に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Display_NumberOnly {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Display_NumberOnly", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Roman desktop number に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Display_RomanNumber {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Display_RomanNumber", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Desktop + number に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Display_DesktopNumber {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Display_DesktopNumber", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Desktop name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Display_NameOnly {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Display_NameOnly", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Desktop name with number に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Display_NameWithNumber {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Display_NameWithNumber", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Use custom desktop number style に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_CustomNumberStyle {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_CustomNumberStyle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Wrapper: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_NumberWrapper {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_NumberWrapper", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Add spaces inside wrapper に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_NumberWrapperSpaces {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_NumberWrapperSpaces", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Use Roman numerals に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_RomanNumber {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_RomanNumber", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Show total desktop count に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_ShowTotalDesktopCount {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_ShowTotalDesktopCount", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Show number before name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_NumberBeforeName {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_NumberBeforeName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Use custom font に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_CustomAppearance {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_CustomAppearance", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Font: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Font {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Font", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Size: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Size {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Size", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Style: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Style {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Style", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Bold に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Bold {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Bold", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Italic に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Italic {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Italic", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Underline に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Underline {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Underline", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Color: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Color {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Color", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Select... に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_SelectColor {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_SelectColor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Show mouse tooltip に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Tooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Show desktop number only に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_TooltipNumberOnly {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipNumberOnly", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   List opened windows on desktop に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_TooltipListWindows {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipListWindows", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   List style: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_TooltipWindowStyle {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipWindowStyle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Window title に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_Title {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Application name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationName {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Application name: window title に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameColonTitle {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameColonTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Application name - window title に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameDashTitle {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameDashTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Switch desktops with mouse wheel over deskband に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_MouseWheelSwitch {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_MouseWheelSwitch", resourceCulture);
             }
         }
 
@@ -1409,7 +1778,16 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwitchSpecifiedDesktop_ResizeToFit", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Taskbar に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Taskbar {
+            get {
+                return ResourceManager.GetString("Settings_Taskbar", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Task View に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1463,76 +1841,13 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ToggleTrayIconInfo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Tray Icon に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_TrayIcon {
             get {
                 return ResourceManager.GetString("Settings_TrayIcon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Font: に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Settings_TrayIcon_FontFamily {
-            get {
-                return ResourceManager.GetString("Settings_TrayIcon_FontFamily", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Bold に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Settings_TrayIcon_FontBold {
-            get {
-                return ResourceManager.GetString("Settings_TrayIcon_FontBold", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Italic に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Settings_TrayIcon_FontItalic {
-            get {
-                return ResourceManager.GetString("Settings_TrayIcon_FontItalic", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Size: に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Settings_TrayIcon_FontSize {
-            get {
-                return ResourceManager.GetString("Settings_TrayIcon_FontSize", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   px に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Settings_TrayIcon_FontSize_Pixels {
-            get {
-                return ResourceManager.GetString("Settings_TrayIcon_FontSize_Pixels", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Underline に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Settings_TrayIcon_FontUnderline {
-            get {
-                return ResourceManager.GetString("Settings_TrayIcon_FontUnderline", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Use specific font for tray numbers に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Settings_TrayIcon_UseCustomFont {
-            get {
-                return ResourceManager.GetString("Settings_TrayIcon_UseCustomFont", resourceCulture);
             }
         }
 
@@ -1564,23 +1879,41 @@ namespace SylphyHorn.Properties {
         }
         
         /// <summary>
-        ///   E&amp;xit (X) に類似しているローカライズされた文字列を検索します。
+        ///   Exit に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string TaskTray_Menu_Exit {
             get {
                 return ResourceManager.GetString("TaskTray_Menu_Exit", resourceCulture);
             }
         }
-        
+
         /// <summary>
-        ///   &amp;Settings (S) に類似しているローカライズされた文字列を検索します。
+        ///   Hide taskbar deskband に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TaskTray_Menu_HideDeskband {
+            get {
+                return ResourceManager.GetString("TaskTray_Menu_HideDeskband", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string TaskTray_Menu_Settings {
             get {
                 return ResourceManager.GetString("TaskTray_Menu_Settings", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Show taskbar deskband に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TaskTray_Menu_ShowDeskband {
+            get {
+                return ResourceManager.GetString("TaskTray_Menu_ShowDeskband", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Desktop {0}/{1} に類似しているローカライズされた文字列を検索します。
         /// </summary>
