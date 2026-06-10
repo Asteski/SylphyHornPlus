@@ -3,17 +3,16 @@
 SylphyHornPlus is Virtual Desktop Tools for Windows 11 and 10.  
 Provides global hotkeys, switching notification, change background and several functions to virtual desktop.
 
-This app is a fork of SylphyHorn with better support for Windows 11.  
+This app is a fork of SylphyHornPlusWin11 with better support for Windows 11.  
 New features are below:
 
-* Add support for Windows 11.
-  * SylphyHornPlus is synchronized with Windows 11 virtual desktop (its name and wallpaper file settings).
-  * Reordering notification.
-* Can control and manage Windows virtual desktops on Settings window (Desktop tab).
-  * Creating and removing a desktop, and reordering (Windows 11 only) is available.
-* Can export and import settings.
-  * Can also use this feature as backup of virtual desktops.
-* Add Mouse shortcuts (rocker and wheel gestures) on both Windows 11 and 10.
+* Taskbar Deskband
+  * Display virtual desktop information, including the desktop number, name, and total desktop count.
+  * Customize its position, font, size, color, and style.
+  * Enable a mouse tooltip that displays virtual desktop information and lists included apps/windows.
+  * Supports both Windows 11 and 10.
+* Switch desktops by scrolling the mouse wheel over the deskband.
+* Configure apps to open on a specific virtual desktop.
 
 
 ## Installations
