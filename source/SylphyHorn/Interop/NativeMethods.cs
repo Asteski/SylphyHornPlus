@@ -12,6 +12,34 @@ namespace SylphyHorn.Interop
 		[DllImport("user32.dll")]
 		public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
 
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsWindowVisible(IntPtr hWnd);
+
+		[DllImport("user32.dll")]
+		public static extern IntPtr GetAncestor(IntPtr hWnd, GetAncestorFlags gaFlags);
+
+		[DllImport("user32.dll")]
+		public static extern IntPtr GetShellWindow();
+
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+		[DllImport("user32.dll")]
+		public static extern IntPtr SetWinEventHook(
+			uint eventMin,
+			uint eventMax,
+			IntPtr hmodWinEventProc,
+			WinEventDelegate lpfnWinEventProc,
+			uint idProcess,
+			uint idThread,
+			uint dwFlags);
+
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
+
 		[DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
 		public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
@@ -68,4 +96,20 @@ namespace SylphyHorn.Interop
 	}
 
 	public delegate bool EnumMonitorsDelegate(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
+
+	public delegate void WinEventDelegate(
+		IntPtr hWinEventHook,
+		uint eventType,
+		IntPtr hwnd,
+		int idObject,
+		int idChild,
+		uint dwEventThread,
+		uint dwmsEventTime);
+
+	public enum GetAncestorFlags
+	{
+		Parent = 1,
+		Root = 2,
+		RootOwner = 3,
+	}
 }

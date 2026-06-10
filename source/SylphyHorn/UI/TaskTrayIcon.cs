@@ -101,10 +101,48 @@ namespace SylphyHorn.UI
 			{
 				this._infoIcon = new DynamicInfoTrayIcon(
 					WindowsTheme.SystemTheme.Current,
-					WindowsTheme.ColorPrevalence.Current);
+					WindowsTheme.ColorPrevalence.Current,
+					fontFamilyName: GetTrayIconFontFamily(),
+					fontSize: GetTrayIconFontSize(),
+					fontBold: GetTrayIconFontBold(),
+					fontItalic: GetTrayIconFontItalic(),
+					fontUnderline: GetTrayIconFontUnderline());
 			}
 
+			this._infoIcon.UpdateFont(GetTrayIconFontFamily(), GetTrayIconFontSize(), GetTrayIconFontBold(), GetTrayIconFontItalic(), GetTrayIconFontUnderline());
 			this.ChangeIcon(this._infoIcon.GetDesktopInfoIcon(currentDesktopIndex, Settings.General.TrayShowOnlyCurrentNumber ? 0 : totalDesktopCount));
+		}
+
+		private static string GetTrayIconFontFamily()
+		{
+			return Settings.General.TrayUseCustomFont
+				? Settings.General.TrayFontFamily.Value
+				: null;
+		}
+
+		private static double? GetTrayIconFontSize()
+		{
+			return Settings.General.TrayUseCustomFont
+				? Settings.General.TrayFontSize.Value
+				: (double?)null;
+		}
+
+		private static bool GetTrayIconFontBold()
+		{
+			return Settings.General.TrayUseCustomFont
+				&& Settings.General.TrayFontBold.Value;
+		}
+
+		private static bool GetTrayIconFontItalic()
+		{
+			return Settings.General.TrayUseCustomFont
+				&& Settings.General.TrayFontItalic.Value;
+		}
+
+		private static bool GetTrayIconFontUnderline()
+		{
+			return Settings.General.TrayUseCustomFont
+				&& Settings.General.TrayFontUnderline.Value;
 		}
 
 		private void OnCurrentDesktopChanged(object sender, VirtualDesktopChangedEventArgs e)

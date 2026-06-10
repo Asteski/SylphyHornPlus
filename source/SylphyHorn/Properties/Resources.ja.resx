@@ -186,6 +186,12 @@
   <data name="Settings_Desktop" xml:space="preserve">
     <value>デスクトップ</value>
   </data>
+  <data name="Settings_Desktop_AppRouting" xml:space="preserve">
+    <value>指定したデスクトップでアプリ/ウィンドウを開く</value>
+  </data>
+  <data name="Settings_Desktop_AppRouting_ProcessName" xml:space="preserve">
+    <value>プロセス名または実行ファイル名</value>
+  </data>
   <data name="Settings_DesktopNames" xml:space="preserve">
     <value>デスクトップ名</value>
   </data>
@@ -581,6 +587,27 @@
   </data>
   <data name="Settings_TrayIcon" xml:space="preserve">
     <value>トレイ アイコン</value>
+  </data>
+  <data name="Settings_TrayIcon_FontFamily" xml:space="preserve">
+    <value>フォント:</value>
+  </data>
+  <data name="Settings_TrayIcon_FontBold" xml:space="preserve">
+    <value>太字</value>
+  </data>
+  <data name="Settings_TrayIcon_FontItalic" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="Settings_TrayIcon_FontSize" xml:space="preserve">
+    <value>サイズ:</value>
+  </data>
+  <data name="Settings_TrayIcon_FontSize_Pixels" xml:space="preserve">
+    <value>px</value>
+  </data>
+  <data name="Settings_TrayIcon_FontUnderline" xml:space="preserve">
+    <value>下線</value>
+  </data>
+  <data name="Settings_TrayIcon_UseCustomFont" xml:space="preserve">
+    <value>トレイ番号に指定したフォントを使用する</value>
   </data>
   <data name="Settings_Unpin" xml:space="preserve">
     <value>ピン留めを外す:</value>

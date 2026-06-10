@@ -77,6 +77,18 @@ namespace SylphyHorn.Serialization
 
 		public SerializableProperty<bool> TrayShowOnlyCurrentNumber => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TrayShowOnlyCurrentNumberDefaultValue));
 
+		public SerializableProperty<bool> TrayUseCustomFont => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TrayUseCustomFontDefaultValue));
+
+		public SerializableProperty<string> TrayFontFamily => this.Cache(key => new SerializableProperty<string>(key, this._provider, TrayFontFamilyDefaultValue));
+
+		public SerializableProperty<int> TrayFontSize => this.Cache(key => new SerializableProperty<int>(key, this._provider, TrayFontSizeDefaultValue));
+
+		public SerializableProperty<bool> TrayFontBold => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TrayFontBoldDefaultValue));
+
+		public SerializableProperty<bool> TrayFontItalic => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TrayFontItalicDefaultValue));
+
+		public SerializableProperty<bool> TrayFontUnderline => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TrayFontUnderlineDefaultValue));
+
 		public SerializableProperty<bool> UseDesktopName => this.Cache(key => new SerializableProperty<bool>(key, this._provider));
 
 		public SerializableProperty<bool> OverrideDesktopsOnStartup => this.Cache(key => new SerializableProperty<bool>(key, this._provider, OverrideDesktopsOnStartupDefaultValue));
@@ -86,6 +98,8 @@ namespace SylphyHorn.Serialization
 		public WallpaperPathPropertyList DesktopBackgroundImagePaths => this.Cache(key => new WallpaperPathPropertyList(key, this._provider));
 
 		public WallpaperPositionsPropertyList DesktopBackgroundPositions => this.Cache(key => new WallpaperPositionsPropertyList(key, this._provider));
+
+		public DesktopProcessNamePropertyList DesktopProcessNames => this.Cache(key => new DesktopProcessNamePropertyList(key, this._provider));
 
 		#region default values
 
@@ -138,6 +152,18 @@ namespace SylphyHorn.Serialization
 		public static bool TrayShowDesktopDefaultValue { get; } = false;
 
 		public static bool TrayShowOnlyCurrentNumberDefaultValue { get; } = false;
+
+		public static bool TrayUseCustomFontDefaultValue { get; } = false;
+
+		public static string TrayFontFamilyDefaultValue { get; } = "Segoe UI Variable Text";
+
+		public static int TrayFontSizeDefaultValue { get; } = 9;
+
+		public static bool TrayFontBoldDefaultValue { get; } = false;
+
+		public static bool TrayFontItalicDefaultValue { get; } = false;
+
+		public static bool TrayFontUnderlineDefaultValue { get; } = false;
 
 		public static bool OverrideDesktopsOnStartupDefaultValue { get; } = false;
 

@@ -108,6 +108,7 @@ namespace SylphyHorn.Services
 			Settings.General.DesktopNames.Resize(desktopCount);
 			Settings.General.DesktopBackgroundImagePaths.Resize(desktopCount);
 			Settings.General.DesktopBackgroundPositions.Resize(desktopCount);
+			Settings.General.DesktopProcessNames.Resize(desktopCount);
 
 			foreach (var name in Settings.General.DesktopNames.Value)
 			{
@@ -116,6 +117,10 @@ namespace SylphyHorn.Services
 			foreach (var path in Settings.General.DesktopBackgroundImagePaths.Value)
 			{
 				if (path.Value == null) path.Value = "";
+			}
+			foreach (var processName in Settings.General.DesktopProcessNames.Value)
+			{
+				if (processName.Value == null) processName.Value = "";
 			}
 		}
 

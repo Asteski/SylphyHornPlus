@@ -44,6 +44,8 @@ namespace SylphyHorn.UI.Bindings
 
 		public IReadOnlyCollection<DisplayViewModel<HorizontalAlignment>> NotificationTextAlignments { get; }
 
+		public IReadOnlyCollection<DisplayViewModel<string>> TrayIconFontFamilies { get; }
+
 		public bool IsDisplayEnabled { get; }
 
 		public IReadOnlyCollection<DisplayViewModel<uint>> Displays { get; }
@@ -191,6 +193,7 @@ namespace SylphyHorn.UI.Bindings
 					this.RaisePropertyChanged(nameof(this.IsMouseOfMoveToIndicesLarger));
 					this.RaisePropertyChanged(nameof(this.IsMouseOfMoveToIndicesAndSwitchLarger));
 					this.RaisePropertyChanged(nameof(this.IsMouseOfSwapDesktopIndicesLarger));
+					this.RaisePropertyChanged(nameof(this.IsDesktopProcessNamesLarger));
 				}
 			}
 		}
@@ -252,6 +255,48 @@ namespace SylphyHorn.UI.Bindings
 		}
 
 		#endregion
+
+		#region TrayFontFamily notification property
+
+		public string TrayFontFamily
+		{
+			get => Settings.General.TrayFontFamily.Value;
+			set
+			{
+				if (Settings.General.TrayFontFamily.Value != value)
+				{
+					Settings.General.TrayFontFamily.Value = value ?? GeneralSettings.TrayFontFamilyDefaultValue;
+
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+
+		#endregion
+
+		#region TrayFontSize notification property
+
+		public int? TrayFontSize
+		{
+			get => Settings.General.TrayFontSize.Value;
+			set
+			{
+				var param = value ?? GeneralSettings.TrayFontSizeDefaultValue;
+				if (param < 4) param = 4;
+				if (param > 24) param = 24;
+
+				if (Settings.General.TrayFontSize.Value != param)
+				{
+					Settings.General.TrayFontSize.Value = param;
+
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+
+		#endregion
+
+		public bool IsTrayIconFontSelectorEnabled => Settings.General.TrayShowDesktop && Settings.General.TrayUseCustomFont;
 
 		#region NotificationWindowStyle notification property
 
@@ -759,6 +804,8 @@ namespace SylphyHorn.UI.Bindings
 
 		public bool IsMouseOfSwapDesktopIndicesLarger => Settings.MouseShortcut.SwapDesktopIndices.Count > Desktops.Length;
 
+		public bool IsDesktopProcessNamesLarger => Settings.General.DesktopProcessNames.Count > Desktops.Length;
+
 		public ReadOnlyDispatcherCollection<LogViewModel> Logs { get; }
 
 		public SettingsWindowViewModel(HookService hookService)
@@ -821,6 +868,13 @@ namespace SylphyHorn.UI.Bindings
 				new DisplayViewModel<HorizontalAlignment> { Display = Resources.Settings_NotificationTextAlignment_Center, Value = HorizontalAlignment.Center, },
 				new DisplayViewModel<HorizontalAlignment> { Display = Resources.Settings_NotificationTextAlignment_Right, Value = HorizontalAlignment.Right, },
 			}.ToList();
+
+			this.TrayIconFontFamilies = new[] { GeneralSettings.TrayFontFamilyDefaultValue }
+				.Concat(Fonts.SystemFontFamilies.Select(font => font.Source))
+				.Distinct(StringComparer.CurrentCultureIgnoreCase)
+				.OrderBy(font => font)
+				.Select(font => new DisplayViewModel<string> { Display = font, Value = font, })
+				.ToList();
 
 			this.Displays = new[] { new DisplayViewModel<uint> { Display = Resources.Settings_MultipleDisplays_CurrentDisplay, Value = 0, } }
 				.Concat(MonitorService.GetMonitors()
@@ -903,6 +957,30 @@ namespace SylphyHorn.UI.Bindings
 			Settings.General.LoopDesktop
 				.Subscribe(_ => this._hookService.Reload())
 				.AddTo(this);
+			Settings.General.TrayShowDesktop
+				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.IsTrayIconFontSelectorEnabled)))
+				.AddTo(this);
+			Settings.General.TrayUseCustomFont
+				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.IsTrayIconFontSelectorEnabled)))
+				.AddTo(this);
+			Settings.General.TrayUseCustomFont
+				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
+				.AddTo(this);
+			Settings.General.TrayFontFamily
+				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
+				.AddTo(this);
+			Settings.General.TrayFontSize
+				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
+				.AddTo(this);
+			Settings.General.TrayFontBold
+				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
+				.AddTo(this);
+			Settings.General.TrayFontItalic
+				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
+				.AddTo(this);
+			Settings.General.TrayFontUnderline
+				.Subscribe(_ => Application.Current.TaskTrayIcon.Reload())
+				.AddTo(this);
 
 			Settings.General.SimpleNotification
 				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.PreviewNotificationText)))
@@ -943,6 +1021,9 @@ namespace SylphyHorn.UI.Bindings
 				.AddTo(this);
 			Settings.MouseShortcut.SwapDesktopIndices
 				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.IsMouseOfSwapDesktopIndicesLarger)))
+				.AddTo(this);
+			Settings.General.DesktopProcessNames
+				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.IsDesktopProcessNamesLarger)))
 				.AddTo(this);
 
 			WindowsTheme.ColorPrevalence
@@ -1140,11 +1221,35 @@ namespace SylphyHorn.UI.Bindings
 		public void ResizeMouseListToFit(string propName)
 		{
 			var propList = this.GetShortcutListFromSettings(Settings.MouseShortcut, propName);
-			
+
 			if (propList == null) return;
 
 			var count = VirtualDesktopService.Count;
 			propList.Resize(count);
+		}
+
+		[UsedImplicitly]
+		public void AddDesktopProcessNameList()
+		{
+			var propList = Settings.General.DesktopProcessNames;
+
+			propList.Resize(propList.Count + 1);
+		}
+
+		[UsedImplicitly]
+		public void RemoveLastDesktopProcessNameList()
+		{
+			var propList = Settings.General.DesktopProcessNames;
+
+			if (propList.Count == 0) return;
+
+			propList.Resize(propList.Count - 1);
+		}
+
+		[UsedImplicitly]
+		public void ResizeDesktopProcessNameListToFit()
+		{
+			Settings.General.DesktopProcessNames.Resize(VirtualDesktopService.Count);
 		}
 
 		private ShortcutkeyPropertyList GetShortcutListFromSettings(ShortcutKeySettings settings, string propName)

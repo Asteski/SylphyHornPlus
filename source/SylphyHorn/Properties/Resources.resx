@@ -186,6 +186,12 @@
   <data name="Settings_Desktop" xml:space="preserve">
     <value>Desktop</value>
   </data>
+  <data name="Settings_Desktop_AppRouting" xml:space="preserve">
+    <value>Open apps/windows on specified desktop</value>
+  </data>
+  <data name="Settings_Desktop_AppRouting_ProcessName" xml:space="preserve">
+    <value>Process or executable name</value>
+  </data>
   <data name="Settings_DesktopNames" xml:space="preserve">
     <value>Desktop names</value>
   </data>
@@ -581,6 +587,27 @@
   </data>
   <data name="Settings_TrayIcon" xml:space="preserve">
     <value>Tray Icon</value>
+  </data>
+  <data name="Settings_TrayIcon_FontFamily" xml:space="preserve">
+    <value>Font:</value>
+  </data>
+  <data name="Settings_TrayIcon_FontBold" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="Settings_TrayIcon_FontItalic" xml:space="preserve">
+    <value>Italic</value>
+  </data>
+  <data name="Settings_TrayIcon_FontSize" xml:space="preserve">
+    <value>Size:</value>
+  </data>
+  <data name="Settings_TrayIcon_FontSize_Pixels" xml:space="preserve">
+    <value>px</value>
+  </data>
+  <data name="Settings_TrayIcon_FontUnderline" xml:space="preserve">
+    <value>Underline</value>
+  </data>
+  <data name="Settings_TrayIcon_UseCustomFont" xml:space="preserve">
+    <value>Use specific font for tray numbers</value>
   </data>
   <data name="Settings_Unpin" xml:space="preserve">
     <value>Unpin window:</value>

@@ -266,7 +266,25 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Open apps/windows on specified desktop に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_AppRouting {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_AppRouting", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Process or executable name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_AppRouting_ProcessName {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_AppRouting_ProcessName", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Click to switch to this desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1455,6 +1473,69 @@ namespace SylphyHorn.Properties {
             }
         }
         
+        /// <summary>
+        ///   Font: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_TrayIcon_FontFamily {
+            get {
+                return ResourceManager.GetString("Settings_TrayIcon_FontFamily", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Bold に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_TrayIcon_FontBold {
+            get {
+                return ResourceManager.GetString("Settings_TrayIcon_FontBold", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Italic に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_TrayIcon_FontItalic {
+            get {
+                return ResourceManager.GetString("Settings_TrayIcon_FontItalic", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Size: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_TrayIcon_FontSize {
+            get {
+                return ResourceManager.GetString("Settings_TrayIcon_FontSize", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   px に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_TrayIcon_FontSize_Pixels {
+            get {
+                return ResourceManager.GetString("Settings_TrayIcon_FontSize_Pixels", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Underline に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_TrayIcon_FontUnderline {
+            get {
+                return ResourceManager.GetString("Settings_TrayIcon_FontUnderline", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Use specific font for tray numbers に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_TrayIcon_UseCustomFont {
+            get {
+                return ResourceManager.GetString("Settings_TrayIcon_UseCustomFont", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Unpin window: に類似しているローカライズされた文字列を検索します。
         /// </summary>

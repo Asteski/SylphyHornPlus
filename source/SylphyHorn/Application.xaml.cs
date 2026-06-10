@@ -80,6 +80,7 @@ namespace SylphyHorn
 
 					preparation.VirtualDesktopInitialized += () =>
 					{
+						ApplicationRoutingService.Instance.Start();
 						this.TaskTrayIcon.Show();
 						this.TaskTrayIcon.Reload();
 						if (Settings.General.AlwaysShowDesktopNotification)
@@ -112,6 +113,7 @@ namespace SylphyHorn
 
 					NotificationService.Instance.AddTo(this);
 					WallpaperService.Instance.AddTo(this);
+					ApplicationRoutingService.Instance.AddTo(this);
 
 #if !DEBUG
 					appInstance.CommandLineArgsReceived += (sender, message) =>

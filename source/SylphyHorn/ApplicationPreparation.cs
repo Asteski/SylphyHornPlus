@@ -178,6 +178,11 @@ namespace SylphyHorn
 					{
 						positionSettings.Value[i].Value = positionSettings.Value[i + 1].Value;
 					}
+					var processNameSettings = Settings.General.DesktopProcessNames;
+					for (var i = destroyedIndex; i + 1 < processNameSettings.Count; ++i)
+					{
+						processNameSettings.Value[i].Value = processNameSettings.Value[i + 1].Value;
+					}
 					SettingsService.ResizeListIfNeeded();
 
 					LocalSettingsProvider.Instance.SaveAsync().Wait();
@@ -205,6 +210,11 @@ namespace SylphyHorn
 					{
 						positionSettings.Value[i].Value = positionSettings.Value[i + 1].Value;
 					}
+					var processNameSettings = Settings.General.DesktopProcessNames;
+					for (var i = destroyedIndex; i + 1 < processNameSettings.Count; ++i)
+					{
+						processNameSettings.Value[i].Value = processNameSettings.Value[i + 1].Value;
+					}
 					SettingsService.ResizeListIfNeeded();
 
 					LocalSettingsProvider.Instance.SaveAsync().Wait();
@@ -217,6 +227,7 @@ namespace SylphyHorn
 			{
 				SettingsService.SynchronizeWithWindows();
 				Settings.General.DesktopBackgroundPositions.Move(args.OldIndex, args.NewIndex);
+				Settings.General.DesktopProcessNames.Move(args.OldIndex, args.NewIndex);
 
 				LocalSettingsProvider.Instance.SaveAsync().Wait();
 				idCaches = VirtualDesktop.AllDesktops.Select(d => d.Id).ToArray();

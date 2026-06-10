@@ -236,6 +236,71 @@
 								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_ShowOnlyCurrentNumberInTray}" />
 							</CheckBox>
 						</StackPanel>
+						<StackPanel Margin="8,0,0,0">
+							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TrayUseCustomFont.Value, Mode=TwoWay}"
+									  IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TrayShowDesktop.Value, Mode=OneWay}">
+								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_TrayIcon_UseCustomFont}" />
+							</CheckBox>
+						</StackPanel>
+						<Grid Margin="28,2,0,0">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="8" />
+								<ColumnDefinition Width="240" />
+							</Grid.ColumnDefinitions>
+							<TextBlock Grid.Column="0"
+									   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_TrayIcon_FontFamily}"
+									   VerticalAlignment="Center"
+									   Foreground="{DynamicResource ForegroundBrushKey}" />
+							<metro:PromptComboBox Grid.Column="2"
+												  ItemsSource="{Binding TrayIconFontFamilies}"
+												  DisplayMemberPath="Display"
+												  SelectedValuePath="Value"
+												  SelectedValue="{Binding TrayFontFamily, Mode=TwoWay}"
+												  Prompt=""
+												  IsReadOnly="True"
+												  IsEnabled="{Binding IsTrayIconFontSelectorEnabled}"
+												  MinWidth="220"
+												  Margin="0" />
+						</Grid>
+						<Grid Margin="28,4,0,0">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="8" />
+								<ColumnDefinition Width="80" />
+								<ColumnDefinition Width="8" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<TextBlock Grid.Column="0"
+									   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_TrayIcon_FontSize}"
+									   VerticalAlignment="Center"
+									   Foreground="{DynamicResource ForegroundBrushKey}" />
+							<metro:PromptTextBox Grid.Column="2"
+												 Text="{Binding TrayFontSize, Mode=TwoWay, Converter={StaticResource NullableIntToStringConverter}}"
+												 IsEnabled="{Binding IsTrayIconFontSelectorEnabled}"
+												 MinWidth="64"
+												 Margin="0" />
+							<TextBlock Grid.Column="4"
+									   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_TrayIcon_FontSize_Pixels}"
+									   VerticalAlignment="Center"
+									   Foreground="{DynamicResource ForegroundBrushKey}" />
+						</Grid>
+						<StackPanel Margin="28,4,0,0" Orientation="Horizontal">
+							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TrayFontBold.Value, Mode=TwoWay}"
+									  IsEnabled="{Binding IsTrayIconFontSelectorEnabled}">
+								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_TrayIcon_FontBold}" />
+							</CheckBox>
+							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TrayFontItalic.Value, Mode=TwoWay}"
+									  IsEnabled="{Binding IsTrayIconFontSelectorEnabled}"
+									  Margin="12,0,0,0">
+								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_TrayIcon_FontItalic}" />
+							</CheckBox>
+							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TrayFontUnderline.Value, Mode=TwoWay}"
+									  IsEnabled="{Binding IsTrayIconFontSelectorEnabled}"
+									  Margin="12,0,0,0">
+								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_TrayIcon_FontUnderline}" />
+							</CheckBox>
+						</StackPanel>
 						<Border Height="8" />
 
 						<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Startup}"
@@ -310,7 +375,7 @@
 
 			<TabItem>
 				<TabItem.Header>
-					<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop}"
+					<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop, StringFormat='{}{0} 1'}"
 							   Style="{DynamicResource TabitemStyleKey}" />
 				</TabItem.Header>
 
@@ -621,6 +686,97 @@
 															 Margin="0" />
 								</Grid>
 
+							</Grid>
+						</StackPanel>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+
+			<TabItem>
+				<TabItem.Header>
+					<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop, StringFormat='{}{0} 2'}"
+							   Style="{DynamicResource TabitemStyleKey}" />
+				</TabItem.Header>
+
+				<ScrollViewer HorizontalScrollBarVisibility="Auto"
+							  VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="16,0,16,16"
+								Focusable="True">
+						<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_AppRouting}"
+								   Style="{DynamicResource HeaderStyleKey}"
+								   Margin="0,0,0,8" />
+						<StackPanel Margin="8,0,0,0"
+									Grid.IsSharedSizeScope="True">
+							<Grid Margin="0,0,0,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"
+													  SharedSizeGroup="DesktopAppRoutingHeader" />
+									<ColumnDefinition Width="8" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<ItemsControl ItemsSource="{Binding Source={x:Static serialization:Settings.General}, Path=DesktopProcessNames.Value, Mode=TwoWay}"
+											  Grid.Column="0">
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<UniformGrid Columns="1" />
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<TextBlock VerticalAlignment="Center"
+													   Foreground="{DynamicResource ForegroundBrushKey}">
+												<TextBlock.Text>
+													<MultiBinding StringFormat="{}{0} {1}:">
+														<Binding Source="{x:Static services:ResourceService.Current}" Path="Resources.Settings_Desktop" />
+														<Binding Path="NumberText" />
+													</MultiBinding>
+												</TextBlock.Text>
+											</TextBlock>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
+								<ItemsControl ItemsSource="{Binding Source={x:Static serialization:Settings.General}, Path=DesktopProcessNames.Value, Mode=TwoWay}"
+											  Grid.Column="2">
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<UniformGrid Columns="1" />
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<metro:PromptTextBox Text="{Binding Path='Value', Mode=TwoWay}"
+																 Prompt="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_AppRouting_ProcessName}"
+																 MinWidth="312"
+																 Margin="2" />
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
+							</Grid>
+							<Grid Margin="0,8,0,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="8" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="8" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<metro2:CallMethodButton Grid.Column="0"
+														 Content="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_SwitchSpecifiedDesktop_Add}"
+														 MethodTarget="{Binding}"
+														 MethodName="AddDesktopProcessNameList"
+														 Margin="0" />
+								<metro2:CallMethodButton Grid.Column="2"
+														 Content="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_SwitchSpecifiedDesktop_RemoveLast}"
+														 MethodTarget="{Binding}"
+														 MethodName="RemoveLastDesktopProcessNameList"
+														 IsEnabled="{Binding IsDesktopProcessNamesLarger}"
+														 Margin="0" />
+								<metro2:CallMethodButton Grid.Column="4"
+														 Content="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_SwitchSpecifiedDesktop_ResizeToFit}"
+														 MethodTarget="{Binding}"
+														 MethodName="ResizeDesktopProcessNameListToFit"
+														 IsEnabled="{Binding IsDesktopProcessNamesLarger}"
+														 Margin="0" />
 							</Grid>
 						</StackPanel>
 					</StackPanel>

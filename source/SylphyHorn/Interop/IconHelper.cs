@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
 using MetroRadiance.Interop;
 
@@ -25,7 +26,7 @@ namespace SylphyHorn.Interop
 		{
 			var imageDpi = dpi ?? new Dpi(96, 96);
 			var imageSize = ScaleSizeByDpi(size, imageDpi);
-			var renderTarget = new RenderTargetBitmap(imageSize.Width, imageSize.Height, imageDpi.X, imageDpi.Y, System.Windows.Media.PixelFormats.Default);
+			var renderTarget = new RenderTargetBitmap(imageSize.Width, imageSize.Height, imageDpi.X, imageDpi.Y, System.Windows.Media.PixelFormats.Pbgra32);
 			renderTarget.Render(drawingVisual);
 			return renderTarget;
 		}
@@ -33,30 +34,38 @@ namespace SylphyHorn.Interop
 		public static Bitmap ToBitmap(this System.Windows.Media.DrawingVisual drawingVisual, Size size, Dpi? dpi = null, Color? transparentColor = null)
 		{
 			var renderTarget = drawingVisual.ToRenderTargetBitmap(size, dpi);
-			var encoder = new BmpBitmapEncoder();
+			var encoder = new PngBitmapEncoder();
 			var frame = BitmapFrame.Create(renderTarget);
 			encoder.Frames.Add(frame);
 
 			using (var stream = new MemoryStream())
 			{
 				encoder.Save(stream);
+				stream.Seek(0, SeekOrigin.Begin);
 
-				var bitmap = new Bitmap(stream, useIcm: true);
-				if (transparentColor.HasValue)
+				using (var source = new Bitmap(stream, useIcm: true))
 				{
-					bitmap.MakeTransparent(transparentColor.Value);
+					var bitmap = new Bitmap(source);
+					if (transparentColor.HasValue)
+					{
+						bitmap.MakeTransparent(transparentColor.Value);
+					}
+					return bitmap;
 				}
-				return bitmap;
 			}
 		}
 
 		public static Icon ToIcon(this Bitmap bitmap)
 		{
 			var iconHandle = bitmap.GetHicon();
-			var icon = Icon.FromHandle(iconHandle);
+			var icon = (Icon)Icon.FromHandle(iconHandle).Clone();
+			DestroyIcon(iconHandle);
 
 			return icon;
 		}
+
+		[DllImport("user32.dll", SetLastError = true)]
+		private static extern bool DestroyIcon(IntPtr hIcon);
 
 #if DEBUG
 		internal static BitmapSource ToBitmapSource(this Icon icon)

@@ -11,29 +11,30 @@ namespace SylphyHorn.UI
 {
 	public class DynamicInfoTrayIcon
 	{
-		private const string _defaultFontFamilyName = "Segoe UI";
-		private const double _horizontalFontSize = 9;
-		private const double _verticalFontSize = 8;
+		private const string _defaultFontFamilyName = "Segoe UI Variable Text, Segoe UI";
+		private const double _defaultHorizontalFontSize = 8.5;
+		private const double _defaultVerticalFontSize = 7.5;
 		private const double _verticalSpacing = -0.5;
 		private const double _triggerFontSizeInEffectivePixels = 14.0;
 		private const double _minFontSize = 4.0;
-		private const double _simpleFontSize = 16;
+		private const double _defaultSimpleFontSize = 15;
 
 		private static readonly SolidColorBrush _lightForegroundBrush = new SolidColorBrush(ImmersiveColor.GetColorByTypeName(ImmersiveColorNames.SystemTextLightTheme));
-		private static readonly SolidColorBrush _lightBackgroundBrush = new SolidColorBrush(ImmersiveColor.GetColorByTypeName(ImmersiveColorNames.SystemBackgroundLightTheme));
 		private static readonly SolidColorBrush _darkForegroundBrush = new SolidColorBrush(ImmersiveColor.GetColorByTypeName(ImmersiveColorNames.SystemTextDarkTheme));
-		private static readonly SolidColorBrush _darkBackgroundBrush = new SolidColorBrush(ImmersiveColor.GetColorByTypeName(ImmersiveColorNames.SystemBackgroundDarkTheme));
-
-		private static readonly Typeface _defaultFont = new Typeface(new FontFamily(_defaultFontFamilyName), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
-		private static readonly Typeface _simpleFont = new Typeface(new FontFamily(_defaultFontFamilyName), FontStyles.Normal, FontWeights.SemiBold, FontStretches.Normal);
 
 		private SolidColorBrush _foregroundBrush;
-		private SolidColorBrush _backgroundBrush;
+		private Typeface _defaultFont;
+		private Typeface _simpleFont;
+		private double _horizontalFontSize;
+		private double _verticalFontSize;
+		private double _simpleFontSize;
+		private bool _underline;
 		private Dpi? _dpi;
 
-		public DynamicInfoTrayIcon(Theme theme, bool colorPrevalence, Dpi? dpi = null)
+		public DynamicInfoTrayIcon(Theme theme, bool colorPrevalence, Dpi? dpi = null, string fontFamilyName = null, double? fontSize = null, bool fontBold = false, bool fontItalic = false, bool fontUnderline = false)
 		{
-			(this._foregroundBrush, this._backgroundBrush) = GetThemeBrushes(theme, colorPrevalence);
+			this._foregroundBrush = GetThemeBrush(theme, colorPrevalence);
+			this.UpdateFont(fontFamilyName, fontSize, fontBold, fontItalic, fontUnderline);
 			this._dpi = dpi;
 		}
 
@@ -47,7 +48,27 @@ namespace SylphyHorn.UI
 
 		public void UpdateBrush(Theme theme, bool colorPrevalence)
 		{
-			(this._foregroundBrush, this._backgroundBrush) = GetThemeBrushes(theme, colorPrevalence);
+			this._foregroundBrush = GetThemeBrush(theme, colorPrevalence);
+		}
+
+		public void UpdateFont(string fontFamilyName, double? fontSize = null, bool fontBold = false, bool fontItalic = false, bool fontUnderline = false)
+		{
+			var useCustomFont = !string.IsNullOrWhiteSpace(fontFamilyName) || fontSize.HasValue || fontBold || fontItalic || fontUnderline;
+			var familyName = string.IsNullOrWhiteSpace(fontFamilyName)
+				? _defaultFontFamilyName
+				: $"{fontFamilyName}, {_defaultFontFamilyName}";
+			var fontFamily = new FontFamily(familyName);
+			var fontStyle = fontItalic ? FontStyles.Italic : FontStyles.Normal;
+			var fontWeight = useCustomFont
+				? fontBold ? FontWeights.Bold : FontWeights.Normal
+				: FontWeights.SemiBold;
+			this._defaultFont = new Typeface(fontFamily, fontStyle, fontWeight, FontStretches.Normal);
+			this._simpleFont = new Typeface(fontFamily, fontStyle, fontWeight, FontStretches.Normal);
+			this._underline = fontUnderline;
+
+			this._horizontalFontSize = fontSize ?? _defaultHorizontalFontSize;
+			this._verticalFontSize = this._horizontalFontSize * _defaultVerticalFontSize / _defaultHorizontalFontSize;
+			this._simpleFontSize = this._horizontalFontSize * _defaultSimpleFontSize / _defaultHorizontalFontSize;
 		}
 
 		// consolidate two methods below?
@@ -58,10 +79,10 @@ namespace SylphyHorn.UI
 			var scale = dpi.X / 96.0;
 
 			var drawingVisual = new DrawingVisual();
+			TextOptions.SetTextRenderingMode(drawingVisual, TextRenderingMode.Grayscale);
+			TextOptions.SetTextFormattingMode(drawingVisual, TextFormattingMode.Display);
 			using (var context = drawingVisual.RenderOpen())
 			{
-				context.DrawRectangle(this._backgroundBrush, null, new Rect(0.0, 0.0, iconSize.Width, iconSize.Height));
-
 				var currentOrientation = GetOrientation(totalDesktopCount);
 				if (totalDesktopCount <= 0)
 				{
@@ -77,17 +98,14 @@ namespace SylphyHorn.UI
 				}
 			}
 
-			return drawingVisual.ToBitmap(
-				iconSize,
-				dpi,
-				this._backgroundBrush.Color.ToGDIColor());
+			return drawingVisual.ToBitmap(iconSize, dpi);
 		}
 
 		private void DrawHorizontalInfo(DrawingContext context, System.Drawing.Size size, double scale, int currentDesktop, int totalDesktopCount)
 		{
 			var stringToDraw = $"{currentDesktop}/{totalDesktopCount}";
-			var formattedText = this.GetFormattedTextFromText(stringToDraw, _horizontalFontSize, size, scale);
-			formattedText.LineHeight = Math.Min(_horizontalFontSize, size.Height);
+			var formattedText = this.GetFormattedTextFromText(stringToDraw, this._horizontalFontSize, size, scale);
+			formattedText.LineHeight = Math.Min(this._horizontalFontSize, size.Height);
 
 			var offsetY = Math.Floor(0.5 * (size.Height - formattedText.Extent));
 			context.DrawText(formattedText, new Point(0, offsetY));
@@ -95,7 +113,7 @@ namespace SylphyHorn.UI
 
 		private void DrawVerticalInfo(DrawingContext context, System.Drawing.Size size, double scale, int currentDesktop, int totalDesktopCount, double? currentFontSize = null)
 		{
-			var fontSize = currentFontSize ?? _verticalFontSize;
+			var fontSize = currentFontSize ?? this._verticalFontSize;
 			var scaleable = (fontSize - 1) >= _minFontSize;
 			var lineHeight = Math.Min(fontSize, 0.5 * size.Height);
 
@@ -128,7 +146,7 @@ namespace SylphyHorn.UI
 		{
 			var stringToDraw = $"{currentDesktop}";
 			var digit = (int)Math.Floor(Math.Log10(currentDesktop));
-			var fontSize = _simpleFontSize * Math.Pow(0.84, digit) * Math.Pow(0.84, digit > 0 ? digit - 1 : 0);
+			var fontSize = this._simpleFontSize * Math.Pow(0.84, digit) * Math.Pow(0.84, digit > 0 ? digit - 1 : 0);
 			var formattedText = this.GetFormattedTextFromText(stringToDraw, fontSize, size, scale, _simpleFont);
 			formattedText.LineHeight = Math.Min(fontSize, size.Height);
 
@@ -152,6 +170,10 @@ namespace SylphyHorn.UI
 			formattedText.MaxTextWidth = size.Width;
 			formattedText.TextAlignment = TextAlignment.Center;
 			formattedText.Trimming = TextTrimming.None;
+			if (this._underline)
+			{
+				formattedText.SetTextDecorations(TextDecorations.Underline);
+			}
 			return formattedText;
 		}
 
@@ -160,13 +182,13 @@ namespace SylphyHorn.UI
 			return totalDesktopCount >= 10 ? Orientation.Vertical : Orientation.Horizontal;
 		}
 
-		private static (SolidColorBrush Foreground, SolidColorBrush Background) GetThemeBrushes(Theme theme, bool colorPrevalence)
+		private static SolidColorBrush GetThemeBrush(Theme theme, bool colorPrevalence)
 		{
 			return colorPrevalence
-				? (_darkForegroundBrush, new SolidColorBrush(ImmersiveColor.GetColorByTypeName(ImmersiveColorNames.SystemAccentDark1)))
+				? _darkForegroundBrush
 				: theme == Theme.Light
-					? (_lightForegroundBrush, _lightBackgroundBrush)
-					: (_darkForegroundBrush, _darkBackgroundBrush);
+					? _lightForegroundBrush
+					: _darkForegroundBrush;
 		}
 
 		private static Dpi GetDpi()

@@ -82,6 +82,13 @@ namespace SylphyHorn.Serialization
 	}
 
 
+	public class DesktopProcessNameProperty : IndexedSerializableProperty<string>
+	{
+		public DesktopProcessNameProperty(string key, int index, ISerializationProvider provider) : base(key, index, provider) { }
+		public DesktopProcessNameProperty(string key, int index, ISerializationProvider provider, string defaultValue) : base(key, index, provider, defaultValue) { }
+	}
+
+
 	public class WallpaperPositionsProperty : IndexedSerializableProperty<byte>
 	{
 		public WallpaperPositionsProperty(string key, int index, ISerializationProvider provider) : base(key, index, provider, 4 /* WallpaperPosition.Fill */) { }
@@ -447,6 +454,60 @@ namespace SylphyHorn.Serialization
 		}
 
 		protected override bool IsEmptyValue(WallpaperPathProperty value)
+		{
+			return value == null || string.IsNullOrEmpty(value.Value);
+		}
+	}
+
+
+	public class DesktopProcessNamePropertyList : SerializablePropertyListBase<DesktopProcessNameProperty>
+	{
+		public DesktopProcessNamePropertyList(string key, ISerializationProvider provider) : base(key, provider) { }
+		public DesktopProcessNamePropertyList(string key, int size, ISerializationProvider provider) : base(key, size, provider) { }
+		public DesktopProcessNamePropertyList(string key, ISerializationProvider provider, params DesktopProcessNameProperty[] defaultValues) : base(key, provider, defaultValues) { }
+
+		protected override void MoveCore(int fromIndex, int toIndex)
+		{
+			var newValue = this.Value.ToList();
+			var tempItem = this.Value[fromIndex].Value;
+			if (fromIndex < toIndex)
+			{
+				var targetIndex = fromIndex;
+				var sourceIndex = fromIndex + 1;
+				for (; sourceIndex <= toIndex; ++targetIndex, ++sourceIndex)
+				{
+					newValue[targetIndex].Value = newValue[sourceIndex].Value;
+				}
+			}
+			else
+			{
+				var targetIndex = fromIndex;
+				var sourceIndex = fromIndex - 1;
+				for (; sourceIndex >= toIndex; --targetIndex, --sourceIndex)
+				{
+					newValue[targetIndex].Value = newValue[sourceIndex].Value;
+				}
+			}
+			newValue[toIndex].Value = tempItem;
+			this.Value = newValue;
+		}
+
+		protected override void LoadProperties()
+		{
+			this.LoadPropertiesCore<string>();
+		}
+
+		protected override DesktopProcessNameProperty CreateProperty(int index)
+		{
+			return new DesktopProcessNameProperty(this.CreateItemName(index), index, this.Provider);
+		}
+
+		protected override DesktopProcessNameProperty CreatePropertyWithDefault(int index, DesktopProcessNameProperty defaultValue)
+		{
+			return new DesktopProcessNameProperty(this.CreateItemName(index), index, this.Provider, defaultValue.Value);
+		}
+
+		protected override bool IsEmptyValue(DesktopProcessNameProperty value)
 		{
 			return value == null || string.IsNullOrEmpty(value.Value);
 		}
