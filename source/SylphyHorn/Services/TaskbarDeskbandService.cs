@@ -14,6 +14,8 @@ using MetroRadiance.Interop.Win32;
 using SylphyHorn.Interop;
 using SylphyHorn.Properties;
 using SylphyHorn.Serialization;
+using SylphyHorn.UI;
+using SylphyHorn.UI.Bindings;
 using WindowsDesktop;
 
 namespace SylphyHorn.Services
@@ -37,6 +39,9 @@ namespace SylphyHorn.Services
 		private const int _verticalHeight = 28;
 		private const int _regularFontWeight = 400;
 		private const int _boldFontWeight = 700;
+		private const int _rpcServerUnavailableHResult = unchecked((int)0x800706BA);
+		private const int _rpcCallFailedHResult = unchecked((int)0x800706BE);
+		private const int _rpcDisconnectedHResult = unchecked((int)0x80010108);
 
 		private readonly LivetCompositeDisposable _compositeDisposable = new LivetCompositeDisposable();
 		private readonly Timer _layoutTimer;
@@ -58,21 +63,21 @@ namespace SylphyHorn.Services
 			MigrateLegacyRomanDisplayMode();
 
 			this._layoutTimer = new Timer { Interval = 1000 };
-			this._layoutTimer.Tick += (sender, args) =>
-			{
-				if (Settings.General.TaskbarDeskbandTooltipListWindows.Value)
-				{
-					this.UpdateText(show: false, render: false);
-				}
-
-				this.UpdateLayout();
-			};
+			this._layoutTimer.Tick += (sender, args) => this.OnLayoutTimerTick();
 
 			Settings.General.TaskbarDeskbandMode
-				.Subscribe(_ =>
+				.Subscribe(mode =>
 				{
+					RememberDeskbandMode(mode);
 					if (!this._started) return;
-					this.Hide();
+					this.Hide(stopTimer: false);
+					if (GetDeskbandMode() == DeskbandMode.Disabled)
+					{
+						this._layoutTimer.Stop();
+						return;
+					}
+
+					this._layoutTimer.Start();
 					this.Show();
 				})
 				.AddTo(this._compositeDisposable);
@@ -152,6 +157,7 @@ namespace SylphyHorn.Services
 			this._started = true;
 			if (GetDeskbandMode() != DeskbandMode.Disabled)
 			{
+				this._layoutTimer.Start();
 				this.Show();
 			}
 		}
@@ -163,14 +169,36 @@ namespace SylphyHorn.Services
 		{
 			if (IsDeskbandModeEnabled)
 			{
+				RememberDeskbandMode(Settings.General.TaskbarDeskbandMode.Value);
 				Settings.General.TaskbarDeskbandMode.Value = GeneralSettings.TaskbarDeskbandModeDisabledValue;
 				return;
 			}
 
-			Settings.General.TaskbarDeskbandMode.Value = ProductInfo.IsWindows11OrLater
+			Settings.General.TaskbarDeskbandMode.Value = GetLastEnabledDeskbandMode();
+		}
+
+		private static void RememberDeskbandMode(uint mode)
+		{
+			if (IsEnabledDeskbandMode(mode))
+			{
+				Settings.General.TaskbarDeskbandLastEnabledMode.Value = mode;
+			}
+		}
+
+		private static uint GetLastEnabledDeskbandMode()
+		{
+			var mode = Settings.General.TaskbarDeskbandLastEnabledMode.Value;
+			return IsEnabledDeskbandMode(mode) ? mode : GetDefaultEnabledDeskbandMode();
+		}
+
+		private static uint GetDefaultEnabledDeskbandMode()
+			=> ProductInfo.IsWindows11OrLater
 				? GeneralSettings.TaskbarDeskbandModeModernTaskbarValue
 				: GeneralSettings.TaskbarDeskbandModeLegacyTaskbarValue;
-		}
+
+		private static bool IsEnabledDeskbandMode(uint mode)
+			=> mode == GeneralSettings.TaskbarDeskbandModeModernTaskbarValue
+				|| mode == GeneralSettings.TaskbarDeskbandModeLegacyTaskbarValue;
 
 		public void Dispose()
 		{
@@ -186,6 +214,35 @@ namespace SylphyHorn.Services
 			this._compositeDisposable.Dispose();
 			this.Hide();
 			this._layoutTimer.Dispose();
+		}
+
+		private void OnLayoutTimerTick()
+		{
+			try
+			{
+				if (GetDeskbandMode() == DeskbandMode.Disabled)
+				{
+					this.Hide();
+					return;
+				}
+
+				if (this._form == null)
+				{
+					this.Show();
+					return;
+				}
+
+				if (Settings.General.TaskbarDeskbandTooltipListWindows.Value)
+				{
+					this.UpdateText(show: false, render: false);
+				}
+
+				this.UpdateLayout();
+			}
+			catch (COMException ex) when (IsVirtualDesktopTemporarilyUnavailable(ex))
+			{
+				// Explorer can briefly tear down the virtual desktop COM server while restarting.
+			}
 		}
 
 		private void Show()
@@ -213,9 +270,13 @@ namespace SylphyHorn.Services
 			this._layoutTimer.Start();
 		}
 
-		private void Hide()
+		private void Hide(bool stopTimer = true)
 		{
-			this._layoutTimer.Stop();
+			if (stopTimer)
+			{
+				this._layoutTimer.Stop();
+			}
+
 			this.RestoreTaskList();
 
 			if (this._form != null)
@@ -235,9 +296,10 @@ namespace SylphyHorn.Services
 		private void UpdateLayout(bool force = false)
 		{
 			if (this._form == null) return;
-			if (!this.AreTaskbarWindowsValid() && !this.TryFindTaskbarWindows(this._activeMode))
+			if (!this.AreTaskbarWindowsValid())
 			{
-				this.Hide();
+				this.Hide(stopTimer: false);
+				this.Show();
 				return;
 			}
 
@@ -261,15 +323,15 @@ namespace SylphyHorn.Services
 				return;
 			}
 
+			var horizontal = Width(taskbarRect) >= Height(taskbarRect);
+			var placeOnLeft = IsDeskbandPlacedOnLeft();
 			if (!this._hasOriginalTaskListRect || force)
 			{
-				this._originalTaskListRect = taskListRect;
+				this._originalTaskListRect = GetInitialTaskListRect(taskListRect, containerRect, horizontal, placeOnLeft);
 				this._hasOriginalTaskListRect = true;
 			}
 
 			var sourceTaskListRect = this._originalTaskListRect;
-			var horizontal = Width(taskbarRect) >= Height(taskbarRect);
-			var placeOnLeft = IsDeskbandPlacedOnLeft();
 			if (horizontal)
 			{
 				var height = Math.Max(1, Height(sourceTaskListRect));
@@ -378,6 +440,32 @@ namespace SylphyHorn.Services
 			this._hasOriginalTaskListRect = false;
 		}
 
+		private static RECT GetInitialTaskListRect(RECT taskListRect, RECT containerRect, bool horizontal, bool placeOnLeft)
+		{
+			if (!placeOnLeft) return taskListRect;
+
+			var rect = taskListRect;
+			var staleOffsetThreshold = Scale(_horizontalMinWidth);
+			if (horizontal)
+			{
+				var staleOffset = rect.Left - containerRect.Left;
+				if (staleOffset >= staleOffsetThreshold)
+				{
+					rect.Left = containerRect.Left;
+				}
+			}
+			else
+			{
+				var staleOffset = rect.Top - containerRect.Top;
+				if (staleOffset >= staleOffsetThreshold)
+				{
+					rect.Top = containerRect.Top;
+				}
+			}
+
+			return rect;
+		}
+
 		private bool TryFindTaskbarWindows(DeskbandMode mode)
 		{
 			this._taskbarHandle = NativeMethods.FindWindow("Shell_TrayWnd", null);
@@ -482,16 +570,39 @@ namespace SylphyHorn.Services
 		{
 			if (this._form == null) return;
 
-			var currentDesktop = VirtualDesktop.Current;
-			var currentDesktopIndex = Array.IndexOf(VirtualDesktop.AllDesktops, currentDesktop) + 1;
-			var desktopName = currentDesktopIndex > 0 ? GetDesktopName(currentDesktopIndex, currentDesktop) : string.Empty;
-			var text = currentDesktopIndex > 0 ? GetDeskbandText(currentDesktopIndex, desktopName) : string.Empty;
-			var tooltip = currentDesktopIndex > 0 ? GetDesktopTooltip(currentDesktopIndex, desktopName, currentDesktop) : string.Empty;
+			if (!TryGetDeskbandInfo(out var text, out var tooltip)) return;
 			if (this._form.SetDesktopInfo(text, tooltip, render) && show)
 			{
 				NativeMethods.ShowWindow(this._form.Handle, ShowWindowCommand.ShowNoActivate);
 			}
 		}
+
+		private static bool TryGetDeskbandInfo(out string text, out string tooltip)
+		{
+			text = string.Empty;
+			tooltip = string.Empty;
+
+			try
+			{
+				var currentDesktop = VirtualDesktop.Current;
+				var currentDesktopIndex = Array.IndexOf(VirtualDesktop.AllDesktops, currentDesktop) + 1;
+				if (currentDesktopIndex <= 0) return true;
+
+				var desktopName = GetDesktopName(currentDesktopIndex, currentDesktop);
+				text = GetDeskbandText(currentDesktopIndex, desktopName);
+				tooltip = GetDesktopTooltip(currentDesktopIndex, desktopName, currentDesktop);
+				return true;
+			}
+			catch (COMException ex) when (IsVirtualDesktopTemporarilyUnavailable(ex))
+			{
+				return false;
+			}
+		}
+
+		private static bool IsVirtualDesktopTemporarilyUnavailable(COMException ex)
+			=> ex.ErrorCode == _rpcServerUnavailableHResult
+				|| ex.ErrorCode == _rpcCallFailedHResult
+				|| ex.ErrorCode == _rpcDisconnectedHResult;
 
 		private void OnCurrentDesktopChanged(object sender, VirtualDesktopChangedEventArgs e)
 		{
@@ -1218,6 +1329,26 @@ namespace SylphyHorn.Services
 				}
 			}
 
+			protected override void OnMouseDoubleClick(MouseEventArgs e)
+			{
+				base.OnMouseDoubleClick(e);
+
+				if (e.Button == MouseButtons.Left)
+				{
+					ExecuteDoubleClickAction();
+				}
+			}
+
+			protected override void OnMouseClick(MouseEventArgs e)
+			{
+				base.OnMouseClick(e);
+
+				if (e.Button == MouseButtons.Middle)
+				{
+					ExecuteMiddleClickAction();
+				}
+			}
+
 			public bool SetAppearance(DeskbandAppearance appearance)
 			{
 				if (this._textFont != null
@@ -1392,6 +1523,74 @@ namespace SylphyHorn.Services
 
 				this._lastLoggedUpdateError = error;
 				LoggingService.Instance.Register(new Win32Exception(error, "Taskbar deskband layered update failed."));
+			}
+
+			private static void ExecuteDoubleClickAction()
+				=> ExecuteDeskbandAction(Settings.General.TaskbarDeskbandDoubleClickAction.Value, allowReturnToDesktop1: false);
+
+			private static void ExecuteMiddleClickAction()
+				=> ExecuteDeskbandAction(Settings.General.TaskbarDeskbandMiddleClickAction.Value, allowReturnToDesktop1: true);
+
+			private static void ExecuteDeskbandAction(uint action, bool allowReturnToDesktop1)
+			{
+				if (action == GeneralSettings.TaskbarDeskbandDoubleClickActionDisabledValue)
+				{
+					return;
+				}
+
+				if (allowReturnToDesktop1
+					&& action == GeneralSettings.TaskbarDeskbandMiddleClickActionReturnToDesktop1Value)
+				{
+					VirtualDesktopService.GetByIndex(0)?.Switch();
+					return;
+				}
+
+				if (action == GeneralSettings.TaskbarDeskbandDoubleClickActionSettingsValue)
+				{
+					OpenSettingsWindow();
+					return;
+				}
+
+				VirtualDesktopService.ShowTaskView();
+			}
+
+			private static void OpenSettingsWindow()
+			{
+				var dispatcher = System.Windows.Application.Current?.Dispatcher;
+				if (dispatcher == null) return;
+
+				dispatcher.BeginInvoke(new Action(() =>
+				{
+					try
+					{
+						if (!SylphyHorn.Application.Args.CanSettings) return;
+
+						if (SettingsWindow.Instance != null)
+						{
+							SettingsWindow.Instance.Activate();
+							return;
+						}
+
+						var application = System.Windows.Application.Current as SylphyHorn.Application;
+						SettingsWindow.Instance = new SettingsWindow
+						{
+							DataContext = new SettingsWindowViewModel(application?.HookService),
+						};
+
+						try
+						{
+							SettingsWindow.Instance.ShowDialog();
+						}
+						finally
+						{
+							SettingsWindow.Instance = null;
+						}
+					}
+					catch (Exception ex)
+					{
+						LoggingService.Instance.Register(ex);
+					}
+				}));
 			}
 
 			private static void CopyBitmapBits(Bitmap bitmap, IntPtr targetBits, int width, int height)

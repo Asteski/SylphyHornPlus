@@ -77,9 +77,13 @@ namespace SylphyHorn.Serialization
 
 		public SerializableProperty<bool> TrayShowOnlyCurrentNumber => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TrayShowOnlyCurrentNumberDefaultValue));
 
+		public SerializableProperty<bool> TraySwitchDesktopWithMouseWheel => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TraySwitchDesktopWithMouseWheelDefaultValue));
+
 		public SerializableProperty<bool> TaskbarDeskbandEnabled => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandEnabledDefaultValue));
 
 		public SerializableProperty<uint> TaskbarDeskbandMode => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandModeDefaultValue));
+
+		public SerializableProperty<uint> TaskbarDeskbandLastEnabledMode => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandLastEnabledModeDefaultValue));
 
 		public SerializableProperty<bool> TaskbarDeskbandPlaceOnLeft => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandPlaceOnLeftDefaultValue));
 
@@ -123,6 +127,10 @@ namespace SylphyHorn.Serialization
 
 		public SerializableProperty<bool> TaskbarDeskbandSwitchDesktopWithMouseWheel => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandSwitchDesktopWithMouseWheelDefaultValue));
 
+		public SerializableProperty<uint> TaskbarDeskbandDoubleClickAction => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandDoubleClickActionDefaultValue));
+
+		public SerializableProperty<uint> TaskbarDeskbandMiddleClickAction => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandMiddleClickActionDefaultValue));
+
 		public SerializableProperty<bool> UseDesktopName => this.Cache(key => new SerializableProperty<bool>(key, this._provider));
 
 		public SerializableProperty<bool> OverrideDesktopsOnStartup => this.Cache(key => new SerializableProperty<bool>(key, this._provider, OverrideDesktopsOnStartupDefaultValue));
@@ -134,6 +142,8 @@ namespace SylphyHorn.Serialization
 		public WallpaperPositionsPropertyList DesktopBackgroundPositions => this.Cache(key => new WallpaperPositionsPropertyList(key, this._provider));
 
 		public DesktopProcessNamePropertyList DesktopProcessNames => this.Cache(key => new DesktopProcessNamePropertyList(key, this._provider));
+
+		public DesktopProcessNameClosePropertyList DesktopProcessNamesCloseWhenEmpty => this.Cache(key => new DesktopProcessNameClosePropertyList(key, this._provider));
 
 		public SerializableProperty<bool> DesktopProcessNamesCreateMissingDesktop => this.Cache(key => new SerializableProperty<bool>(key, this._provider, DesktopProcessNamesCreateMissingDesktopDefaultValue));
 
@@ -189,6 +199,8 @@ namespace SylphyHorn.Serialization
 
 		public static bool TrayShowOnlyCurrentNumberDefaultValue { get; } = false;
 
+		public static bool TraySwitchDesktopWithMouseWheelDefaultValue { get; } = false;
+
 		public static bool TaskbarDeskbandEnabledDefaultValue { get; } = false;
 
 		public static uint TaskbarDeskbandModeDisabledValue { get; } = 0;
@@ -198,6 +210,8 @@ namespace SylphyHorn.Serialization
 		public static uint TaskbarDeskbandModeLegacyTaskbarValue { get; } = 2;
 
 		public static uint TaskbarDeskbandModeDefaultValue { get; } = TaskbarDeskbandModeDisabledValue;
+
+		public static uint TaskbarDeskbandLastEnabledModeDefaultValue { get; } = TaskbarDeskbandModeDisabledValue;
 
 		public static bool TaskbarDeskbandPlaceOnLeftDefaultValue { get; } = false;
 
@@ -280,6 +294,24 @@ namespace SylphyHorn.Serialization
 		public static uint TaskbarDeskbandTooltipWindowStyleDefaultValue { get; } = TaskbarDeskbandTooltipWindowStyleTitleValue;
 
 		public static bool TaskbarDeskbandSwitchDesktopWithMouseWheelDefaultValue { get; } = false;
+
+		public static uint TaskbarDeskbandDoubleClickActionTaskViewValue { get; } = 0;
+
+		public static uint TaskbarDeskbandDoubleClickActionSettingsValue { get; } = 1;
+
+		public static uint TaskbarDeskbandDoubleClickActionDisabledValue { get; } = 2;
+
+		public static uint TaskbarDeskbandDoubleClickActionDefaultValue { get; } = TaskbarDeskbandDoubleClickActionTaskViewValue;
+
+		public static uint TaskbarDeskbandMiddleClickActionTaskViewValue { get; } = 0;
+
+		public static uint TaskbarDeskbandMiddleClickActionSettingsValue { get; } = 1;
+
+		public static uint TaskbarDeskbandMiddleClickActionDisabledValue { get; } = 2;
+
+		public static uint TaskbarDeskbandMiddleClickActionReturnToDesktop1Value { get; } = 3;
+
+		public static uint TaskbarDeskbandMiddleClickActionDefaultValue { get; } = TaskbarDeskbandMiddleClickActionDisabledValue;
 
 		public static bool OverrideDesktopsOnStartupDefaultValue { get; } = false;
 

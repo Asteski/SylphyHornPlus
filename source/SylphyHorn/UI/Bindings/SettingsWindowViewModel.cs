@@ -58,6 +58,10 @@ namespace SylphyHorn.UI.Bindings
 
 		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandTooltipWindowStyles { get; }
 
+		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandDoubleClickActions { get; }
+
+		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandMiddleClickActions { get; }
+
 		public bool IsDisplayEnabled { get; }
 
 		public IReadOnlyCollection<DisplayViewModel<uint>> Displays { get; }
@@ -774,7 +778,9 @@ namespace SylphyHorn.UI.Bindings
 
 		public bool IsMouseOfSwapDesktopIndicesLarger => Settings.MouseShortcut.SwapDesktopIndices.Count > Desktops.Length;
 
-		public bool IsDesktopProcessNamesLarger => Settings.General.DesktopProcessNames.Count > Desktops.Length;
+		public bool IsDesktopProcessNamesLarger
+			=> Settings.General.DesktopProcessNames.Count > Desktops.Length
+				|| Settings.General.DesktopProcessNamesCloseWhenEmpty.Count > Desktops.Length;
 
 		public ReadOnlyDispatcherCollection<LogViewModel> Logs { get; }
 
@@ -869,15 +875,15 @@ namespace SylphyHorn.UI.Bindings
 
 			this.TaskbarDeskbandNumberWrappers = new[]
 			{
-				new DisplayViewModel<uint> { Display = "num", Value = GeneralSettings.TaskbarDeskbandNumberWrapperNoneValue, },
-				new DisplayViewModel<uint> { Display = "[num]", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSquareValue, },
-				new DisplayViewModel<uint> { Display = "(num)", Value = GeneralSettings.TaskbarDeskbandNumberWrapperRoundValue, },
-				new DisplayViewModel<uint> { Display = "{num}", Value = GeneralSettings.TaskbarDeskbandNumberWrapperCurlyValue, },
-				new DisplayViewModel<uint> { Display = "<num>", Value = GeneralSettings.TaskbarDeskbandNumberWrapperAngleValue, },
-				new DisplayViewModel<uint> { Display = "'num'", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSingleQuoteValue, },
-				new DisplayViewModel<uint> { Display = "\"num\"", Value = GeneralSettings.TaskbarDeskbandNumberWrapperDoubleQuoteValue, },
-				new DisplayViewModel<uint> { Display = "|num|", Value = GeneralSettings.TaskbarDeskbandNumberWrapperPipeValue, },
-				new DisplayViewModel<uint> { Display = "/num/", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSlashValue, },
+				new DisplayViewModel<uint> { Display = "None", Value = GeneralSettings.TaskbarDeskbandNumberWrapperNoneValue, },
+				new DisplayViewModel<uint> { Display = "[ ]", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSquareValue, },
+				new DisplayViewModel<uint> { Display = "( )", Value = GeneralSettings.TaskbarDeskbandNumberWrapperRoundValue, },
+				new DisplayViewModel<uint> { Display = "{ }", Value = GeneralSettings.TaskbarDeskbandNumberWrapperCurlyValue, },
+				new DisplayViewModel<uint> { Display = "< >", Value = GeneralSettings.TaskbarDeskbandNumberWrapperAngleValue, },
+				new DisplayViewModel<uint> { Display = "' '", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSingleQuoteValue, },
+				new DisplayViewModel<uint> { Display = "\" \"", Value = GeneralSettings.TaskbarDeskbandNumberWrapperDoubleQuoteValue, },
+				new DisplayViewModel<uint> { Display = "| |", Value = GeneralSettings.TaskbarDeskbandNumberWrapperPipeValue, },
+				new DisplayViewModel<uint> { Display = "/ /", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSlashValue, },
 			}.ToList();
 
 			this.TaskbarDeskbandTooltipWindowStyles = new[]
@@ -886,6 +892,21 @@ namespace SylphyHorn.UI.Bindings
 				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationName, Value = GeneralSettings.TaskbarDeskbandTooltipWindowStyleApplicationNameValue, },
 				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameColonTitle, Value = GeneralSettings.TaskbarDeskbandTooltipWindowStyleApplicationNameColonTitleValue, },
 				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameDashTitle, Value = GeneralSettings.TaskbarDeskbandTooltipWindowStyleApplicationNameDashTitleValue, },
+			}.ToList();
+
+			this.TaskbarDeskbandDoubleClickActions = new[]
+			{
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_DoubleClickAction_Disabled, Value = GeneralSettings.TaskbarDeskbandDoubleClickActionDisabledValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_DoubleClickAction_TaskView, Value = GeneralSettings.TaskbarDeskbandDoubleClickActionTaskViewValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_DoubleClickAction_Settings, Value = GeneralSettings.TaskbarDeskbandDoubleClickActionSettingsValue, },
+			}.ToList();
+
+			this.TaskbarDeskbandMiddleClickActions = new[]
+			{
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_DoubleClickAction_Disabled, Value = GeneralSettings.TaskbarDeskbandMiddleClickActionDisabledValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_DoubleClickAction_TaskView, Value = GeneralSettings.TaskbarDeskbandMiddleClickActionTaskViewValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_DoubleClickAction_Settings, Value = GeneralSettings.TaskbarDeskbandMiddleClickActionSettingsValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_MiddleClickAction_ReturnToDesktop1, Value = GeneralSettings.TaskbarDeskbandMiddleClickActionReturnToDesktop1Value, },
 			}.ToList();
 
 			this.Displays = new[] { new DisplayViewModel<uint> { Display = Resources.Settings_MultipleDisplays_CurrentDisplay, Value = 0, } }
@@ -1030,6 +1051,9 @@ namespace SylphyHorn.UI.Bindings
 			Settings.General.DesktopProcessNames
 				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.IsDesktopProcessNamesLarger)))
 				.AddTo(this);
+			Settings.General.DesktopProcessNamesCloseWhenEmpty
+				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.IsDesktopProcessNamesLarger)))
+				.AddTo(this);
 
 			WindowsTheme.ColorPrevalence
 				.RegisterListener(_ => this.UpdateNotificationColor(this.NotificationWindowStyle))
@@ -1108,18 +1132,6 @@ namespace SylphyHorn.UI.Bindings
 					this.RaisePropertyChanged();
 				}
 			}
-		}
-
-		[UsedImplicitly]
-		public void IncreaseTaskbarDeskbandFontSize()
-		{
-			this.TaskbarDeskbandFontSize++;
-		}
-
-		[UsedImplicitly]
-		public void DecreaseTaskbarDeskbandFontSize()
-		{
-			this.TaskbarDeskbandFontSize--;
 		}
 
 		public Brush TaskbarDeskbandFontColorBrush
@@ -1343,24 +1355,29 @@ namespace SylphyHorn.UI.Bindings
 		public void AddDesktopProcessNameList()
 		{
 			var propList = Settings.General.DesktopProcessNames;
+			var closePropList = Settings.General.DesktopProcessNamesCloseWhenEmpty;
 
 			propList.Resize(propList.Count + 1);
+			closePropList.Resize(propList.Count);
 		}
 
 		[UsedImplicitly]
 		public void RemoveLastDesktopProcessNameList()
 		{
 			var propList = Settings.General.DesktopProcessNames;
+			var closePropList = Settings.General.DesktopProcessNamesCloseWhenEmpty;
 
 			if (propList.Count == 0) return;
 
 			propList.Resize(propList.Count - 1);
+			closePropList.Resize(propList.Count);
 		}
 
 		[UsedImplicitly]
 		public void ResizeDesktopProcessNameListToFit()
 		{
 			Settings.General.DesktopProcessNames.Resize(VirtualDesktopService.Count);
+			Settings.General.DesktopProcessNamesCloseWhenEmpty.Resize(VirtualDesktopService.Count);
 		}
 
 		private ShortcutkeyPropertyList GetShortcutListFromSettings(ShortcutKeySettings settings, string propName)

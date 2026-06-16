@@ -10,17 +10,18 @@ New features are below:
   * Display virtual desktop information, including the desktop number, name, and total desktop count.
   * Customize its position, font, size, color, and style.
   * Enable a mouse tooltip that displays virtual desktop information and lists included apps/windows.
-  * Supports both Windows 11 and 10.
-* Switch desktops by scrolling the mouse wheel over the deskband.
+  * Custom double-click or middle-click actions.
+  * Supports both Windows 11 and 10 taskbar.
+* Switch desktops by scrolling the mouse wheel over the deskband or tray icon.
 * Configure apps to open on a specific virtual desktop.
 
 
 ## Installations
 
-Please download beta version from [Releases](https://github.com/hwtnb/SylphyHornPlusWin11/releases).
+Please download beta version from [Releases](https://github.com/Asteski/SylphyHornPlus/releases).
 
 ### Note: Update from the original or other forks
-Please delete cache data (VirtualDesktop.*****.generated.dll) at %UserProfile%\AppData\Local\grabacr.net\SylphyHorn\assemblies before SylphyHornPlus starts.
+Please delete cache data (VirtualDesktop.*****.generated.dll) at %UserProfile%\AppData\Local\Asteski\SylphyHorn\assemblies before SylphyHornPlus starts.
 
 
 ## Requirements

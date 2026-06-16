@@ -107,6 +107,19 @@ namespace SylphyHorn.Serialization
 			return property;
 		}
 
+		protected DesktopProcessNameClosePropertyList Cache(Func<string, DesktopProcessNameClosePropertyList> create, [CallerMemberName] string propertyName = "")
+		{
+			var key = this.CategoryName + "." + propertyName;
+
+			object obj;
+			if (this._cachedProperties.TryGetValue(key, out obj) && obj is DesktopProcessNameClosePropertyList) return (DesktopProcessNameClosePropertyList)obj;
+
+			var property = create(key);
+			this._cachedProperties[key] = property;
+
+			return property;
+		}
+
 		public static T Instance<T>() where T : SettingsHost
 		{
 			SettingsHost host;

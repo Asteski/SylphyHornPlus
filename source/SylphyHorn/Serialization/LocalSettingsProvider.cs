@@ -56,6 +56,19 @@ namespace SylphyHorn.Serialization
 				return;
 			}
 
+			var previousPath = Path.Combine(
+				Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+				"Asteski",
+				ProductInfo.Product,
+				this.Filename);
+
+			if (File.Exists(previousPath))
+			{
+				await this.ImportAsync(previousPath).ConfigureAwait(false);
+				await this.SaveAsync().ConfigureAwait(false);
+				return;
+			}
+
 			var path = Path.Combine(
 				Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
 				ProductInfo.OriginalCompany,

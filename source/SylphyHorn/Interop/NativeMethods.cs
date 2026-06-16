@@ -14,11 +14,15 @@ namespace SylphyHorn.Interop
 		public const int UlwAlpha = 0x00000002;
 		public const uint BiRgb = 0;
 		public const uint DibRgbColors = 0;
+		public const int DwmwaWindowCornerPreference = 33;
 		public const int SpiGetNonClientMetrics = 0x0029;
 		public const int WmGetFont = 0x0031;
 
 		[DllImport("user32.dll")]
 		public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+
+		[DllImport("dwmapi.dll", PreserveSig = true)]
+		public static extern int DwmSetWindowAttribute(IntPtr hWnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
 
 		[DllImport("user32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -83,6 +87,9 @@ namespace SylphyHorn.Interop
 
 		[DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 		public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
+		[DllImport("shell32.dll", ExactSpelling = true)]
+		public static extern int Shell_NotifyIconGetRect(ref NotifyIconIdentifier identifier, out RECT iconLocation);
 
 		[DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -230,6 +237,23 @@ namespace SylphyHorn.Interop
 			public static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
 			public delegate IntPtr HookDelegate(int nCode, uint msg, ref MSLLHOOKSTRUCT msllhookstruct);
+		}
+
+		public enum DwmWindowCornerPreference
+		{
+			Default = 0,
+			DoNotRound = 1,
+			Round = 2,
+			RoundSmall = 3,
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NotifyIconIdentifier
+		{
+			public int Size;
+			public IntPtr HWnd;
+			public uint Id;
+			public Guid GuidItem;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]

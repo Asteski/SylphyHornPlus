@@ -1,25 +1,36 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Forms;
+using MetroRadiance.Interop.Win32;
 using MetroRadiance.Platform;
+using SylphyHorn.Interop;
 using SylphyHorn.Properties;
 using SylphyHorn.Serialization;
 using SylphyHorn.Services;
+using SylphyHorn.Services.Mouse;
 using WindowsDesktop;
 
 namespace SylphyHorn.UI
 {
 	public class TaskTrayIcon : IDisposable
 	{
+		private const int _trayWheelThrottleMilliseconds = 120;
+
 		private Icon _icon;
 		private readonly Icon _darkIcon;
 		private readonly Icon _lightIcon;
 		private readonly TaskTrayIconItem[] _items;
+		private readonly IDisposable _trayMouseWheelSettingSubscription;
 		private NotifyIcon _notifyIcon;
 		private DynamicInfoTrayIcon _infoIcon;
 		private readonly string _showSettingsMenuName = Resources.TaskTray_Menu_Settings;
+		private MouseInterceptor _trayMouseInterceptor;
+		private int _lastTrayMouseWheelTime;
+		private bool _loggedNotifyIconRectFailure;
 
 		public TaskTrayIcon(Icon darkIcon, Icon lightIcon, TaskTrayIconItem[] items)
 		{
@@ -34,6 +45,8 @@ namespace SylphyHorn.UI
 			WindowsTheme.ColorPrevalence.Changed += this.OnColorPrevalenceChanged;
 			VirtualDesktop.CurrentChanged += this.OnCurrentDesktopChanged;
 			VirtualDesktop.Destroyed += this.OnDesktopDestroyed;
+			this._trayMouseWheelSettingSubscription = Settings.General.TraySwitchDesktopWithMouseWheel
+				.Subscribe(_ => this.UpdateTrayMouseWheelHook());
 		}
 
 		public void Show()
@@ -51,6 +64,7 @@ namespace SylphyHorn.UI
 			this.RebuildContextMenu();
 			this._notifyIcon.ContextMenu.Popup += this.OnContextMenuPopup;
 			this._notifyIcon.MouseClick += this.OnIconClick;
+			this.UpdateTrayMouseWheelHook();
 		}
 
 		public TaskTrayBaloon CreateBaloon() => new TaskTrayBaloon(this);
@@ -160,6 +174,132 @@ namespace SylphyHorn.UI
 			}
 		}
 
+		private void UpdateTrayMouseWheelHook()
+		{
+			if (this._notifyIcon != null && Settings.General.TraySwitchDesktopWithMouseWheel.Value)
+			{
+				this.StartTrayMouseWheelHook();
+				return;
+			}
+
+			this.StopTrayMouseWheelHook();
+		}
+
+		private void StartTrayMouseWheelHook()
+		{
+			if (this._trayMouseInterceptor != null) return;
+
+			var mouseInterceptor = new MouseInterceptor();
+			mouseInterceptor.WheelDown += this.OnTrayMouseWheel;
+			mouseInterceptor.WheelUp += this.OnTrayMouseWheel;
+			try
+			{
+				mouseInterceptor.StartCapturing();
+				this._trayMouseInterceptor = mouseInterceptor;
+			}
+			catch (Exception ex)
+			{
+				mouseInterceptor.Dispose();
+				LoggingService.Instance.Register(ex);
+			}
+		}
+
+		private void StopTrayMouseWheelHook()
+		{
+			var mouseInterceptor = this._trayMouseInterceptor;
+			if (mouseInterceptor == null) return;
+
+			this._trayMouseInterceptor = null;
+			mouseInterceptor.WheelDown -= this.OnTrayMouseWheel;
+			mouseInterceptor.WheelUp -= this.OnTrayMouseWheel;
+			mouseInterceptor.Dispose();
+		}
+
+		private void OnTrayMouseWheel(ref MouseState state)
+		{
+			try
+			{
+				if (!Settings.General.TraySwitchDesktopWithMouseWheel.Value) return;
+				if (!this.IsPointOverNotifyIcon(state.X, state.Y)) return;
+
+				state.Handled = true;
+				if (!this.TryAcceptTrayMouseWheel()) return;
+
+				var delta = state.Stroke == Stroke.WheelUp ? 120 : -120;
+				VisualHelper.InvokeOnUIDispatcher(() => VirtualDesktopService.SwitchByMouseWheelDelta(delta));
+			}
+			catch (Exception ex)
+			{
+				LoggingService.Instance.Register(ex);
+			}
+		}
+
+		private bool TryAcceptTrayMouseWheel()
+		{
+			var now = unchecked((uint)Environment.TickCount);
+			var last = unchecked((uint)this._lastTrayMouseWheelTime);
+			if (now - last < _trayWheelThrottleMilliseconds) return false;
+
+			this._lastTrayMouseWheelTime = unchecked((int)now);
+			return true;
+		}
+
+		private bool IsPointOverNotifyIcon(int x, int y)
+		{
+			return this.TryGetNotifyIconRect(out var rect)
+				&& x >= rect.Left
+				&& x < rect.Right
+				&& y >= rect.Top
+				&& y < rect.Bottom;
+		}
+
+		private bool TryGetNotifyIconRect(out RECT rect)
+		{
+			rect = default(RECT);
+			try
+			{
+				if (!this.TryGetNotifyIconIdentifier(out var identifier)) return false;
+
+				return NativeMethods.Shell_NotifyIconGetRect(ref identifier, out rect) == 0;
+			}
+			catch (Exception ex)
+			{
+				if (!this._loggedNotifyIconRectFailure)
+				{
+					this._loggedNotifyIconRectFailure = true;
+					LoggingService.Instance.Register(ex);
+				}
+
+				return false;
+			}
+		}
+
+		private bool TryGetNotifyIconIdentifier(out NativeMethods.NotifyIconIdentifier identifier)
+		{
+			identifier = default(NativeMethods.NotifyIconIdentifier);
+			if (this._notifyIcon == null) return false;
+
+			var notifyIconType = typeof(NotifyIcon);
+			var windowField = notifyIconType.GetField("window", BindingFlags.NonPublic | BindingFlags.Instance);
+			var idField = notifyIconType.GetField("id", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (windowField == null || idField == null) return false;
+
+			var window = windowField.GetValue(this._notifyIcon) as NativeWindow;
+			if (window == null || window.Handle == IntPtr.Zero) return false;
+
+			var id = idField.GetValue(this._notifyIcon);
+			if (id == null) return false;
+
+			identifier = new NativeMethods.NotifyIconIdentifier
+			{
+				Size = Marshal.SizeOf(typeof(NativeMethods.NotifyIconIdentifier)),
+				HWnd = window.Handle,
+				Id = Convert.ToUInt32(id),
+				GuidItem = Guid.Empty,
+			};
+			return true;
+		}
+
 		private void OnContextMenuPopup(object sender, EventArgs e)
 		{
 			this.RebuildContextMenu();
@@ -174,7 +314,16 @@ namespace SylphyHorn.UI
 			foreach (var item in this._items.Where(x => x.CanDisplay()))
 			{
 				var menuItem = item;
-				contextMenu.MenuItems.Add(new MenuItem(menuItem.Text, (sender, args) => menuItem.ClickAction()));
+				if (menuItem.IsSeparator)
+				{
+					contextMenu.MenuItems.Add(new MenuItem("-"));
+					continue;
+				}
+
+				contextMenu.MenuItems.Add(new MenuItem(menuItem.Text, (sender, args) => menuItem.ClickAction())
+				{
+					Enabled = menuItem.CanClick(),
+				});
 			}
 		}
 
@@ -207,6 +356,8 @@ namespace SylphyHorn.UI
 				this._notifyIcon.MouseClick -= this.OnIconClick;
 			}
 
+			this.StopTrayMouseWheelHook();
+			this._trayMouseWheelSettingSubscription?.Dispose();
 			this._notifyIcon?.Dispose();
 			this._lightIcon?.Dispose();
 			this._icon?.Dispose();
@@ -223,18 +374,36 @@ namespace SylphyHorn.UI
 
 		public Func<bool> CanDisplay { get; }
 
+		public Func<bool> CanClick { get; }
+
+		public bool IsSeparator { get; }
+
+		public static TaskTrayIconItem Separator()
+			=> new TaskTrayIconItem(() => "-", () => { }, () => true, () => false, true);
+
 		public TaskTrayIconItem(string text, Action clickAction) : this(text, clickAction, () => true) { }
 
 		public TaskTrayIconItem(string text, Action clickAction, Func<bool> canDisplay)
 			: this(() => text, clickAction, canDisplay) { }
 
+		public TaskTrayIconItem(string text, Action clickAction, Func<bool> canDisplay, Func<bool> canClick)
+			: this(() => text, clickAction, canDisplay, canClick) { }
+
 		public TaskTrayIconItem(Func<string> textProvider, Action clickAction) : this(textProvider, clickAction, () => true) { }
 
 		public TaskTrayIconItem(Func<string> textProvider, Action clickAction, Func<bool> canDisplay)
+			: this(textProvider, clickAction, canDisplay, () => true) { }
+
+		public TaskTrayIconItem(Func<string> textProvider, Action clickAction, Func<bool> canDisplay, Func<bool> canClick)
+			: this(textProvider, clickAction, canDisplay, canClick, false) { }
+
+		private TaskTrayIconItem(Func<string> textProvider, Action clickAction, Func<bool> canDisplay, Func<bool> canClick, bool isSeparator)
 		{
 			this._textProvider = textProvider;
 			this.ClickAction = clickAction;
 			this.CanDisplay = canDisplay;
+			this.CanClick = canClick;
+			this.IsSeparator = isSeparator;
 		}
 	}
 

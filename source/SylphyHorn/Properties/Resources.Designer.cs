@@ -286,6 +286,15 @@ namespace SylphyHorn.Properties {
         }
 
         /// <summary>
+        ///   Close desktop when no apps are running に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_AppRouting_CloseWhenEmpty {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_AppRouting_CloseWhenEmpty", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Process or executable name に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Desktop_AppRouting_ProcessName {
@@ -651,6 +660,60 @@ namespace SylphyHorn.Properties {
         public static string Settings_Desktop_TaskbarDeskband_MouseWheelSwitch {
             get {
                 return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_MouseWheelSwitch", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Double-click: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_DoubleClickAction {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_DoubleClickAction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Open Task View に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_DoubleClickAction_TaskView {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_DoubleClickAction_TaskView", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Disabled に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_DoubleClickAction_Disabled {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_DoubleClickAction_Disabled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_DoubleClickAction_Settings {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_DoubleClickAction_Settings", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Middle-click: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_MiddleClickAction {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_MiddleClickAction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Return to Desktop 1 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_MiddleClickAction_ReturnToDesktop1 {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_MiddleClickAction_ReturnToDesktop1", resourceCulture);
             }
         }
 
@@ -1616,6 +1679,15 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ShowOnlyCurrentNumberInTray", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Switch desktops with mouse wheel over tray icon に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_SwitchDesktopWithMouseWheelOverTrayIcon {
+            get {
+                return ResourceManager.GetString("Settings_SwitchDesktopWithMouseWheelOverTrayIcon", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Show settings: に類似しているローカライズされた文字列を検索します。
@@ -1888,11 +1960,47 @@ namespace SylphyHorn.Properties {
         }
 
         /// <summary>
-        ///   Hide taskbar deskband に類似しているローカライズされた文字列を検索します。
+        ///   About に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TaskTray_Menu_About {
+            get {
+                return ResourceManager.GetString("TaskTray_Menu_About", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Elevate に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TaskTray_Menu_Elevate {
+            get {
+                return ResourceManager.GetString("TaskTray_Menu_Elevate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Elevated に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TaskTray_Menu_Elevated {
+            get {
+                return ResourceManager.GetString("TaskTray_Menu_Elevated", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Hide Deskband に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string TaskTray_Menu_HideDeskband {
             get {
                 return ResourceManager.GetString("TaskTray_Menu_HideDeskband", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Reload に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TaskTray_Menu_Reload {
+            get {
+                return ResourceManager.GetString("TaskTray_Menu_Reload", resourceCulture);
             }
         }
 
@@ -1906,7 +2014,16 @@ namespace SylphyHorn.Properties {
         }
 
         /// <summary>
-        ///   Show taskbar deskband に類似しているローカライズされた文字列を検索します。
+        ///   Open Settings XML に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TaskTray_Menu_OpenSettingsFile {
+            get {
+                return ResourceManager.GetString("TaskTray_Menu_OpenSettingsFile", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Show Deskband に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string TaskTray_Menu_ShowDeskband {
             get {

@@ -1,4 +1,4 @@
-﻿<metro:MetroWindow x:Class="SylphyHorn.UI.SettingsWindow"
+<Window x:Class="SylphyHorn.UI.SettingsWindow"
 				   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 				   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 				   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,8 +19,14 @@
 				   Icon="/SylphyHorn;component/.assets/app.white.ico"
 				   Title="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Title}"
 				   Width="760"
-				   Height="600"
+				   Height="646"
+				   MinWidth="760"
+				   MinHeight="646"
+				   ResizeMode="CanResize"
 				   Background="{DynamicResource ThemeBrushKey}"
+				   BorderBrush="Transparent"
+				   BorderThickness="0"
+				   Effect="{x:Null}"
 				   Foreground="{DynamicResource ActiveForegroundBrushKey}"
 				   FontFamily="Segoe UI, Meiryo UI"
 				   SnapsToDevicePixels="True"
@@ -82,28 +88,8 @@
 		</livet:InteractionMessageTrigger>
 	</i:Interaction.Triggers>
 
-	<DockPanel>
-		<!-- #region Caption area -->
-		<DockPanel DockPanel.Dock="Top"
-				   metro:MetroWindow.IsCaptionBar="True">
-			<Border DockPanel.Dock="Bottom"
-					Height="8" />
-
-			<StackPanel DockPanel.Dock="Right"
-						Orientation="Horizontal"
-						HorizontalAlignment="Right"
-						VerticalAlignment="Top"
-						WindowChrome.IsHitTestVisibleInChrome="True">
-				<metro:SystemButtons />
-			</StackPanel>
-			<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Title}"
-					   FontFamily="Segoe UI Light, Meiryo UI"
-					   FontSize="18"
-					   Margin="12,8" />
-		</DockPanel>
-		<!-- #endregion -->
-
-		<TabControl Style="{DynamicResource VerticalTabControlStyleKey}">
+	<TabControl x:Name="SettingsTabControl"
+				Style="{DynamicResource VerticalTabControlStyleKey}">
 			<TabControl.Resources>
 				<Style TargetType="{x:Type TextBlock}">
 					<Setter Property="Foreground"
@@ -234,6 +220,9 @@
 							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TrayShowOnlyCurrentNumber.Value, Mode=TwoWay}"
 									  IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TrayShowDesktop.Value, Mode=OneWay}">
 								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_ShowOnlyCurrentNumberInTray}" />
+							</CheckBox>
+							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TraySwitchDesktopWithMouseWheel.Value, Mode=TwoWay}">
+								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_SwitchDesktopWithMouseWheelOverTrayIcon}" />
 							</CheckBox>
 						</StackPanel>
 						<Border Height="8" />
@@ -485,31 +474,13 @@
 										   Grid.Column="0"
 										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Size}"
 										   Margin="0,2" />
-								<Grid Grid.Row="1"
-									  Grid.Column="2"
-									  HorizontalAlignment="Left"
-									  Margin="2">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="60" />
-										<ColumnDefinition Width="4" />
-										<ColumnDefinition Width="24" />
-										<ColumnDefinition Width="2" />
-										<ColumnDefinition Width="24" />
-									</Grid.ColumnDefinitions>
-									<metro:PromptTextBox Grid.Column="0"
-														 Text="{Binding TaskbarDeskbandFontSize, Mode=TwoWay}"
-														 Prompt="" />
-									<metro2:CallMethodButton Grid.Column="2"
-															 Content="+"
-															 MethodTarget="{Binding}"
-															 MethodName="IncreaseTaskbarDeskbandFontSize"
-															 Margin="0" />
-									<metro2:CallMethodButton Grid.Column="4"
-															 Content="-"
-															 MethodTarget="{Binding}"
-															 MethodName="DecreaseTaskbarDeskbandFontSize"
-															 Margin="0" />
-								</Grid>
+								<metro:PromptTextBox Grid.Row="1"
+													 Grid.Column="2"
+													 Text="{Binding TaskbarDeskbandFontSize, Mode=TwoWay}"
+													 Prompt=""
+													 Width="60"
+													 HorizontalAlignment="Left"
+													 Margin="2" />
 
 								<TextBlock Grid.Row="2"
 										   Grid.Column="0"
@@ -595,6 +566,46 @@
 									  Margin="0,6,0,0">
 								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_MouseWheelSwitch}" />
 							</CheckBox>
+							<Grid Margin="0,6,0,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="8" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0"
+										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_DoubleClickAction}"
+										   Margin="0,2" />
+								<metro:PromptComboBox Grid.Column="2"
+													  ItemsSource="{Binding TaskbarDeskbandDoubleClickActions}"
+													  DisplayMemberPath="Display"
+													  SelectedValuePath="Value"
+													  SelectedValue="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandDoubleClickAction.Value, Mode=TwoWay}"
+													  Prompt=""
+													  IsReadOnly="True"
+													  MinWidth="250"
+													  HorizontalAlignment="Left"
+													  Margin="2" />
+							</Grid>
+							<Grid Margin="0,2,0,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="8" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0"
+										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_MiddleClickAction}"
+										   Margin="0,2" />
+								<metro:PromptComboBox Grid.Column="2"
+													  ItemsSource="{Binding TaskbarDeskbandMiddleClickActions}"
+													  DisplayMemberPath="Display"
+													  SelectedValuePath="Value"
+													  SelectedValue="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandMiddleClickAction.Value, Mode=TwoWay}"
+													  Prompt=""
+													  IsReadOnly="True"
+													  MinWidth="250"
+													  HorizontalAlignment="Left"
+													  Margin="2" />
+							</Grid>
 						</StackPanel>
 					</StackPanel>
 				</ScrollViewer>
@@ -1009,6 +1020,33 @@
 														 IsEnabled="{Binding IsDesktopProcessNamesLarger}"
 														 Margin="0" />
 							</Grid>
+							<Border Height="12" />
+							<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_AppRouting_CloseWhenEmpty}"
+									   Style="{DynamicResource HeaderStyleKey}"
+									   Margin="0,0,0,4" />
+							<ItemsControl ItemsSource="{Binding Source={x:Static serialization:Settings.General}, Path=DesktopProcessNamesCloseWhenEmpty.Value, Mode=TwoWay}"
+										  Margin="8,0,0,0">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<UniformGrid Columns="1" />
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<CheckBox IsChecked="{Binding Path='Value', Mode=TwoWay}"
+												  Margin="2">
+											<TextBlock>
+												<TextBlock.Text>
+													<MultiBinding StringFormat="{}{0} {1}">
+														<Binding Source="{x:Static services:ResourceService.Current}" Path="Resources.Settings_Desktop" />
+														<Binding Path="NumberText" />
+													</MultiBinding>
+												</TextBlock.Text>
+											</TextBlock>
+										</CheckBox>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
 						</StackPanel>
 					</StackPanel>
 				</ScrollViewer>
@@ -2753,8 +2791,8 @@
 								   FontFamily="Segoe UI, Meiryo UI"
 								   Margin="2,6">
 							<Run Text="Source code:" />
-							<metro2:HyperlinkEx Uri="https://github.com/hwtnb/SylphyHornPlusWin11">
-								<Run Text="https://github.com/hwtnb/SylphyHornPlusWin11" />
+							<metro2:HyperlinkEx Uri="https://github.com/Asteski/SylphyHornPlus">
+								<Run Text="https://github.com/Asteski/SylphyHornPlus" />
 							</metro2:HyperlinkEx>
 
 							<LineBreak />
@@ -2942,6 +2980,5 @@
 					</StackPanel>
 				</ScrollViewer>
 			</TabItem>
-		</TabControl>
-	</DockPanel>
-</metro:MetroWindow>
+	</TabControl>
+</Window>

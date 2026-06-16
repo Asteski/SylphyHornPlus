@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using WindowsDesktop;
 using MetroTrilithon.Lifetime;
@@ -61,8 +62,14 @@ namespace SylphyHorn
 				var lightIcon = IconHelper.GetIconFromResource(lightUri);
 				var menus = new[]
 				{
-					new TaskTrayIconItem(Resources.TaskTray_Menu_Settings, this.ShowSettings, () => Application.Args.CanSettings),
 					new TaskTrayIconItem(this.GetTaskbarDeskbandMenuText, TaskbarDeskbandService.ToggleDeskbandMode),
+					new TaskTrayIconItem(Resources.TaskTray_Menu_Reload, this.Reload),
+					new TaskTrayIconItem(this.GetElevateMenuText, this.Elevate, () => true, () => !IsAdministrator()),
+					TaskTrayIconItem.Separator(),
+					new TaskTrayIconItem(Resources.TaskTray_Menu_Settings, this.ShowSettings, () => Application.Args.CanSettings),
+					new TaskTrayIconItem(Resources.TaskTray_Menu_OpenSettingsFile, this.OpenSettingsFile),
+					TaskTrayIconItem.Separator(),
+					new TaskTrayIconItem(Resources.TaskTray_Menu_About, this.ShowAbout, () => Application.Args.CanSettings),
 					new TaskTrayIconItem(Resources.TaskTray_Menu_Exit, this._shutdownAction),
 #if DEBUG
 					new TaskTrayIconItem("Tasktray Icon Test", () => new TaskTrayTestWindow().Show()),
@@ -80,10 +87,26 @@ namespace SylphyHorn
 				? Resources.TaskTray_Menu_HideDeskband
 				: Resources.TaskTray_Menu_ShowDeskband;
 
+		private string GetElevateMenuText()
+			=> IsAdministrator()
+				? Resources.TaskTray_Menu_Elevated
+				: Resources.TaskTray_Menu_Elevate;
+
 		private void ShowSettings()
+			=> this.ShowSettings(selectAbout: false);
+
+		private void ShowAbout()
+			=> this.ShowSettings(selectAbout: true);
+
+		private void ShowSettings(bool selectAbout)
 		{
 			if (SettingsWindow.Instance != null)
 			{
+				if (selectAbout)
+				{
+					SettingsWindow.Instance.SelectAboutSection();
+				}
+
 				SettingsWindow.Instance.Activate();
 			}
 			else
@@ -93,10 +116,72 @@ namespace SylphyHorn
 					DataContext = new SettingsWindowViewModel(this._hookService),
 				};
 
+				if (selectAbout)
+				{
+					SettingsWindow.Instance.SelectAboutSection();
+				}
+
 				SettingsWindow.Instance.ShowDialog();
 				SettingsWindow.Instance = null;
 			}
 		}
+
+		private void Reload()
+		{
+			this.StartDelayedApplication(elevated: false);
+			this._shutdownAction();
+		}
+
+		private void Elevate()
+		{
+			if (IsAdministrator()) return;
+
+			this.StartDelayedApplication(elevated: true);
+			this._shutdownAction();
+		}
+
+		private void OpenSettingsFile()
+		{
+			LocalSettingsProvider.Instance.SaveAsync().Wait();
+			System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+			{
+				FileName = LocalSettingsProvider.Instance.FilePath,
+				UseShellExecute = true,
+			});
+		}
+
+		private static bool IsAdministrator()
+		{
+			using (var identity = WindowsIdentity.GetCurrent())
+			{
+				var principal = new WindowsPrincipal(identity);
+				return principal.IsInRole(WindowsBuiltInRole.Administrator);
+			}
+		}
+
+		private void StartDelayedApplication(bool elevated)
+		{
+			var executablePath = Environment.GetCommandLineArgs()[0];
+			var arguments = GetCommandLineArguments();
+			var command = $"timeout /t 1 /nobreak > nul & start \"\" \"{executablePath}\" {arguments}";
+			var startInfo = new System.Diagnostics.ProcessStartInfo("cmd.exe", "/c " + command)
+			{
+				CreateNoWindow = true,
+				UseShellExecute = elevated,
+				WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+			};
+			if (elevated)
+			{
+				startInfo.Verb = "runas";
+			}
+
+			System.Diagnostics.Process.Start(startInfo);
+		}
+
+		private static string GetCommandLineArguments()
+			=> Application.Args == null
+				? string.Empty
+				: string.Join(" ", Application.Args.Options.Select(x => x.ToString()));
 
 		public TaskTrayBaloon CreateFirstTimeBaloon()
 		{
@@ -184,6 +269,16 @@ namespace SylphyHorn
 					{
 						positionSettings.Value[i].Value = positionSettings.Value[i + 1].Value;
 					}
+					var processNameSettings = Settings.General.DesktopProcessNames;
+					for (var i = destroyedIndex; i + 1 < processNameSettings.Count; ++i)
+					{
+						processNameSettings.Value[i].Value = processNameSettings.Value[i + 1].Value;
+					}
+					var closeSettings = Settings.General.DesktopProcessNamesCloseWhenEmpty;
+					for (var i = destroyedIndex; i + 1 < closeSettings.Count; ++i)
+					{
+						closeSettings.Value[i].Value = closeSettings.Value[i + 1].Value;
+					}
 					SettingsService.ResizeListIfNeeded();
 
 					LocalSettingsProvider.Instance.SaveAsync().Wait();
@@ -211,6 +306,16 @@ namespace SylphyHorn
 					{
 						positionSettings.Value[i].Value = positionSettings.Value[i + 1].Value;
 					}
+					var processNameSettings = Settings.General.DesktopProcessNames;
+					for (var i = destroyedIndex; i + 1 < processNameSettings.Count; ++i)
+					{
+						processNameSettings.Value[i].Value = processNameSettings.Value[i + 1].Value;
+					}
+					var closeSettings = Settings.General.DesktopProcessNamesCloseWhenEmpty;
+					for (var i = destroyedIndex; i + 1 < closeSettings.Count; ++i)
+					{
+						closeSettings.Value[i].Value = closeSettings.Value[i + 1].Value;
+					}
 					SettingsService.ResizeListIfNeeded();
 
 					LocalSettingsProvider.Instance.SaveAsync().Wait();
@@ -224,6 +329,7 @@ namespace SylphyHorn
 				SettingsService.SynchronizeWithWindows();
 				Settings.General.DesktopBackgroundPositions.Move(args.OldIndex, args.NewIndex);
 				Settings.General.DesktopProcessNames.Move(args.OldIndex, args.NewIndex);
+				Settings.General.DesktopProcessNamesCloseWhenEmpty.Move(args.OldIndex, args.NewIndex);
 
 				LocalSettingsProvider.Instance.SaveAsync().Wait();
 				idCaches = VirtualDesktop.AllDesktops.Select(d => d.Id).ToArray();

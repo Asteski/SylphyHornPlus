@@ -192,6 +192,9 @@
   <data name="Settings_Desktop_AppRouting_CreateMissingDesktop" xml:space="preserve">
     <value>一致するアプリを開いたときに不足しているデスクトップを作成する</value>
   </data>
+  <data name="Settings_Desktop_AppRouting_CloseWhenEmpty" xml:space="preserve">
+    <value>アプリが実行されていない場合はデスクトップを閉じる</value>
+  </data>
   <data name="Settings_Desktop_AppRouting_ProcessName" xml:space="preserve">
     <value>プロセス名または実行ファイル名</value>
   </data>
@@ -314,6 +317,24 @@
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_MouseWheelSwitch" xml:space="preserve">
     <value>デスクバンド上のマウス ホイールでデスクトップを切り替える</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_DoubleClickAction" xml:space="preserve">
+    <value>ダブルクリック:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_DoubleClickAction_TaskView" xml:space="preserve">
+    <value>タスク ビューを開く</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_DoubleClickAction_Disabled" xml:space="preserve">
+    <value>無効</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_DoubleClickAction_Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_MiddleClickAction" xml:space="preserve">
+    <value>中クリック:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_MiddleClickAction_ReturnToDesktop1" xml:space="preserve">
+    <value>デスクトップ 1 に戻る</value>
   </data>
   <data name="Settings_DesktopNames" xml:space="preserve">
     <value>デスクトップ名</value>
@@ -636,6 +657,9 @@
   <data name="Settings_ShowOnlyCurrentNumberInTray" xml:space="preserve">
     <value>現在のデスクトップ番号のみ表示する (シンプルモード)</value>
   </data>
+  <data name="Settings_SwitchDesktopWithMouseWheelOverTrayIcon" xml:space="preserve">
+    <value>トレイ アイコン上のマウス ホイールでデスクトップを切り替える</value>
+  </data>
   <data name="Settings_ShowSettings" xml:space="preserve">
     <value>設定を表示:</value>
   </data>
@@ -726,14 +750,29 @@
   <data name="TaskTray_Menu_Exit" xml:space="preserve">
     <value>終了</value>
   </data>
+  <data name="TaskTray_Menu_About" xml:space="preserve">
+    <value>バージョン情報</value>
+  </data>
+  <data name="TaskTray_Menu_Elevate" xml:space="preserve">
+    <value>管理者として再起動</value>
+  </data>
+  <data name="TaskTray_Menu_Elevated" xml:space="preserve">
+    <value>管理者として実行中</value>
+  </data>
   <data name="TaskTray_Menu_HideDeskband" xml:space="preserve">
-    <value>タスクバー デスクバンドを非表示</value>
+    <value>デスクバンドを非表示</value>
+  </data>
+  <data name="TaskTray_Menu_Reload" xml:space="preserve">
+    <value>再読み込み</value>
   </data>
   <data name="TaskTray_Menu_Settings" xml:space="preserve">
     <value>設定</value>
   </data>
+  <data name="TaskTray_Menu_OpenSettingsFile" xml:space="preserve">
+    <value>設定 XML を開く</value>
+  </data>
   <data name="TaskTray_Menu_ShowDeskband" xml:space="preserve">
-    <value>タスクバー デスクバンドを表示</value>
+    <value>デスクバンドを表示</value>
   </data>
   <data name="TaskTray_TooltipText_DesktopCount" xml:space="preserve">
     <value>デスクトップ {0}/{1}</value>
