@@ -208,7 +208,7 @@
     <value>Mode:</value>
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_Mode_Disabled" xml:space="preserve">
-    <value>Disable</value>
+    <value>Disabled</value>
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_Mode_ModernTaskbar" xml:space="preserve">
     <value>Modern Taskbar (Windows 11)</value>
@@ -227,6 +227,12 @@
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_Position_Left" xml:space="preserve">
     <value>Left side</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_PositionOffset" xml:space="preserve">
+    <value>Horizontal adjustment:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_VerticalPositionOffset" xml:space="preserve">
+    <value>Vertical adjustment:</value>
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_Display" xml:space="preserve">
     <value>Display:</value>
@@ -276,6 +282,24 @@
   <data name="Settings_Desktop_TaskbarDeskband_Style" xml:space="preserve">
     <value>Style:</value>
   </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight" xml:space="preserve">
+    <value>Weight:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight_Regular" xml:space="preserve">
+    <value>Regular</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight_Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight_SemiLight" xml:space="preserve">
+    <value>SemiLight</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight_SemiBold" xml:space="preserve">
+    <value>SemiBold</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight_Bold" xml:space="preserve">
+    <value>Bold</value>
+  </data>
   <data name="Settings_Desktop_TaskbarDeskband_Bold" xml:space="preserve">
     <value>Bold</value>
   </data>
@@ -299,6 +323,15 @@
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_TooltipListWindows" xml:space="preserve">
     <value>List opened windows on desktop</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipLook" xml:space="preserve">
+    <value>Tooltip look:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipLook_Windows10" xml:space="preserve">
+    <value>Windows 10</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipLook_Windows11" xml:space="preserve">
+    <value>Windows 11</value>
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle" xml:space="preserve">
     <value>List style:</value>
@@ -660,6 +693,9 @@
   <data name="Settings_SwitchDesktopWithMouseWheelOverTrayIcon" xml:space="preserve">
     <value>Switch desktops with mouse wheel over tray icon</value>
   </data>
+  <data name="Settings_ReverseSwitchDesktopWithMouseWheelOverTrayIcon" xml:space="preserve">
+    <value>Reverse scrolling direction</value>
+  </data>
   <data name="Settings_ShowSettings" xml:space="preserve">
     <value>Show settings:</value>
   </data>
@@ -716,6 +752,15 @@
   </data>
   <data name="Settings_Taskbar" xml:space="preserve">
     <value>Taskbar</value>
+  </data>
+  <data name="Settings_Taskbar_DeskbandCustomFont" xml:space="preserve">
+    <value>Custom font</value>
+  </data>
+  <data name="Settings_Taskbar_MouseClickActions" xml:space="preserve">
+    <value>Mouse click actions</value>
+  </data>
+  <data name="Settings_Taskbar_MouseTooltip" xml:space="preserve">
+    <value>Mouse tooltip</value>
   </data>
   <data name="Settings_TaskView" xml:space="preserve">
     <value>Task View</value>

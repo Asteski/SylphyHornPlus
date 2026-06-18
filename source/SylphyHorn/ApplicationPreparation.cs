@@ -23,6 +23,7 @@ namespace SylphyHorn
 		private readonly Action _shutdownAction;
 		private readonly IDisposableHolder _disposable;
 		private TaskTrayIcon _taskTrayIcon;
+		private System.Diagnostics.Process _elevatedHelperProcess;
 
 		public event Action VirtualDesktopInitialized;
 
@@ -64,7 +65,7 @@ namespace SylphyHorn
 				{
 					new TaskTrayIconItem(this.GetTaskbarDeskbandMenuText, TaskbarDeskbandService.ToggleDeskbandMode),
 					new TaskTrayIconItem(Resources.TaskTray_Menu_Reload, this.Reload),
-					new TaskTrayIconItem(this.GetElevateMenuText, this.Elevate, () => true, () => !IsAdministrator()),
+					new TaskTrayIconItem(this.GetElevateMenuText, this.Elevate, () => true, () => !IsAdministrator() && !this.IsElevatedHelperRunning()),
 					TaskTrayIconItem.Separator(),
 					new TaskTrayIconItem(Resources.TaskTray_Menu_Settings, this.ShowSettings, () => Application.Args.CanSettings),
 					new TaskTrayIconItem(Resources.TaskTray_Menu_OpenSettingsFile, this.OpenSettingsFile),
@@ -88,7 +89,7 @@ namespace SylphyHorn
 				: Resources.TaskTray_Menu_ShowDeskband;
 
 		private string GetElevateMenuText()
-			=> IsAdministrator()
+			=> IsAdministrator() || this.IsElevatedHelperRunning()
 				? Resources.TaskTray_Menu_Elevated
 				: Resources.TaskTray_Menu_Elevate;
 
@@ -134,10 +135,49 @@ namespace SylphyHorn
 
 		private void Elevate()
 		{
-			if (IsAdministrator()) return;
+			if (IsAdministrator() || this.IsElevatedHelperRunning()) return;
 
-			this.StartDelayedApplication(elevated: true);
-			this._shutdownAction();
+			this.StartElevatedHelper();
+		}
+
+		private bool IsElevatedHelperRunning()
+		{
+			try
+			{
+				return this._elevatedHelperProcess != null && !this._elevatedHelperProcess.HasExited;
+			}
+			catch
+			{
+				this._elevatedHelperProcess = null;
+				return false;
+			}
+		}
+
+		private void StartElevatedHelper()
+		{
+			var executablePath = Environment.GetCommandLineArgs()[0];
+			var arguments = string.Join(" ", new[]
+			{
+				Application.Args.CreateOption(nameof(CommandLineArgs.ElevatedHelper), null).ToString(),
+				Application.Args.CreateOption(nameof(CommandLineArgs.ElevatedHelperParentPid), System.Diagnostics.Process.GetCurrentProcess().Id.ToString()).ToString(),
+			});
+
+			try
+			{
+				this._elevatedHelperProcess = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+				{
+					FileName = executablePath,
+					Arguments = arguments,
+					CreateNoWindow = true,
+					UseShellExecute = true,
+					Verb = "runas",
+					WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+				});
+			}
+			catch (Exception ex)
+			{
+				LoggingService.Instance.Register(ex);
+			}
 		}
 
 		private void OpenSettingsFile()

@@ -15,6 +15,12 @@ namespace SylphyHorn
 		[CommandLineOption(nameof(Restarted))]
 		public int? Restarted { get; private set; }
 
+		[CommandLineOption(nameof(ElevatedHelper))]
+		public bool ElevatedHelper { get; private set; }
+
+		[CommandLineOption(nameof(ElevatedHelperParentPid))]
+		public int? ElevatedHelperParentPid { get; private set; }
+
 		public CommandLineArgs()
 			: base(new string[0])
 		{

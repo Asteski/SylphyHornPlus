@@ -37,7 +37,10 @@ namespace SylphyHorn.Services
 		private const int _modernLeftReservedWidth = 60;
 		private const int _modernEdgeMargin = 4;
 		private const int _verticalHeight = 28;
+		private const int _lightFontWeight = 300;
+		private const int _semiLightFontWeight = 350;
 		private const int _regularFontWeight = 400;
+		private const int _semiBoldFontWeight = 600;
 		private const int _boldFontWeight = 700;
 		private const int _rpcServerUnavailableHResult = unchecked((int)0x800706BA);
 		private const int _rpcCallFailedHResult = unchecked((int)0x800706BE);
@@ -84,6 +87,12 @@ namespace SylphyHorn.Services
 			Settings.General.TaskbarDeskbandPosition
 				.Subscribe(_ => this.UpdateLayout())
 				.AddTo(this._compositeDisposable);
+			Settings.General.TaskbarDeskbandPositionOffset
+				.Subscribe(_ => this.UpdateLayout())
+				.AddTo(this._compositeDisposable);
+			Settings.General.TaskbarDeskbandVerticalPositionOffset
+				.Subscribe(_ => this.UpdateLayout())
+				.AddTo(this._compositeDisposable);
 			Settings.General.TaskbarDeskbandDisplayMode
 				.Subscribe(_ => this.UpdateTextAndLayout())
 				.AddTo(this._compositeDisposable);
@@ -115,6 +124,9 @@ namespace SylphyHorn.Services
 				.Subscribe(_ => this.UpdateAppearance())
 				.AddTo(this._compositeDisposable);
 			Settings.General.TaskbarDeskbandFontColor
+				.Subscribe(_ => this.UpdateAppearance())
+				.AddTo(this._compositeDisposable);
+			Settings.General.TaskbarDeskbandFontWeight
 				.Subscribe(_ => this.UpdateAppearance())
 				.AddTo(this._compositeDisposable);
 			Settings.General.TaskbarDeskbandFontBold
@@ -325,6 +337,8 @@ namespace SylphyHorn.Services
 
 			var horizontal = Width(taskbarRect) >= Height(taskbarRect);
 			var placeOnLeft = IsDeskbandPlacedOnLeft();
+			var horizontalOffset = GetDeskbandHorizontalOffset();
+			var verticalOffset = GetDeskbandVerticalOffset();
 			if (!this._hasOriginalTaskListRect || force)
 			{
 				this._originalTaskListRect = GetInitialTaskListRect(taskListRect, containerRect, horizontal, placeOnLeft);
@@ -340,16 +354,17 @@ namespace SylphyHorn.Services
 				var width = this._form.GetDesiredWidth(minWidth, maxWidth);
 				var left = sourceTaskListRect.Left - containerRect.Left;
 				var top = sourceTaskListRect.Top - containerRect.Top;
+				var deskbandTop = top + verticalOffset;
 				var taskWidth = Math.Max(1, Width(sourceTaskListRect) - width);
 				if (placeOnLeft)
 				{
-					NativeMethods.MoveWindow(this._form.Handle, left, top, width, height, true);
+					NativeMethods.MoveWindow(this._form.Handle, Clamp(left + horizontalOffset, 0, Math.Max(0, Width(containerRect) - width)), deskbandTop, width, height, true);
 					NativeMethods.MoveWindow(this._taskListHandle, left + width, top, taskWidth, height, true);
 				}
 				else
 				{
 					NativeMethods.MoveWindow(this._taskListHandle, left, top, taskWidth, height, true);
-					NativeMethods.MoveWindow(this._form.Handle, left + taskWidth, top, width, height, true);
+					NativeMethods.MoveWindow(this._form.Handle, Clamp(left + taskWidth + horizontalOffset, 0, Math.Max(0, Width(containerRect) - width)), deskbandTop, width, height, true);
 				}
 				this.ShowDeskbandFormIfRendered();
 			}
@@ -362,13 +377,13 @@ namespace SylphyHorn.Services
 				var taskHeight = Math.Max(1, Height(sourceTaskListRect) - height);
 				if (placeOnLeft)
 				{
-					NativeMethods.MoveWindow(this._form.Handle, left, top, width, height, true);
+					NativeMethods.MoveWindow(this._form.Handle, Clamp(left + horizontalOffset, 0, Math.Max(0, Width(containerRect) - width)), top + verticalOffset, width, height, true);
 					NativeMethods.MoveWindow(this._taskListHandle, left, top + height, width, taskHeight, true);
 				}
 				else
 				{
 					NativeMethods.MoveWindow(this._taskListHandle, left, top, width, taskHeight, true);
-					NativeMethods.MoveWindow(this._form.Handle, left, top + taskHeight, width, height, true);
+					NativeMethods.MoveWindow(this._form.Handle, Clamp(left + horizontalOffset, 0, Math.Max(0, Width(containerRect) - width)), top + taskHeight + verticalOffset, width, height, true);
 				}
 				this.ShowDeskbandFormIfRendered();
 			}
@@ -392,9 +407,10 @@ namespace SylphyHorn.Services
 				var left = placeOnLeft
 					? Math.Min(taskbarWidth - width, Scale(_modernLeftReservedWidth) + margin)
 					: GetModernRightEdge(taskbarRect) - width - margin;
+				left += GetDeskbandHorizontalOffset();
 				left = Math.Max(0, Math.Min(taskbarWidth - width, left));
 
-				NativeMethods.MoveWindow(this._form.Handle, left, 0, width, height, true);
+				NativeMethods.MoveWindow(this._form.Handle, left, GetDeskbandVerticalOffset(), width, height, true);
 			}
 			else
 			{
@@ -405,9 +421,9 @@ namespace SylphyHorn.Services
 				var top = placeOnLeft
 					? margin
 					: taskbarHeight - height - margin;
-				top = Math.Max(0, Math.Min(taskbarHeight - height, top));
+				top += GetDeskbandVerticalOffset();
 
-				NativeMethods.MoveWindow(this._form.Handle, 0, top, width, height, true);
+				NativeMethods.MoveWindow(this._form.Handle, Clamp(GetDeskbandHorizontalOffset(), 0, Math.Max(0, Width(taskbarRect) - width)), top, width, height, true);
 			}
 
 			this.ShowDeskbandFormIfRendered();
@@ -531,13 +547,18 @@ namespace SylphyHorn.Services
 			if (Settings.General.TaskbarDeskbandDisplayMode.Value == GeneralSettings.TaskbarDeskbandDisplayModeRomanNumberValue)
 			{
 				Settings.General.TaskbarDeskbandDisplayMode.Value = GeneralSettings.TaskbarDeskbandDisplayModeNumberOnlyValue;
-				Settings.General.TaskbarDeskbandCustomNumberStyleEnabled.Value = true;
 				Settings.General.TaskbarDeskbandRomanNumber.Value = true;
 			}
 		}
 
 		private static bool IsDeskbandPlacedOnLeft()
 			=> Settings.General.TaskbarDeskbandPosition.Value == GeneralSettings.TaskbarDeskbandPositionLeftValue;
+
+		private static int GetDeskbandHorizontalOffset()
+			=> Settings.General.TaskbarDeskbandPositionOffset.Value;
+
+		private static int GetDeskbandVerticalOffset()
+			=> Settings.General.TaskbarDeskbandVerticalPositionOffset.Value;
 
 		private static DeskbandMode GetDeskbandMode()
 		{
@@ -649,15 +670,16 @@ namespace SylphyHorn.Services
 		{
 			if (Settings.General.TaskbarDeskbandCustomAppearanceEnabled)
 			{
-				var fontStyle = FontStyle.Regular;
-				if (Settings.General.TaskbarDeskbandFontBold) fontStyle |= FontStyle.Bold;
+				var fontWeightValue = GetCustomFontWeightValue();
+				var fontWeight = GetCustomFontWeight(fontWeightValue);
+				var fontStyle = fontWeight >= _boldFontWeight ? FontStyle.Bold : FontStyle.Regular;
 				if (Settings.General.TaskbarDeskbandFontItalic) fontStyle |= FontStyle.Italic;
 				if (Settings.General.TaskbarDeskbandFontUnderline) fontStyle |= FontStyle.Underline;
 
 				return new DeskbandAppearance(
-					CreateCustomFont(fontStyle),
+					CreateCustomFont(fontStyle, fontWeightValue, fontWeight),
 					GetCustomTextColor(theme),
-					$"custom:{GetCustomFontFamily()}:{GetCustomFontSize()}:{fontStyle}");
+					$"custom:{GetCustomFontFamily()}:{GetCustomFontSize()}:{fontStyle}:{fontWeight}");
 			}
 
 			return CreateDefaultAppearance(theme, taskbarHandle);
@@ -679,13 +701,34 @@ namespace SylphyHorn.Services
 			return fontSize;
 		}
 
-		private static Font CreateCustomFont(FontStyle fontStyle)
+		private static uint GetCustomFontWeightValue()
+		{
+			var value = Settings.General.TaskbarDeskbandFontWeight.Value;
+			if (value == GeneralSettings.TaskbarDeskbandFontWeightRegularValue
+				&& Settings.General.TaskbarDeskbandFontBold.Value)
+			{
+				return GeneralSettings.TaskbarDeskbandFontWeightBoldValue;
+			}
+
+			return value;
+		}
+
+		private static int GetCustomFontWeight(uint value)
+		{
+			if (value == GeneralSettings.TaskbarDeskbandFontWeightLightValue) return _lightFontWeight;
+			if (value == GeneralSettings.TaskbarDeskbandFontWeightSemiLightValue) return _semiLightFontWeight;
+			if (value == GeneralSettings.TaskbarDeskbandFontWeightSemiBoldValue) return _semiBoldFontWeight;
+			if (value == GeneralSettings.TaskbarDeskbandFontWeightBoldValue) return _boldFontWeight;
+			return _regularFontWeight;
+		}
+
+		private static Font CreateCustomFont(FontStyle fontStyle, uint fontWeightValue, int fontWeight)
 		{
 			var logFont = CreateLogFont(
-				GetCustomFontFamily(),
+				GetCustomFontFamilyForWeight(fontWeightValue),
 				GetCustomFontSize(),
 				fontStyle,
-				(fontStyle & FontStyle.Bold) == FontStyle.Bold ? _boldFontWeight : _regularFontWeight);
+				fontWeight);
 			if (TryCreateFontFromLogFont(logFont, out var logFontFont))
 			{
 				return logFontFont;
@@ -693,13 +736,28 @@ namespace SylphyHorn.Services
 
 			try
 			{
-				return new Font(GetCustomFontFamily(), GetCustomFontSize(), fontStyle, GraphicsUnit.Point);
+				return new Font(GetCustomFontFamilyForWeight(fontWeightValue), GetCustomFontSize(), fontStyle, GraphicsUnit.Point);
 			}
 			catch
 			{
 				return new Font(GeneralSettings.TaskbarDeskbandFontFamilyDefaultValue, GetCustomFontSize(), fontStyle, GraphicsUnit.Point);
 			}
 		}
+
+		private static string GetCustomFontFamilyForWeight(uint fontWeightValue)
+		{
+			var fontFamily = GetCustomFontFamily();
+			if (!IsSegoeFontFamily(fontFamily)) return fontFamily;
+
+			if (fontWeightValue == GeneralSettings.TaskbarDeskbandFontWeightLightValue) return "Segoe UI Light";
+			if (fontWeightValue == GeneralSettings.TaskbarDeskbandFontWeightSemiLightValue) return "Segoe UI Semilight";
+			if (fontWeightValue == GeneralSettings.TaskbarDeskbandFontWeightSemiBoldValue) return "Segoe UI Semibold";
+			return fontFamily;
+		}
+
+		private static bool IsSegoeFontFamily(string fontFamily)
+			=> fontFamily != null
+				&& fontFamily.StartsWith("Segoe UI", StringComparison.OrdinalIgnoreCase);
 
 		private static NativeMethods.LogFont CreateLogFont(string faceName, float fontSizeInPoints, FontStyle fontStyle, int weight)
 		{
@@ -955,7 +1013,7 @@ namespace SylphyHorn.Services
 
 			if (mode == GeneralSettings.TaskbarDeskbandDisplayModeNameWithNumberValue)
 			{
-				var formattedNumber = FormatDesktopNumber(number, forceDefaultWrapper: true);
+				var formattedNumber = FormatDesktopNumber(number);
 				var name = GetDesktopNameWithoutDefaultNumber(number, desktopName);
 
 				return Settings.General.TaskbarDeskbandNumberBeforeName
@@ -966,16 +1024,10 @@ namespace SylphyHorn.Services
 			return FormatDesktopNumber(number);
 		}
 
-		private static string FormatDesktopNumber(int number, bool forceDefaultWrapper = false)
+		private static string FormatDesktopNumber(int number)
 		{
-			var useRomanNumber = Settings.General.TaskbarDeskbandCustomNumberStyleEnabled.Value
-				&& Settings.General.TaskbarDeskbandRomanNumber.Value;
+			var useRomanNumber = Settings.General.TaskbarDeskbandRomanNumber.Value;
 			var numberText = FormatDesktopNumberText(number, useRomanNumber);
-			if (!Settings.General.TaskbarDeskbandCustomNumberStyleEnabled.Value)
-			{
-				return forceDefaultWrapper ? $"[{numberText}]" : numberText;
-			}
-
 			GetNumberWrapper(out var open, out var close);
 			if (string.IsNullOrEmpty(open) && string.IsNullOrEmpty(close)) return numberText;
 
@@ -1142,7 +1194,7 @@ namespace SylphyHorn.Services
 					foreach (var line in windowLines)
 					{
 						builder.AppendLine();
-						builder.Append(line);
+						builder.Append("- ").Append(line);
 					}
 				}
 			}
@@ -1274,6 +1326,9 @@ namespace SylphyHorn.Services
 
 		private static int Height(RECT rect) => rect.Bottom - rect.Top;
 
+		private static int Clamp(int value, int min, int max)
+			=> Math.Max(min, Math.Min(max, value));
+
 		private static int Scale(int value)
 		{
 			using (var graphics = Graphics.FromHwnd(IntPtr.Zero))
@@ -1284,9 +1339,16 @@ namespace SylphyHorn.Services
 
 		private class DeskbandForm : Form
 		{
+			private const int _wmContextMenu = 0x007B;
+			private const int _wmRButtonUp = 0x0205;
+
 			private Font _textFont;
 			private string _textValue = string.Empty;
-			private readonly ToolTip _toolTip = new ToolTip { InitialDelay = 300, ReshowDelay = 100, AutoPopDelay = 5000 };
+			private string _tooltipValue = string.Empty;
+			private readonly ToolTip _nativeToolTip = new ToolTip { InitialDelay = 300, ReshowDelay = 100, AutoPopDelay = 5000 };
+			private readonly Timer _modernTooltipShowTimer = new Timer { Interval = 300 };
+			private readonly Timer _modernTooltipHideTimer = new Timer { Interval = 5000 };
+			private ModernTooltipForm _modernTooltip;
 			private Color _textColor;
 			private string _appearanceSignature;
 			private int _lastLoggedUpdateError;
@@ -1298,6 +1360,8 @@ namespace SylphyHorn.Services
 				this.StartPosition = FormStartPosition.Manual;
 				this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
 				this.ApplyAppearance(appearance);
+				this._modernTooltipShowTimer.Tick += (sender, args) => this.ShowModernTooltip();
+				this._modernTooltipHideTimer.Tick += (sender, args) => this.HideModernTooltip();
 			}
 
 			protected override void OnPaintBackground(PaintEventArgs e)
@@ -1310,7 +1374,8 @@ namespace SylphyHorn.Services
 
 			public bool SetDesktopInfo(string value, string tooltip, bool render = true)
 			{
-				this._toolTip.SetToolTip(this, tooltip);
+				this._tooltipValue = tooltip ?? string.Empty;
+				this.UpdateNativeTooltip();
 				if (this._textValue != value)
 				{
 					this._textValue = value;
@@ -1319,13 +1384,37 @@ namespace SylphyHorn.Services
 				return render && this.RenderLayered();
 			}
 
+			protected override void OnMouseEnter(EventArgs e)
+			{
+				base.OnMouseEnter(e);
+				this.StartModernTooltipTimer();
+			}
+
+			protected override void OnMouseMove(MouseEventArgs e)
+			{
+				base.OnMouseMove(e);
+				if (this._modernTooltip?.Visible == true)
+				{
+					this.PositionModernTooltip();
+				}
+			}
+
+			protected override void OnMouseLeave(EventArgs e)
+			{
+				base.OnMouseLeave(e);
+				this.HideModernTooltip();
+			}
+
 			protected override void OnMouseWheel(MouseEventArgs e)
 			{
 				base.OnMouseWheel(e);
 
 				if (Settings.General.TaskbarDeskbandSwitchDesktopWithMouseWheel.Value)
 				{
-					VirtualDesktopService.SwitchByMouseWheelDelta(e.Delta);
+					var delta = Settings.General.TaskbarDeskbandSwitchDesktopWithMouseWheelReverse.Value
+						? -e.Delta
+						: e.Delta;
+					VirtualDesktopService.SwitchByMouseWheelDelta(delta);
 				}
 			}
 
@@ -1348,6 +1437,79 @@ namespace SylphyHorn.Services
 					ExecuteMiddleClickAction();
 				}
 			}
+
+			protected override void WndProc(ref Message m)
+			{
+				if (m.Msg == _wmRButtonUp || m.Msg == _wmContextMenu)
+				{
+					this.HideModernTooltip();
+					this.ShowDeskbandContextMenu();
+					return;
+				}
+
+				base.WndProc(ref m);
+			}
+
+			private void ShowDeskbandContextMenu()
+			{
+				var point = this.PointToClient(Cursor.Position);
+				(SylphyHorn.Application.Current as SylphyHorn.Application)?.TaskTrayIcon?.ShowContextMenu(this, point);
+			}
+
+			private void UpdateNativeTooltip()
+			{
+				this._nativeToolTip.SetToolTip(this, UseModernTooltipLook() ? string.Empty : this._tooltipValue);
+			}
+
+			private void StartModernTooltipTimer()
+			{
+				this.UpdateNativeTooltip();
+				if (!UseModernTooltipLook() || string.IsNullOrWhiteSpace(this._tooltipValue)) return;
+
+				this._modernTooltipShowTimer.Stop();
+				this._modernTooltipShowTimer.Start();
+			}
+
+			private void ShowModernTooltip()
+			{
+				this._modernTooltipShowTimer.Stop();
+				if (!UseModernTooltipLook() || string.IsNullOrWhiteSpace(this._tooltipValue)) return;
+
+				if (this._modernTooltip == null || this._modernTooltip.IsDisposed)
+				{
+					this._modernTooltip = new ModernTooltipForm();
+				}
+
+				this._modernTooltip.SetText(this._tooltipValue);
+				this.PositionModernTooltip();
+				this._modernTooltip.ShowNoActivate();
+				this._modernTooltipHideTimer.Stop();
+				this._modernTooltipHideTimer.Start();
+			}
+
+			private void PositionModernTooltip()
+			{
+				if (this._modernTooltip == null || this._modernTooltip.IsDisposed) return;
+
+				var cursor = Cursor.Position;
+				var screen = Screen.FromPoint(cursor).WorkingArea;
+				var x = cursor.X + TaskbarDeskbandService.Scale(12);
+				var y = cursor.Y + TaskbarDeskbandService.Scale(18);
+				if (x + this._modernTooltip.Width > screen.Right) x = cursor.X - this._modernTooltip.Width - TaskbarDeskbandService.Scale(12);
+				if (y + this._modernTooltip.Height > screen.Bottom) y = cursor.Y - this._modernTooltip.Height - TaskbarDeskbandService.Scale(12);
+
+				this._modernTooltip.Location = new Point(Math.Max(screen.Left, x), Math.Max(screen.Top, y));
+			}
+
+			private void HideModernTooltip()
+			{
+				this._modernTooltipShowTimer.Stop();
+				this._modernTooltipHideTimer.Stop();
+				this._modernTooltip?.Hide();
+			}
+
+			private static bool UseModernTooltipLook()
+				=> Settings.General.TaskbarDeskbandTooltipLook.Value == GeneralSettings.TaskbarDeskbandTooltipLookWindows11Value;
 
 			public bool SetAppearance(DeskbandAppearance appearance)
 			{
@@ -1397,7 +1559,7 @@ namespace SylphyHorn.Services
 				using (var bitmap = new Bitmap(width, height, PixelFormat.Format32bppPArgb))
 				using (var graphics = Graphics.FromImage(bitmap))
 				{
-					graphics.Clear(Color.Transparent);
+					graphics.Clear(Color.FromArgb(1, 0, 0, 0));
 					graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 					TextRenderer.DrawText(
 						graphics,
@@ -1624,8 +1786,225 @@ namespace SylphyHorn.Services
 			{
 				if (disposing)
 				{
-					this._toolTip.Dispose();
-					this._textFont.Dispose();
+					this._nativeToolTip.Dispose();
+					this._modernTooltipShowTimer.Dispose();
+					this._modernTooltipHideTimer.Dispose();
+					this._modernTooltip?.Dispose();
+					this._textFont?.Dispose();
+				}
+
+				base.Dispose(disposing);
+			}
+		}
+
+		private class ModernTooltipForm : Form
+		{
+			private const int _cornerRadius = 4;
+			private const int _paddingX = 10;
+			private const int _paddingY = 7;
+			private readonly Font _font = new Font("Segoe UI", 9.0f, FontStyle.Regular, GraphicsUnit.Point);
+			private string _text = string.Empty;
+
+			protected override bool ShowWithoutActivation => true;
+
+			protected override CreateParams CreateParams
+			{
+				get
+				{
+					var cp = base.CreateParams;
+					cp.ExStyle |= _wsExToolWindow;
+					cp.ExStyle |= _wsExLayered;
+					cp.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
+					return cp;
+				}
+			}
+
+			public ModernTooltipForm()
+			{
+				this.FormBorderStyle = FormBorderStyle.None;
+				this.ShowInTaskbar = false;
+				this.StartPosition = FormStartPosition.Manual;
+				this.ForeColor = Color.White;
+			}
+
+			public void SetText(string text)
+			{
+				this._text = text ?? string.Empty;
+				var textSize = TextRenderer.MeasureText(
+					this._text,
+					this._font,
+					new Size(420, int.MaxValue),
+					TextFormatFlags.NoPadding | TextFormatFlags.WordBreak | TextFormatFlags.NoPrefix);
+				this.Size = new Size(
+					Math.Max(1, textSize.Width + TaskbarDeskbandService.Scale(_paddingX * 2)),
+					Math.Max(1, textSize.Height + TaskbarDeskbandService.Scale(_paddingY * 2)));
+				if (this.Visible) this.RenderLayered();
+			}
+
+			public void ShowNoActivate()
+			{
+				this.RenderLayered();
+				NativeMethods.ShowWindow(this.Handle, ShowWindowCommand.ShowNoActivate);
+				this.RenderLayered();
+			}
+
+			protected override void OnSizeChanged(EventArgs e)
+			{
+				base.OnSizeChanged(e);
+				if (this.Visible) this.RenderLayered();
+			}
+
+			protected override void OnLocationChanged(EventArgs e)
+			{
+				base.OnLocationChanged(e);
+				if (this.Visible) this.RenderLayered();
+			}
+
+			public bool RenderLayered()
+			{
+				if (!this.IsHandleCreated) return false;
+
+				var width = Math.Max(1, this.Width);
+				var height = Math.Max(1, this.Height);
+				using (var bitmap = new Bitmap(width, height, PixelFormat.Format32bppPArgb))
+				using (var graphics = Graphics.FromImage(bitmap))
+				{
+					graphics.Clear(Color.Transparent);
+					graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+					graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+
+					using (var brush = new SolidBrush(Color.FromArgb(43, 43, 43)))
+					using (var path = CreateRoundedRectanglePath(new Rectangle(0, 0, width, height), TaskbarDeskbandService.Scale(_cornerRadius)))
+					{
+						graphics.FillPath(brush, path);
+					}
+
+					TextRenderer.DrawText(
+						graphics,
+						this._text,
+						this._font,
+						new Rectangle(
+							TaskbarDeskbandService.Scale(_paddingX),
+							TaskbarDeskbandService.Scale(_paddingY),
+							width - TaskbarDeskbandService.Scale(_paddingX * 2),
+							height - TaskbarDeskbandService.Scale(_paddingY * 2)),
+						this.ForeColor,
+						TextFormatFlags.NoPadding | TextFormatFlags.WordBreak | TextFormatFlags.NoPrefix);
+
+					return this.UpdateLayeredBitmap(bitmap, width, height);
+				}
+			}
+
+			private bool UpdateLayeredBitmap(Bitmap bitmap, int width, int height)
+			{
+				var screenDc = NativeMethods.GetDC(IntPtr.Zero);
+				var memoryDc = NativeMethods.CreateCompatibleDC(screenDc);
+				var bitmapHandle = IntPtr.Zero;
+				var previousBitmap = IntPtr.Zero;
+
+				try
+				{
+					var bitmapInfo = new NativeMethods.BitmapInfo
+					{
+						Header = new NativeMethods.BitmapInfoHeader
+						{
+							Size = (uint)Marshal.SizeOf(typeof(NativeMethods.BitmapInfoHeader)),
+							Width = width,
+							Height = -height,
+							Planes = 1,
+							BitCount = 32,
+							Compression = NativeMethods.BiRgb,
+							SizeImage = (uint)(width * height * 4),
+						},
+					};
+
+					bitmapHandle = NativeMethods.CreateDIBSection(
+						screenDc,
+						ref bitmapInfo,
+						NativeMethods.DibRgbColors,
+						out var bitmapBits,
+						IntPtr.Zero,
+						0);
+					if (bitmapHandle == IntPtr.Zero || bitmapBits == IntPtr.Zero) return false;
+
+					CopyBitmapBits(bitmap, bitmapBits, width, height);
+					previousBitmap = NativeMethods.SelectObject(memoryDc, bitmapHandle);
+
+					var destination = new NativeMethods.LayeredPoint(this.Left, this.Top);
+					var size = new NativeMethods.LayeredSize(width, height);
+					var source = new NativeMethods.LayeredPoint(0, 0);
+					var blend = new NativeMethods.BlendFunction
+					{
+						BlendOp = NativeMethods.AcSrcOver,
+						BlendFlags = 0,
+						SourceConstantAlpha = 255,
+						AlphaFormat = NativeMethods.AcSrcAlpha,
+					};
+
+					return NativeMethods.UpdateLayeredWindow(
+						this.Handle,
+						screenDc,
+						ref destination,
+						ref size,
+						memoryDc,
+						ref source,
+						0,
+						ref blend,
+						NativeMethods.UlwAlpha);
+				}
+				finally
+				{
+					if (previousBitmap != IntPtr.Zero) NativeMethods.SelectObject(memoryDc, previousBitmap);
+					if (bitmapHandle != IntPtr.Zero) NativeMethods.DeleteObject(bitmapHandle);
+					if (memoryDc != IntPtr.Zero) NativeMethods.DeleteDC(memoryDc);
+					if (screenDc != IntPtr.Zero) NativeMethods.ReleaseDC(IntPtr.Zero, screenDc);
+				}
+			}
+
+			private static void CopyBitmapBits(Bitmap bitmap, IntPtr targetBits, int width, int height)
+			{
+				var bounds = new Rectangle(0, 0, width, height);
+				var data = bitmap.LockBits(bounds, ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+
+				try
+				{
+					var targetStride = width * 4;
+					var sourceStride = Math.Abs(data.Stride);
+					var sourceBuffer = new byte[sourceStride * height];
+					var targetBuffer = new byte[targetStride * height];
+
+					Marshal.Copy(data.Scan0, sourceBuffer, 0, sourceBuffer.Length);
+					for (var y = 0; y < height; y++)
+					{
+						var sourceY = data.Stride < 0 ? height - 1 - y : y;
+						Buffer.BlockCopy(sourceBuffer, sourceY * sourceStride, targetBuffer, y * targetStride, targetStride);
+					}
+
+					Marshal.Copy(targetBuffer, 0, targetBits, targetBuffer.Length);
+				}
+				finally
+				{
+					bitmap.UnlockBits(data);
+				}
+			}
+
+			private static System.Drawing.Drawing2D.GraphicsPath CreateRoundedRectanglePath(Rectangle rectangle, int radius)
+			{
+				var diameter = Math.Max(1, radius * 2);
+				var path = new System.Drawing.Drawing2D.GraphicsPath();
+				path.AddArc(rectangle.Left, rectangle.Top, diameter, diameter, 180, 90);
+				path.AddArc(rectangle.Right - diameter, rectangle.Top, diameter, diameter, 270, 90);
+				path.AddArc(rectangle.Right - diameter, rectangle.Bottom - diameter, diameter, diameter, 0, 90);
+				path.AddArc(rectangle.Left, rectangle.Bottom - diameter, diameter, diameter, 90, 90);
+				path.CloseFigure();
+				return path;
+			}
+
+			protected override void Dispose(bool disposing)
+			{
+				if (disposing)
+				{
+					this._font.Dispose();
 				}
 
 				base.Dispose(disposing);

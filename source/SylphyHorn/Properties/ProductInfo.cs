@@ -14,9 +14,9 @@ namespace SylphyHorn.Properties
 		private static readonly Lazy<string> _copyrightLazy = new Lazy<string>(() => ((AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(_assembly, typeof(AssemblyCopyrightAttribute))).Copyright);
 		private static readonly Lazy<string> _trademarkLazy = new Lazy<string>(() => ((AssemblyTrademarkAttribute)Attribute.GetCustomAttribute(_assembly, typeof(AssemblyTrademarkAttribute))).Trademark);
 		private static readonly Lazy<string> _versionLazy = new Lazy<string>(() => $"{Version.ToString(3)}{(IsBetaRelease ? " β" : "")}{(Version.Revision == 0 ? "" : " rev." + Version.Revision)}");
-		private static readonly Lazy<string> _extraVersionLazy = new Lazy<string>(() => $"{CustomAttributes.FirstOrDefault(attr => attr.Key == "ExtraVersion").Value}");
-		private static readonly Lazy<string> _originalCompanyLazy = new Lazy<string>(() => $"{CustomAttributes.FirstOrDefault(attr => attr.Key == "OriginalCompany").Value}");
-		private static readonly Lazy<string> _originalProductLazy = new Lazy<string>(() => $"{CustomAttributes.FirstOrDefault(attr => attr.Key == "OriginalProduct").Value}");
+		private static readonly Lazy<string> _extraVersionLazy = new Lazy<string>(() => GetAssemblyMetadata("ExtraVersion"));
+		private static readonly Lazy<string> _originalCompanyLazy = new Lazy<string>(() => GetAssemblyMetadata("OriginalCompany"));
+		private static readonly Lazy<string> _originalProductLazy = new Lazy<string>(() => GetAssemblyMetadata("OriginalProduct"));
 
 
 		public static string Title => _titleLazy.Value;
@@ -78,5 +78,8 @@ namespace SylphyHorn.Properties
 		internal static bool IsReorderingSupportBuild => IsWallpaperSupportBuild;
 
 		private static AssemblyMetadataAttribute[] CustomAttributes => (AssemblyMetadataAttribute[])Attribute.GetCustomAttributes(_assembly, typeof(AssemblyMetadataAttribute));
+
+		private static string GetAssemblyMetadata(string key)
+			=> CustomAttributes.FirstOrDefault(attr => attr.Key == key)?.Value ?? string.Empty;
 	}
 }

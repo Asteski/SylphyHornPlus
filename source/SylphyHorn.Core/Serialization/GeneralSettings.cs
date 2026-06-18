@@ -79,6 +79,8 @@ namespace SylphyHorn.Serialization
 
 		public SerializableProperty<bool> TraySwitchDesktopWithMouseWheel => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TraySwitchDesktopWithMouseWheelDefaultValue));
 
+		public SerializableProperty<bool> TraySwitchDesktopWithMouseWheelReverse => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TraySwitchDesktopWithMouseWheelReverseDefaultValue));
+
 		public SerializableProperty<bool> TaskbarDeskbandEnabled => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandEnabledDefaultValue));
 
 		public SerializableProperty<uint> TaskbarDeskbandMode => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandModeDefaultValue));
@@ -88,6 +90,10 @@ namespace SylphyHorn.Serialization
 		public SerializableProperty<bool> TaskbarDeskbandPlaceOnLeft => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandPlaceOnLeftDefaultValue));
 
 		public SerializableProperty<uint> TaskbarDeskbandPosition => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandPositionDefaultValue));
+
+		public SerializableProperty<int> TaskbarDeskbandPositionOffset => this.Cache(key => new SerializableProperty<int>(key, this._provider, TaskbarDeskbandPositionOffsetDefaultValue));
+
+		public SerializableProperty<int> TaskbarDeskbandVerticalPositionOffset => this.Cache(key => new SerializableProperty<int>(key, this._provider, TaskbarDeskbandVerticalPositionOffsetDefaultValue));
 
 		public SerializableProperty<uint> TaskbarDeskbandDisplayMode => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandDisplayModeDefaultValue));
 
@@ -111,6 +117,8 @@ namespace SylphyHorn.Serialization
 
 		public SerializableProperty<string> TaskbarDeskbandFontColor => this.Cache(key => new SerializableProperty<string>(key, this._provider, TaskbarDeskbandFontColorDefaultValue));
 
+		public SerializableProperty<uint> TaskbarDeskbandFontWeight => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandFontWeightDefaultValue));
+
 		public SerializableProperty<bool> TaskbarDeskbandFontBold => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandFontBoldDefaultValue));
 
 		public SerializableProperty<bool> TaskbarDeskbandFontItalic => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandFontItalicDefaultValue));
@@ -123,9 +131,13 @@ namespace SylphyHorn.Serialization
 
 		public SerializableProperty<bool> TaskbarDeskbandTooltipListWindows => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandTooltipListWindowsDefaultValue));
 
+		public SerializableProperty<uint> TaskbarDeskbandTooltipLook => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandTooltipLookDefaultValue));
+
 		public SerializableProperty<uint> TaskbarDeskbandTooltipWindowStyle => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandTooltipWindowStyleDefaultValue));
 
 		public SerializableProperty<bool> TaskbarDeskbandSwitchDesktopWithMouseWheel => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandSwitchDesktopWithMouseWheelDefaultValue));
+
+		public SerializableProperty<bool> TaskbarDeskbandSwitchDesktopWithMouseWheelReverse => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandSwitchDesktopWithMouseWheelReverseDefaultValue));
 
 		public SerializableProperty<uint> TaskbarDeskbandDoubleClickAction => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandDoubleClickActionDefaultValue));
 
@@ -161,7 +173,7 @@ namespace SylphyHorn.Serialization
 
 		public static uint NotificationWindowStyleDefaultValue { get; } = 4 /* BlurWindowThemeMode.System */;
 
-		public static uint NotificationCornerStyleDefaultValue { get; } = 1 /* BlurWindowCornerMode.NotRounded */;
+		public static uint NotificationCornerStyleDefaultValue { get; } = IsWindows11OrLater ? 2u : 1u /* BlurWindowCornerMode.Rounded / NotRounded */;
 
 		public static uint NotificationHeaderAlignmentDefaultValue { get; } = 0 /* Left */;
 
@@ -201,6 +213,8 @@ namespace SylphyHorn.Serialization
 
 		public static bool TraySwitchDesktopWithMouseWheelDefaultValue { get; } = false;
 
+		public static bool TraySwitchDesktopWithMouseWheelReverseDefaultValue { get; } = false;
+
 		public static bool TaskbarDeskbandEnabledDefaultValue { get; } = false;
 
 		public static uint TaskbarDeskbandModeDisabledValue { get; } = 0;
@@ -220,6 +234,10 @@ namespace SylphyHorn.Serialization
 		public static uint TaskbarDeskbandPositionLeftValue { get; } = 1;
 
 		public static uint TaskbarDeskbandPositionDefaultValue { get; } = TaskbarDeskbandPositionRightValue;
+
+		public static int TaskbarDeskbandPositionOffsetDefaultValue { get; } = 0;
+
+		public static int TaskbarDeskbandVerticalPositionOffsetDefaultValue { get; } = 0;
 
 		public static uint TaskbarDeskbandDisplayModeNumberOnlyValue { get; } = 0;
 
@@ -253,7 +271,7 @@ namespace SylphyHorn.Serialization
 
 		public static uint TaskbarDeskbandNumberWrapperNoneValue { get; } = 8;
 
-		public static uint TaskbarDeskbandNumberWrapperDefaultValue { get; } = TaskbarDeskbandNumberWrapperSquareValue;
+		public static uint TaskbarDeskbandNumberWrapperDefaultValue { get; } = TaskbarDeskbandNumberWrapperNoneValue;
 
 		public static bool TaskbarDeskbandNumberWrapperSpacesDefaultValue { get; } = false;
 
@@ -261,7 +279,7 @@ namespace SylphyHorn.Serialization
 
 		public static bool TaskbarDeskbandShowTotalDesktopCountDefaultValue { get; } = false;
 
-		public static bool TaskbarDeskbandNumberBeforeNameDefaultValue { get; } = true;
+		public static bool TaskbarDeskbandNumberBeforeNameDefaultValue { get; } = false;
 
 		public static bool TaskbarDeskbandCustomAppearanceEnabledDefaultValue { get; } = false;
 
@@ -270,6 +288,18 @@ namespace SylphyHorn.Serialization
 		public static int TaskbarDeskbandFontSizeDefaultValue { get; } = 11;
 
 		public static string TaskbarDeskbandFontColorDefaultValue { get; } = "#FFFFFF";
+
+		public static uint TaskbarDeskbandFontWeightRegularValue { get; } = 0;
+
+		public static uint TaskbarDeskbandFontWeightLightValue { get; } = 1;
+
+		public static uint TaskbarDeskbandFontWeightSemiLightValue { get; } = 2;
+
+		public static uint TaskbarDeskbandFontWeightSemiBoldValue { get; } = 3;
+
+		public static uint TaskbarDeskbandFontWeightBoldValue { get; } = 4;
+
+		public static uint TaskbarDeskbandFontWeightDefaultValue { get; } = TaskbarDeskbandFontWeightRegularValue;
 
 		public static bool TaskbarDeskbandFontBoldDefaultValue { get; } = false;
 
@@ -283,6 +313,14 @@ namespace SylphyHorn.Serialization
 
 		public static bool TaskbarDeskbandTooltipListWindowsDefaultValue { get; } = false;
 
+		public static uint TaskbarDeskbandTooltipLookWindows10Value { get; } = 0;
+
+		public static uint TaskbarDeskbandTooltipLookWindows11Value { get; } = 1;
+
+		public static uint TaskbarDeskbandTooltipLookDefaultValue { get; } = IsWindows11OrLater
+			? TaskbarDeskbandTooltipLookWindows11Value
+			: TaskbarDeskbandTooltipLookWindows10Value;
+
 		public static uint TaskbarDeskbandTooltipWindowStyleTitleValue { get; } = 0;
 
 		public static uint TaskbarDeskbandTooltipWindowStyleApplicationNameValue { get; } = 1;
@@ -294,6 +332,8 @@ namespace SylphyHorn.Serialization
 		public static uint TaskbarDeskbandTooltipWindowStyleDefaultValue { get; } = TaskbarDeskbandTooltipWindowStyleTitleValue;
 
 		public static bool TaskbarDeskbandSwitchDesktopWithMouseWheelDefaultValue { get; } = false;
+
+		public static bool TaskbarDeskbandSwitchDesktopWithMouseWheelReverseDefaultValue { get; } = false;
 
 		public static uint TaskbarDeskbandDoubleClickActionTaskViewValue { get; } = 0;
 
@@ -318,5 +358,7 @@ namespace SylphyHorn.Serialization
 		public static bool DesktopProcessNamesCreateMissingDesktopDefaultValue { get; } = false;
 
 		#endregion
+
+		private static bool IsWindows11OrLater => Environment.OSVersion.Version.Build >= 22000;
 	}
 }

@@ -331,7 +331,7 @@ namespace SylphyHorn.Properties {
         }
 
         /// <summary>
-        ///   Disable に類似しているローカライズされた文字列を検索します。
+        ///   Disabled に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Desktop_TaskbarDeskband_Mode_Disabled {
             get {
@@ -390,6 +390,24 @@ namespace SylphyHorn.Properties {
         public static string Settings_Desktop_TaskbarDeskband_Position_Left {
             get {
                 return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Position_Left", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Horizontal adjustment: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_PositionOffset {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_PositionOffset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Vertical adjustment: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_VerticalPositionOffset {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_VerticalPositionOffset", resourceCulture);
             }
         }
 
@@ -538,6 +556,60 @@ namespace SylphyHorn.Properties {
         }
 
         /// <summary>
+        ///   Weight: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Weight {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Weight", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Regular に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Weight_Regular {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Weight_Regular", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Light に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Weight_Light {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Weight_Light", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   SemiLight に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Weight_SemiLight {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Weight_SemiLight", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   SemiBold に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Weight_SemiBold {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Weight_SemiBold", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Bold に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_Weight_Bold {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_Weight_Bold", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Bold に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Desktop_TaskbarDeskband_Bold {
@@ -606,6 +678,33 @@ namespace SylphyHorn.Properties {
         public static string Settings_Desktop_TaskbarDeskband_TooltipListWindows {
             get {
                 return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipListWindows", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Tooltip look: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_TooltipLook {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipLook", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Windows 10 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_TooltipLook_Windows10 {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipLook_Windows10", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Windows 11 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Desktop_TaskbarDeskband_TooltipLook_Windows11 {
+            get {
+                return ResourceManager.GetString("Settings_Desktop_TaskbarDeskband_TooltipLook_Windows11", resourceCulture);
             }
         }
 
@@ -1688,6 +1787,15 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwitchDesktopWithMouseWheelOverTrayIcon", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Reverse scrolling direction に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_ReverseSwitchDesktopWithMouseWheelOverTrayIcon {
+            get {
+                return ResourceManager.GetString("Settings_ReverseSwitchDesktopWithMouseWheelOverTrayIcon", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Show settings: に類似しているローカライズされた文字列を検索します。
@@ -1857,6 +1965,33 @@ namespace SylphyHorn.Properties {
         public static string Settings_Taskbar {
             get {
                 return ResourceManager.GetString("Settings_Taskbar", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Custom font に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Taskbar_DeskbandCustomFont {
+            get {
+                return ResourceManager.GetString("Settings_Taskbar_DeskbandCustomFont", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Mouse click actions に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Taskbar_MouseClickActions {
+            get {
+                return ResourceManager.GetString("Settings_Taskbar_MouseClickActions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Mouse tooltip に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Taskbar_MouseTooltip {
+            get {
+                return ResourceManager.GetString("Settings_Taskbar_MouseTooltip", resourceCulture);
             }
         }
 

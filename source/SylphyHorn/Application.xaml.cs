@@ -37,6 +37,12 @@ namespace SylphyHorn
 		{
 			Args = new CommandLineArgs(e.Args);
 
+			if (Args.ElevatedHelper)
+			{
+				this.StartElevatedHelperMode();
+				return;
+			}
+
 			if (Args.Setup)
 			{
 				this.SetupShortcut();
@@ -142,6 +148,31 @@ namespace SylphyHorn
 				this.Shutdown();
 			}
 #endif
+		}
+
+		private void StartElevatedHelperMode()
+		{
+			this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+			var parentPid = Args.ElevatedHelperParentPid;
+			if (!parentPid.HasValue)
+			{
+				this.Shutdown();
+				return;
+			}
+
+			System.Threading.Tasks.Task.Run(() =>
+			{
+				try
+				{
+					using (var parent = Process.GetProcessById(parentPid.Value))
+					{
+						parent.WaitForExit();
+					}
+				}
+				catch
+				{
+				}
+			}).ContinueWith(_ => this.Dispatcher.Invoke(this.Shutdown));
 		}
 
 		protected override void OnExit(ExitEventArgs e)

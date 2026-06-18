@@ -69,6 +69,16 @@ namespace SylphyHorn.UI
 
 		public TaskTrayBaloon CreateBaloon() => new TaskTrayBaloon(this);
 
+		public void ShowContextMenu(System.Windows.Forms.Control owner, System.Drawing.Point location)
+		{
+			if (this._notifyIcon == null) this.Show();
+			if (this._notifyIcon?.ContextMenu == null || owner == null || owner.IsDisposed) return;
+
+			this.RebuildContextMenu();
+			NativeMethods.SetForegroundWindow(owner.Handle);
+			this._notifyIcon.ContextMenu.Show(owner, location);
+		}
+
 		internal void ShowBaloon(TaskTrayBaloon baloon)
 		{
 			if (this._notifyIcon == null) this.Show();
@@ -226,6 +236,11 @@ namespace SylphyHorn.UI
 				if (!this.TryAcceptTrayMouseWheel()) return;
 
 				var delta = state.Stroke == Stroke.WheelUp ? 120 : -120;
+				if (Settings.General.TraySwitchDesktopWithMouseWheelReverse.Value)
+				{
+					delta = -delta;
+				}
+
 				VisualHelper.InvokeOnUIDispatcher(() => VirtualDesktopService.SwitchByMouseWheelDelta(delta));
 			}
 			catch (Exception ex)

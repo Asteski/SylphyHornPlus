@@ -26,6 +26,8 @@ namespace SylphyHorn.UI.Bindings
 {
 	public class SettingsWindowViewModel : WindowViewModel
 	{
+		private const uint _taskbarDeskbandTooltipLookDisabledValue = uint.MaxValue;
+
 		private static bool _restartRequired;
 		private static readonly string _defaultCulture = Settings.General.Culture;
 		private static string _exportOrImportFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -55,6 +57,10 @@ namespace SylphyHorn.UI.Bindings
 		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandDisplayModes { get; }
 
 		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandNumberWrappers { get; }
+
+		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandFontWeights { get; }
+
+		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandTooltipLooks { get; }
 
 		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandTooltipWindowStyles { get; }
 
@@ -886,6 +892,22 @@ namespace SylphyHorn.UI.Bindings
 				new DisplayViewModel<uint> { Display = "/ /", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSlashValue, },
 			}.ToList();
 
+			this.TaskbarDeskbandFontWeights = new[]
+			{
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Weight_Regular, Value = GeneralSettings.TaskbarDeskbandFontWeightRegularValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Weight_Light, Value = GeneralSettings.TaskbarDeskbandFontWeightLightValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Weight_SemiLight, Value = GeneralSettings.TaskbarDeskbandFontWeightSemiLightValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Weight_SemiBold, Value = GeneralSettings.TaskbarDeskbandFontWeightSemiBoldValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Weight_Bold, Value = GeneralSettings.TaskbarDeskbandFontWeightBoldValue, },
+			}.ToList();
+
+			this.TaskbarDeskbandTooltipLooks = new[]
+			{
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Mode_Disabled, Value = _taskbarDeskbandTooltipLookDisabledValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_TooltipLook_Windows10, Value = GeneralSettings.TaskbarDeskbandTooltipLookWindows10Value, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_TooltipLook_Windows11, Value = GeneralSettings.TaskbarDeskbandTooltipLookWindows11Value, },
+			}.ToList();
+
 			this.TaskbarDeskbandTooltipWindowStyles = new[]
 			{
 				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_Title, Value = GeneralSettings.TaskbarDeskbandTooltipWindowStyleTitleValue, },
@@ -1020,8 +1042,11 @@ namespace SylphyHorn.UI.Bindings
 					this.RaisePropertyChanged(nameof(this.IsTaskbarDeskbandNumberBeforeNameEnabled));
 				})
 				.AddTo(this);
-			Settings.General.TaskbarDeskbandCustomNumberStyleEnabled
-				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.IsTaskbarDeskbandNumberBeforeNameEnabled)))
+			Settings.General.TaskbarDeskbandTooltipEnabled
+				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.TaskbarDeskbandTooltipLook)))
+				.AddTo(this);
+			Settings.General.TaskbarDeskbandTooltipLook
+				.Subscribe(_ => this.RaisePropertyChanged(nameof(this.TaskbarDeskbandTooltipLook)))
 				.AddTo(this);
 
 			Settings.ShortcutKey.SwitchToIndices
@@ -1147,6 +1172,52 @@ namespace SylphyHorn.UI.Bindings
 			}
 		}
 
+		public int TaskbarDeskbandPositionOffset
+		{
+			get => Settings.General.TaskbarDeskbandPositionOffset.Value;
+			set
+			{
+				var offset = Math.Max(-2000, Math.Min(2000, value));
+				if (Settings.General.TaskbarDeskbandPositionOffset.Value != offset)
+				{
+					Settings.General.TaskbarDeskbandPositionOffset.Value = offset;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+
+		public int TaskbarDeskbandVerticalPositionOffset
+		{
+			get => Settings.General.TaskbarDeskbandVerticalPositionOffset.Value;
+			set
+			{
+				var offset = Math.Max(-2000, Math.Min(2000, value));
+				if (Settings.General.TaskbarDeskbandVerticalPositionOffset.Value != offset)
+				{
+					Settings.General.TaskbarDeskbandVerticalPositionOffset.Value = offset;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+
+		public uint TaskbarDeskbandFontWeight
+		{
+			get => Settings.General.TaskbarDeskbandFontBold.Value
+				&& Settings.General.TaskbarDeskbandFontWeight.Value == GeneralSettings.TaskbarDeskbandFontWeightRegularValue
+					? GeneralSettings.TaskbarDeskbandFontWeightBoldValue
+					: Settings.General.TaskbarDeskbandFontWeight.Value;
+			set
+			{
+				if (Settings.General.TaskbarDeskbandFontWeight.Value != value)
+				{
+					Settings.General.TaskbarDeskbandFontWeight.Value = value;
+				}
+
+				Settings.General.TaskbarDeskbandFontBold.Value = value == GeneralSettings.TaskbarDeskbandFontWeightBoldValue;
+				this.RaisePropertyChanged();
+			}
+		}
+
 		public uint TaskbarDeskbandDisplayMode
 		{
 			get => Settings.General.TaskbarDeskbandDisplayMode.Value;
@@ -1165,7 +1236,31 @@ namespace SylphyHorn.UI.Bindings
 			=> Settings.General.TaskbarDeskbandDisplayMode.Value == GeneralSettings.TaskbarDeskbandDisplayModeNameWithNumberValue;
 
 		public bool IsTaskbarDeskbandNumberBeforeNameEnabled
-			=> Settings.General.TaskbarDeskbandCustomNumberStyleEnabled.Value && this.IsTaskbarDeskbandNameWithNumber;
+			=> this.IsTaskbarDeskbandNameWithNumber;
+
+		public uint TaskbarDeskbandTooltipLook
+		{
+			get => Settings.General.TaskbarDeskbandTooltipEnabled.Value
+				? Settings.General.TaskbarDeskbandTooltipLook.Value
+				: _taskbarDeskbandTooltipLookDisabledValue;
+			set
+			{
+				if (value == _taskbarDeskbandTooltipLookDisabledValue)
+				{
+					Settings.General.TaskbarDeskbandTooltipEnabled.Value = false;
+					this.RaisePropertyChanged();
+					return;
+				}
+
+				if (Settings.General.TaskbarDeskbandTooltipLook.Value != value)
+				{
+					Settings.General.TaskbarDeskbandTooltipLook.Value = value;
+				}
+
+				Settings.General.TaskbarDeskbandTooltipEnabled.Value = true;
+				this.RaisePropertyChanged();
+			}
+		}
 
 		private static bool TryGetDrawingColor(string value, out System.Drawing.Color color)
 		{

@@ -19,9 +19,9 @@
 				   Icon="/SylphyHorn;component/.assets/app.white.ico"
 				   Title="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Title}"
 				   Width="760"
-				   Height="646"
+				   Height="684"
 				   MinWidth="760"
-				   MinHeight="646"
+				   MinHeight="684"
 				   ResizeMode="CanResize"
 				   Background="{DynamicResource ThemeBrushKey}"
 				   BorderBrush="Transparent"
@@ -224,6 +224,10 @@
 							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TraySwitchDesktopWithMouseWheel.Value, Mode=TwoWay}">
 								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_SwitchDesktopWithMouseWheelOverTrayIcon}" />
 							</CheckBox>
+							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TraySwitchDesktopWithMouseWheelReverse.Value, Mode=TwoWay}"
+									  IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TraySwitchDesktopWithMouseWheel.Value, Mode=OneWay}">
+								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_ReverseSwitchDesktopWithMouseWheelOverTrayIcon}" />
+							</CheckBox>
 						</StackPanel>
 						<Border Height="8" />
 
@@ -299,7 +303,7 @@
 
 			<TabItem>
 				<TabItem.Header>
-					<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Taskbar}"
+					<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Taskbar, StringFormat='{}{0} 1'}"
 							   Style="{DynamicResource TabitemStyleKey}" />
 				</TabItem.Header>
 
@@ -340,6 +344,27 @@
 									<ColumnDefinition Width="8" />
 									<ColumnDefinition Width="*" />
 								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0"
+										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Display}"
+										   Margin="0,2" />
+								<metro:PromptComboBox Grid.Column="2"
+													  ItemsSource="{Binding TaskbarDeskbandDisplayModes}"
+													  DisplayMemberPath="Display"
+													  SelectedValuePath="Value"
+													  SelectedValue="{Binding TaskbarDeskbandDisplayMode, Mode=TwoWay}"
+													  Prompt=""
+													  IsReadOnly="True"
+													  MinWidth="250"
+													  HorizontalAlignment="Left"
+													  Margin="2" />
+							</Grid>
+							<Grid Margin="0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"
+													  SharedSizeGroup="TaskbarDeskbandOptionLabel" />
+									<ColumnDefinition Width="8" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
 
 								<TextBlock Grid.Column="0"
 										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Position}"
@@ -363,25 +388,41 @@
 									<ColumnDefinition Width="*" />
 								</Grid.ColumnDefinitions>
 								<TextBlock Grid.Column="0"
-										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Display}"
+										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_PositionOffset}"
 										   Margin="0,2" />
-								<metro:PromptComboBox Grid.Column="2"
-													  ItemsSource="{Binding TaskbarDeskbandDisplayModes}"
-													  DisplayMemberPath="Display"
-													  SelectedValuePath="Value"
-													  SelectedValue="{Binding TaskbarDeskbandDisplayMode, Mode=TwoWay}"
-													  Prompt=""
-													  IsReadOnly="True"
-													  MinWidth="250"
-													  HorizontalAlignment="Left"
-													  Margin="2" />
+								<StackPanel Grid.Column="2"
+											Orientation="Horizontal">
+									<metro:PromptTextBox Text="{Binding TaskbarDeskbandPositionOffset, Mode=TwoWay}"
+														 Prompt="0"
+														 Width="60"
+														 HorizontalAlignment="Left"
+														 Margin="2" />
+									<TextBlock Text="px"
+											   Margin="4,2,0,2" />
+								</StackPanel>
 							</Grid>
-							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandCustomNumberStyleEnabled.Value, Mode=TwoWay}"
-									  Margin="0,6,0,0">
-								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_CustomNumberStyle}" />
-							</CheckBox>
-							<Grid Margin="20,2,0,0"
-								  IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandCustomNumberStyleEnabled.Value, Mode=OneWay}">
+							<Grid Margin="0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"
+													  SharedSizeGroup="TaskbarDeskbandOptionLabel" />
+									<ColumnDefinition Width="8" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0"
+										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_VerticalPositionOffset}"
+										   Margin="0,2" />
+								<StackPanel Grid.Column="2"
+											Orientation="Horizontal">
+									<metro:PromptTextBox Text="{Binding TaskbarDeskbandVerticalPositionOffset, Mode=TwoWay}"
+														 Prompt="0"
+														 Width="60"
+														 HorizontalAlignment="Left"
+														 Margin="2" />
+									<TextBlock Text="px"
+											   Margin="4,2,0,2" />
+								</StackPanel>
+							</Grid>
+							<Grid Margin="0,8,0,0">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto" />
 									<ColumnDefinition Width="8" />
@@ -436,136 +477,17 @@
 									<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_NumberBeforeName}" />
 								</CheckBox>
 							</Grid>
-							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandCustomAppearanceEnabled.Value, Mode=TwoWay}"
-									  Margin="0,6,0,0">
-								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_CustomAppearance}" />
-							</CheckBox>
-							<Grid Margin="20,6,0,0"
-								  IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandCustomAppearanceEnabled.Value, Mode=OneWay}">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="8" />
-									<ColumnDefinition Width="*" />
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-								</Grid.RowDefinitions>
-
-								<TextBlock Grid.Row="0"
-										   Grid.Column="0"
-										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Font}"
-										   Margin="0,2" />
-								<metro:PromptComboBox Grid.Row="0"
-													  Grid.Column="2"
-													  ItemsSource="{Binding FontFamilies}"
-													  DisplayMemberPath="Display"
-													  SelectedValuePath="Value"
-													  SelectedValue="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandFontFamily.Value, Mode=TwoWay}"
-													  Prompt=""
-													  IsReadOnly="True"
-													  MinWidth="250"
-													  HorizontalAlignment="Left"
-													  Margin="2" />
-
-								<TextBlock Grid.Row="1"
-										   Grid.Column="0"
-										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Size}"
-										   Margin="0,2" />
-								<metro:PromptTextBox Grid.Row="1"
-													 Grid.Column="2"
-													 Text="{Binding TaskbarDeskbandFontSize, Mode=TwoWay}"
-													 Prompt=""
-													 Width="60"
-													 HorizontalAlignment="Left"
-													 Margin="2" />
-
-								<TextBlock Grid.Row="2"
-										   Grid.Column="0"
-										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Style}"
-										   Margin="0,2" />
-								<StackPanel Grid.Row="2"
-											Grid.Column="2"
-											Orientation="Horizontal"
-											Margin="2,0,0,0">
-									<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandFontBold.Value, Mode=TwoWay}"
-											  Margin="0,0,10,0">
-										<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Bold}" />
-									</CheckBox>
-									<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandFontItalic.Value, Mode=TwoWay}"
-											  Margin="0,0,10,0">
-										<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Italic}" />
-									</CheckBox>
-									<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandFontUnderline.Value, Mode=TwoWay}">
-										<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Underline}" />
-									</CheckBox>
-								</StackPanel>
-
-								<TextBlock Grid.Row="3"
-										   Grid.Column="0"
-										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Color}"
-										   Margin="0,2" />
-								<StackPanel Grid.Row="3"
-											Grid.Column="2"
-											Orientation="Horizontal"
-											Margin="2,0,0,0">
-									<Border Width="22"
-											Height="22"
-											Background="{Binding TaskbarDeskbandFontColorBrush}"
-											BorderBrush="{DynamicResource BorderBrushKey}"
-											BorderThickness=".99"
-											Margin="0,2,4,2" />
-									<metro:PromptTextBox Text="{Binding TaskbarDeskbandFontColor, Mode=TwoWay}"
-														 Prompt="#RRGGBB"
-														 Width="90"
-														 Margin="2" />
-									<metro2:CallMethodButton Content="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_SelectColor}"
-															 MethodTarget="{Binding}"
-															 MethodName="OpenTaskbarDeskbandFontColorDialog"
-															 HorizontalAlignment="Left"
-															 Margin="2" />
-								</StackPanel>
-							</Grid>
-							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipEnabled.Value, Mode=TwoWay}"
-									  Margin="0,6,0,0">
-								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Tooltip}" />
-							</CheckBox>
-							<StackPanel Margin="20,2,0,0"
-										IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipEnabled.Value, Mode=OneWay}">
-								<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipNumberOnly.Value, Mode=TwoWay}">
-									<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_TooltipNumberOnly}" />
-								</CheckBox>
-								<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipListWindows.Value, Mode=TwoWay}">
-									<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_TooltipListWindows}" />
-								</CheckBox>
-								<Grid Margin="20,2,0,0"
-									  IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipListWindows.Value, Mode=OneWay}">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition Width="8" />
-										<ColumnDefinition Width="*" />
-									</Grid.ColumnDefinitions>
-									<TextBlock Grid.Column="0"
-											   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_TooltipWindowStyle}"
-											   Margin="0,2" />
-									<metro:PromptComboBox Grid.Column="2"
-														  ItemsSource="{Binding TaskbarDeskbandTooltipWindowStyles}"
-														  DisplayMemberPath="Display"
-														  SelectedValuePath="Value"
-														  SelectedValue="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipWindowStyle.Value, Mode=TwoWay}"
-														  Prompt=""
-														  IsReadOnly="True"
-														  MinWidth="250"
-														  HorizontalAlignment="Left"
-														  Margin="2" />
-								</Grid>
-							</StackPanel>
 							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandSwitchDesktopWithMouseWheel.Value, Mode=TwoWay}"
 									  Margin="0,6,0,0">
 								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_MouseWheelSwitch}" />
 							</CheckBox>
+							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandSwitchDesktopWithMouseWheelReverse.Value, Mode=TwoWay}"
+									  IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandSwitchDesktopWithMouseWheel.Value, Mode=OneWay}"
+									  Margin="0,0,0,0">
+								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_ReverseSwitchDesktopWithMouseWheelOverTrayIcon}" />
+							</CheckBox>
+							<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Taskbar_MouseClickActions}"
+									   Style="{DynamicResource HeaderStyleKey}" />
 							<Grid Margin="0,6,0,0">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto" />
@@ -606,6 +528,173 @@
 													  HorizontalAlignment="Left"
 													  Margin="2" />
 							</Grid>
+						</StackPanel>
+					</StackPanel>
+				</ScrollViewer>
+			</TabItem>
+
+			<TabItem>
+				<TabItem.Header>
+					<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Taskbar, StringFormat='{}{0} 2'}"
+							   Style="{DynamicResource TabitemStyleKey}" />
+				</TabItem.Header>
+
+				<ScrollViewer HorizontalScrollBarVisibility="Auto"
+							  VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="16,0,16,16"
+								Focusable="True">
+						<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Taskbar_DeskbandCustomFont}"
+								   Style="{DynamicResource HeaderStyleKey}" />
+						<StackPanel Margin="8,0,0,8"
+									Grid.IsSharedSizeScope="True">
+							<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandCustomAppearanceEnabled.Value, Mode=TwoWay}"
+									  Margin="0,6,0,0">
+								<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_CustomAppearance}" />
+							</CheckBox>
+							<Grid Margin="20,6,0,0"
+								  IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandCustomAppearanceEnabled.Value, Mode=OneWay}">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="8" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+
+								<TextBlock Grid.Row="0"
+										   Grid.Column="0"
+										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Font}"
+										   Margin="0,2" />
+								<metro:PromptComboBox Grid.Row="0"
+													  Grid.Column="2"
+													  ItemsSource="{Binding FontFamilies}"
+													  DisplayMemberPath="Display"
+													  SelectedValuePath="Value"
+													  SelectedValue="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandFontFamily.Value, Mode=TwoWay}"
+													  Prompt=""
+													  IsReadOnly="True"
+													  MinWidth="250"
+													  HorizontalAlignment="Left"
+													  Margin="2" />
+
+								<TextBlock Grid.Row="1"
+										   Grid.Column="0"
+										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Size}"
+										   Margin="0,2" />
+								<metro:PromptTextBox Grid.Row="1"
+													 Grid.Column="2"
+													 Text="{Binding TaskbarDeskbandFontSize, Mode=TwoWay}"
+													 Prompt=""
+													 Width="60"
+													 HorizontalAlignment="Left"
+													 Margin="2" />
+
+								<TextBlock Grid.Row="2"
+										   Grid.Column="0"
+										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Weight}"
+										   Margin="0,2" />
+								<metro:PromptComboBox Grid.Row="2"
+													  Grid.Column="2"
+													  ItemsSource="{Binding TaskbarDeskbandFontWeights}"
+													  DisplayMemberPath="Display"
+													  SelectedValuePath="Value"
+													  SelectedValue="{Binding TaskbarDeskbandFontWeight, Mode=TwoWay}"
+													  Prompt=""
+													  IsReadOnly="True"
+													  MinWidth="120"
+													  HorizontalAlignment="Left"
+													  Margin="2" />
+
+								<TextBlock Grid.Row="3"
+										   Grid.Column="0"
+										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Style}"
+										   Margin="0,2" />
+								<StackPanel Grid.Row="3"
+											Grid.Column="2"
+											Orientation="Horizontal"
+											Margin="2,0,0,0">
+									<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandFontItalic.Value, Mode=TwoWay}"
+											  Margin="0,0,10,0">
+										<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Italic}" />
+									</CheckBox>
+									<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandFontUnderline.Value, Mode=TwoWay}">
+										<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Underline}" />
+									</CheckBox>
+								</StackPanel>
+
+								<TextBlock Grid.Row="4"
+										   Grid.Column="0"
+										   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_Color}"
+										   Margin="0,2" />
+								<StackPanel Grid.Row="4"
+											Grid.Column="2"
+											Orientation="Horizontal"
+											Margin="2,0,0,0">
+									<Border Width="22"
+											Height="22"
+											Background="{Binding TaskbarDeskbandFontColorBrush}"
+											BorderBrush="{DynamicResource BorderBrushKey}"
+											BorderThickness=".99"
+											Margin="0,2,4,2" />
+									<metro:PromptTextBox Text="{Binding TaskbarDeskbandFontColor, Mode=TwoWay}"
+														 Prompt="#RRGGBB"
+														 Width="90"
+														 Margin="2" />
+									<metro2:CallMethodButton Content="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_SelectColor}"
+															 MethodTarget="{Binding}"
+															 MethodName="OpenTaskbarDeskbandFontColorDialog"
+															 HorizontalAlignment="Left"
+															 Margin="2" />
+								</StackPanel>
+							</Grid>
+							<Border Height="8" />
+
+							<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Taskbar_MouseTooltip}"
+									   Style="{DynamicResource HeaderStyleKey}" />
+							<metro:PromptComboBox ItemsSource="{Binding TaskbarDeskbandTooltipLooks}"
+												  DisplayMemberPath="Display"
+												  SelectedValuePath="Value"
+												  SelectedValue="{Binding TaskbarDeskbandTooltipLook, Mode=TwoWay}"
+												  Prompt=""
+												  IsReadOnly="True"
+												  MinWidth="250"
+												  HorizontalAlignment="Left"
+												  Margin="0,0,0,2" />
+							<StackPanel Margin="20,2,0,0"
+										IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipEnabled.Value, Mode=OneWay}">
+								<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipNumberOnly.Value, Mode=TwoWay}">
+									<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_TooltipNumberOnly}" />
+								</CheckBox>
+								<CheckBox IsChecked="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipListWindows.Value, Mode=TwoWay}">
+									<TextBlock Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_TooltipListWindows}" />
+								</CheckBox>
+								<Grid Margin="-20,2,0,0"
+									  IsEnabled="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipListWindows.Value, Mode=OneWay}">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="8" />
+										<ColumnDefinition Width="*" />
+									</Grid.ColumnDefinitions>
+									<TextBlock Grid.Column="0"
+											   Text="{Binding Source={x:Static services:ResourceService.Current}, Path=Resources.Settings_Desktop_TaskbarDeskband_TooltipWindowStyle}"
+											   Margin="0,2" />
+									<metro:PromptComboBox Grid.Column="2"
+														  ItemsSource="{Binding TaskbarDeskbandTooltipWindowStyles}"
+														  DisplayMemberPath="Display"
+														  SelectedValuePath="Value"
+														  SelectedValue="{Binding Source={x:Static serialization:Settings.General}, Path=TaskbarDeskbandTooltipWindowStyle.Value, Mode=TwoWay}"
+														  Prompt=""
+														  IsReadOnly="True"
+														  MinWidth="250"
+														  HorizontalAlignment="Left"
+														  Margin="2" />
+								</Grid>
+							</StackPanel>
 						</StackPanel>
 					</StackPanel>
 				</ScrollViewer>
