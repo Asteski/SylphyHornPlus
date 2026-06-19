@@ -18,7 +18,7 @@ This app is a fork of hwtnb SylphyHornPlusWin11 with new features like Taskbar D
 
 ## Installations
 
-Please download beta version from [Releases](https://github.com/Asteski/SylphyHornPlus/releases).
+Please download beta version from [Releases](https://github.com/Asteski/SylphyHornPlus/releases). Package does not include any installer.
 
 ## Requirements
 
