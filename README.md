@@ -20,10 +20,6 @@ This app is a fork of hwtnb SylphyHornPlusWin11 with new features like Taskbar D
 
 Please download beta version from [Releases](https://github.com/Asteski/SylphyHornPlus/releases).
 
-### Note: Update from the original or other forks
-Please delete cache data (VirtualDesktop.*****.generated.dll) at %UserProfile%\AppData\Local\Asteski\SylphyHorn\assemblies before SylphyHornPlus starts.
-
-
 ## Requirements
 
 * Windows 10 build 14393 (Anniversary Update) or later
