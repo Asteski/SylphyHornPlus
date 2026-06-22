@@ -205,6 +205,7 @@ namespace SylphyHorn.UI.Bindings
 		public static VirtualDesktopViewModel[] CreateAll()
 		{
 			var desktops = VirtualDesktop.AllDesktops;
+			EnsureSettingsListSize(desktops.Length);
 			return desktops.Select((d, i) => new VirtualDesktopViewModel(i, d)).ToArray();
 		}
 
@@ -223,6 +224,23 @@ namespace SylphyHorn.UI.Bindings
 			for (var i = 0; i < viewModels.Length; ++i)
 			{
 				viewModels[i].Model = desktops[i];
+			}
+		}
+
+		private static void EnsureSettingsListSize(int desktopCount)
+		{
+			var settings = Settings.General;
+			settings.DesktopNames.Resize(desktopCount);
+			settings.DesktopBackgroundImagePaths.Resize(desktopCount);
+			settings.DesktopBackgroundPositions.Resize(desktopCount);
+
+			foreach (var name in settings.DesktopNames.Value)
+			{
+				if (name.Value == null) name.Value = "";
+			}
+			foreach (var path in settings.DesktopBackgroundImagePaths.Value)
+			{
+				if (path.Value == null) path.Value = "";
 			}
 		}
 	}

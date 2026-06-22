@@ -229,10 +229,10 @@
     <value>Left side</value>
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_PositionOffset" xml:space="preserve">
-    <value>Horizontal adjustment:</value>
+    <value>Horizontal:</value>
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_VerticalPositionOffset" xml:space="preserve">
-    <value>Vertical adjustment:</value>
+    <value>Vertical:</value>
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_Display" xml:space="preserve">
     <value>Display:</value>
@@ -328,10 +328,10 @@
     <value>Tooltip look:</value>
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_TooltipLook_Windows10" xml:space="preserve">
-    <value>Windows 10</value>
+    <value>Windows 10 style</value>
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_TooltipLook_Windows11" xml:space="preserve">
-    <value>Windows 11</value>
+    <value>Windows 11 style</value>
   </data>
   <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle" xml:space="preserve">
     <value>List style:</value>
@@ -754,10 +754,10 @@
     <value>Taskbar</value>
   </data>
   <data name="Settings_Taskbar_DeskbandCustomFont" xml:space="preserve">
-    <value>Custom font</value>
+    <value>Font style</value>
   </data>
   <data name="Settings_Taskbar_MouseClickActions" xml:space="preserve">
-    <value>Mouse click actions</value>
+    <value>Mouse actions</value>
   </data>
   <data name="Settings_Taskbar_MouseTooltip" xml:space="preserve">
     <value>Mouse tooltip</value>

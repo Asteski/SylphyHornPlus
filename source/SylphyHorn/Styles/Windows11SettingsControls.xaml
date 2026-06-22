@@ -1,0 +1,392 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:metro="http://schemes.grabacr.net/winfx/2014/controls"
+					xmlns:metro2="http://schemes.grabacr.net/winfx/2015/personal/controls">
+
+	<SolidColorBrush x:Key="Windows11SettingsControlHoverBrush"
+					 Color="#18000000" />
+	<SolidColorBrush x:Key="Windows11SettingsControlPressedBrush"
+					 Color="#24000000" />
+	<SolidColorBrush x:Key="Windows11SettingsControlDisabledBrush"
+					 Color="#08000000" />
+
+	<Style x:Key="Windows11SettingsRoundedTextBoxStyle"
+		   TargetType="{x:Type TextBox}">
+		<Setter Property="MinHeight"
+				Value="22" />
+		<Setter Property="Padding"
+				Value="4,2" />
+		<Setter Property="BorderBrush"
+				Value="{DynamicResource BorderBrushKey}" />
+		<Setter Property="BorderThickness"
+				Value=".99" />
+		<Setter Property="Background"
+				Value="{DynamicResource ThemeBrushKey}" />
+		<Setter Property="Foreground"
+				Value="{DynamicResource ForegroundBrushKey}" />
+		<Setter Property="CaretBrush"
+				Value="{DynamicResource ForegroundBrushKey}" />
+		<Setter Property="VerticalContentAlignment"
+				Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type TextBox}">
+					<Border x:Name="Border"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="4"
+							SnapsToDevicePixels="True">
+						<ScrollViewer x:Name="PART_ContentHost"
+									  Margin="{TemplateBinding Padding}" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver"
+								 Value="True">
+							<Setter TargetName="Border"
+									Property="BorderBrush"
+									Value="{DynamicResource AccentBrushKey}" />
+						</Trigger>
+						<Trigger Property="IsKeyboardFocusWithin"
+								 Value="True">
+							<Setter TargetName="Border"
+									Property="BorderBrush"
+									Value="{DynamicResource AccentBrushKey}" />
+						</Trigger>
+						<Trigger Property="IsEnabled"
+								 Value="False">
+							<Setter Property="Foreground"
+									Value="{DynamicResource InactiveForegroundBrushKey}" />
+							<Setter TargetName="Border"
+									Property="Background"
+									Value="{StaticResource Windows11SettingsControlDisabledBrush}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type TextBox}"
+		   BasedOn="{StaticResource Windows11SettingsRoundedTextBoxStyle}" />
+
+	<Style TargetType="{x:Type metro:PromptTextBox}"
+		   BasedOn="{StaticResource Windows11SettingsRoundedTextBoxStyle}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type metro:PromptTextBox}">
+					<Border x:Name="Border"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="4"
+							SnapsToDevicePixels="True">
+						<Grid>
+							<ScrollViewer x:Name="PART_ContentHost"
+										  Margin="{TemplateBinding Padding}" />
+							<TextBlock x:Name="Prompt"
+									   Text="{TemplateBinding Prompt}"
+									   Foreground="{TemplateBinding PromptBrush}"
+									   Margin="{TemplateBinding Padding}"
+									   IsHitTestVisible="False"
+									   Visibility="Collapsed" />
+						</Grid>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="Text"
+								 Value="">
+							<Setter TargetName="Prompt"
+									Property="Visibility"
+									Value="Visible" />
+						</Trigger>
+						<Trigger Property="IsKeyboardFocusWithin"
+								 Value="True">
+							<Setter TargetName="Border"
+									Property="BorderBrush"
+									Value="{DynamicResource AccentBrushKey}" />
+						</Trigger>
+						<Trigger Property="IsMouseOver"
+								 Value="True">
+							<Setter TargetName="Border"
+									Property="BorderBrush"
+									Value="{DynamicResource AccentBrushKey}" />
+						</Trigger>
+						<Trigger Property="IsEnabled"
+								 Value="False">
+							<Setter Property="Foreground"
+									Value="{DynamicResource InactiveForegroundBrushKey}" />
+							<Setter TargetName="Border"
+									Property="Background"
+									Value="{StaticResource Windows11SettingsControlDisabledBrush}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="Windows11SettingsRoundedComboBoxToggleStyle"
+		   TargetType="{x:Type ToggleButton}">
+		<Setter Property="Focusable"
+				Value="False" />
+		<Setter Property="ClickMode"
+				Value="Press" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ToggleButton}">
+					<Border x:Name="Border"
+							Background="Transparent"
+							CornerRadius="4"
+							SnapsToDevicePixels="True">
+						<Path x:Name="Arrow"
+							  Width="7"
+							  Height="4"
+							  HorizontalAlignment="Right"
+							  VerticalAlignment="Center"
+							  Margin="0,0,8,0"
+							  Data="M 0 0 L 3.5 4 L 7 0 Z"
+							  Fill="{DynamicResource ForegroundBrushKey}" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver"
+								 Value="True">
+							<Setter TargetName="Border"
+									Property="Background"
+									Value="{StaticResource Windows11SettingsControlHoverBrush}" />
+						</Trigger>
+						<Trigger Property="IsPressed"
+								 Value="True">
+							<Setter TargetName="Border"
+									Property="Background"
+									Value="{StaticResource Windows11SettingsControlPressedBrush}" />
+						</Trigger>
+						<Trigger Property="IsEnabled"
+								 Value="False">
+							<Setter TargetName="Arrow"
+									Property="Fill"
+									Value="{DynamicResource InactiveForegroundBrushKey}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="Windows11SettingsRoundedComboBoxStyle"
+		   TargetType="{x:Type ComboBox}">
+		<Setter Property="MinHeight"
+				Value="22" />
+		<Setter Property="Padding"
+				Value="4,2" />
+		<Setter Property="BorderBrush"
+				Value="{DynamicResource BorderBrushKey}" />
+		<Setter Property="BorderThickness"
+				Value=".99" />
+		<Setter Property="Background"
+				Value="{DynamicResource ThemeBrushKey}" />
+		<Setter Property="Foreground"
+				Value="{DynamicResource ForegroundBrushKey}" />
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+				Value="Auto" />
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+				Value="Auto" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ComboBox}">
+					<Grid SnapsToDevicePixels="True">
+						<Border x:Name="Border"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								CornerRadius="4" />
+						<ContentPresenter x:Name="ContentSite"
+										  Content="{TemplateBinding SelectionBoxItem}"
+										  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+										  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+										  IsHitTestVisible="False"
+										  Margin="{TemplateBinding Padding}"
+										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+						<ToggleButton x:Name="ToggleButton"
+									  HorizontalAlignment="Stretch"
+									  VerticalAlignment="Stretch"
+									  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+									  Style="{StaticResource Windows11SettingsRoundedComboBoxToggleStyle}" />
+						<Popup x:Name="PART_Popup"
+							   AllowsTransparency="True"
+							   Focusable="False"
+							   IsOpen="{TemplateBinding IsDropDownOpen}"
+							   Placement="Bottom"
+							   PopupAnimation="Fade">
+							<Grid x:Name="DropDown"
+								  MinWidth="{TemplateBinding ActualWidth}"
+								  MaxHeight="{TemplateBinding MaxDropDownHeight}"
+								  SnapsToDevicePixels="True">
+								<Border Background="{DynamicResource ThemeBrushKey}"
+										BorderBrush="{DynamicResource BorderBrushKey}"
+										BorderThickness=".99"
+										CornerRadius="4" />
+								<ScrollViewer Margin="1"
+											  SnapsToDevicePixels="True">
+									<ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+								</ScrollViewer>
+							</Grid>
+						</Popup>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver"
+								 Value="True">
+							<Setter TargetName="Border"
+									Property="BorderBrush"
+									Value="{DynamicResource AccentBrushKey}" />
+						</Trigger>
+						<Trigger Property="IsKeyboardFocusWithin"
+								 Value="True">
+							<Setter TargetName="Border"
+									Property="BorderBrush"
+									Value="{DynamicResource AccentBrushKey}" />
+						</Trigger>
+						<Trigger Property="IsEnabled"
+								 Value="False">
+							<Setter Property="Foreground"
+									Value="{DynamicResource InactiveForegroundBrushKey}" />
+							<Setter TargetName="Border"
+									Property="Background"
+									Value="{StaticResource Windows11SettingsControlDisabledBrush}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type ComboBox}"
+		   BasedOn="{StaticResource Windows11SettingsRoundedComboBoxStyle}" />
+
+	<Style TargetType="{x:Type metro:PromptComboBox}"
+		   BasedOn="{StaticResource Windows11SettingsRoundedComboBoxStyle}" />
+
+	<Style TargetType="{x:Type CheckBox}">
+		<Setter Property="Foreground"
+				Value="{DynamicResource ForegroundBrushKey}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type CheckBox}">
+					<BulletDecorator Background="Transparent"
+									 SnapsToDevicePixels="True">
+						<BulletDecorator.Bullet>
+							<Border x:Name="Box"
+									Width="13"
+									Height="13"
+									Margin="0,2,0,0"
+									Background="{DynamicResource ThemeBrushKey}"
+									BorderBrush="{DynamicResource BorderBrushKey}"
+									BorderThickness=".99"
+									CornerRadius="3">
+								<Path x:Name="Check"
+									  Data="M 2 6 L 5 9 L 11 2"
+									  Stroke="{DynamicResource AccentBrushKey}"
+									  StrokeThickness="2"
+									  StrokeStartLineCap="Round"
+									  StrokeEndLineCap="Round"
+									  Visibility="Collapsed" />
+							</Border>
+						</BulletDecorator.Bullet>
+						<ContentPresenter RecognizesAccessKey="True"
+										  Margin="5,0,0,0"
+										  VerticalAlignment="Center" />
+					</BulletDecorator>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsChecked"
+								 Value="True">
+							<Setter TargetName="Check"
+									Property="Visibility"
+									Value="Visible" />
+						</Trigger>
+						<Trigger Property="IsMouseOver"
+								 Value="True">
+							<Setter TargetName="Box"
+									Property="BorderBrush"
+									Value="{DynamicResource AccentBrushKey}" />
+						</Trigger>
+						<Trigger Property="IsEnabled"
+								 Value="False">
+							<Setter Property="Foreground"
+									Value="{DynamicResource InactiveForegroundBrushKey}" />
+							<Setter TargetName="Box"
+									Property="Background"
+									Value="{StaticResource Windows11SettingsControlDisabledBrush}" />
+							<Setter TargetName="Check"
+									Property="Stroke"
+									Value="{DynamicResource InactiveForegroundBrushKey}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="Windows11SettingsRoundedButtonStyle"
+		   TargetType="{x:Type Button}">
+		<Setter Property="MinHeight"
+				Value="22" />
+		<Setter Property="Padding"
+				Value="8,2" />
+		<Setter Property="Background"
+				Value="{DynamicResource ThemeBrushKey}" />
+		<Setter Property="BorderBrush"
+				Value="{DynamicResource BorderBrushKey}" />
+		<Setter Property="BorderThickness"
+				Value=".99" />
+		<Setter Property="Foreground"
+				Value="{DynamicResource ForegroundBrushKey}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Border x:Name="Border"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="4"
+							SnapsToDevicePixels="True">
+						<ContentPresenter Margin="{TemplateBinding Padding}"
+										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										  RecognizesAccessKey="True" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver"
+								 Value="True">
+							<Setter TargetName="Border"
+									Property="Background"
+									Value="{StaticResource Windows11SettingsControlHoverBrush}" />
+							<Setter TargetName="Border"
+									Property="BorderBrush"
+									Value="{DynamicResource AccentBrushKey}" />
+						</Trigger>
+						<Trigger Property="IsPressed"
+								 Value="True">
+							<Setter TargetName="Border"
+									Property="Background"
+									Value="{StaticResource Windows11SettingsControlPressedBrush}" />
+						</Trigger>
+						<Trigger Property="IsEnabled"
+								 Value="False">
+							<Setter Property="Foreground"
+									Value="{DynamicResource InactiveForegroundBrushKey}" />
+							<Setter TargetName="Border"
+									Property="Background"
+									Value="{StaticResource Windows11SettingsControlDisabledBrush}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type Button}"
+		   BasedOn="{StaticResource Windows11SettingsRoundedButtonStyle}" />
+
+	<Style TargetType="{x:Type metro2:CallMethodButton}"
+		   BasedOn="{StaticResource Windows11SettingsRoundedButtonStyle}" />
+</ResourceDictionary>

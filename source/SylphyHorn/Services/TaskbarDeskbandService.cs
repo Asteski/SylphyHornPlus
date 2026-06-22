@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Text;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -138,6 +140,9 @@ namespace SylphyHorn.Services
 			Settings.General.TaskbarDeskbandFontUnderline
 				.Subscribe(_ => this.UpdateAppearance())
 				.AddTo(this._compositeDisposable);
+			Settings.General.TaskbarDeskbandFontRenderingMode
+				.Subscribe(_ => this.UpdateTextAndLayout())
+				.AddTo(this._compositeDisposable);
 			Settings.General.TaskbarDeskbandTooltipEnabled
 				.Subscribe(_ => this.UpdateTextAndLayout())
 				.AddTo(this._compositeDisposable);
@@ -265,7 +270,7 @@ namespace SylphyHorn.Services
 			if (!this.TryFindTaskbarWindows(mode)) return;
 
 			this._activeMode = mode;
-			this._form = new DeskbandForm(CreateAppearance(WindowsTheme.SystemTheme.Current, this._taskbarHandle));
+			this._form = new DeskbandForm(CreateAppearance(WindowsTheme.SystemTheme.Current));
 
 			var handle = this._form.Handle;
 			var style = NativeMethods.GetWindowLongPtr(handle, _gwlStyle).ToInt64();
@@ -659,14 +664,14 @@ namespace SylphyHorn.Services
 		{
 			if (this._form == null) return;
 
-			if (this._form.SetAppearance(CreateAppearance(WindowsTheme.SystemTheme.Current, this._taskbarHandle)))
+			if (this._form.SetAppearance(CreateAppearance(WindowsTheme.SystemTheme.Current)))
 			{
 				NativeMethods.ShowWindow(this._form.Handle, ShowWindowCommand.ShowNoActivate);
 				this.UpdateLayout();
 			}
 		}
 
-		private static DeskbandAppearance CreateAppearance(Theme theme, IntPtr taskbarHandle)
+		private static DeskbandAppearance CreateAppearance(Theme theme)
 		{
 			if (Settings.General.TaskbarDeskbandCustomAppearanceEnabled)
 			{
@@ -679,10 +684,11 @@ namespace SylphyHorn.Services
 				return new DeskbandAppearance(
 					CreateCustomFont(fontStyle, fontWeightValue, fontWeight),
 					GetCustomTextColor(theme),
+					theme,
 					$"custom:{GetCustomFontFamily()}:{GetCustomFontSize()}:{fontStyle}:{fontWeight}");
 			}
 
-			return CreateDefaultAppearance(theme, taskbarHandle);
+			return CreateDefaultAppearance(theme);
 		}
 
 		private static string GetCustomFontFamily()
@@ -773,24 +779,40 @@ namespace SylphyHorn.Services
 			};
 		}
 
-		private static DeskbandAppearance CreateDefaultAppearance(Theme theme, IntPtr taskbarHandle)
+		private static DeskbandAppearance CreateDefaultAppearance(Theme theme)
 		{
-			if (TryGetTaskbarClockLogFont(taskbarHandle, out var clockLogFont)
-				&& TryCreateFontFromLogFont(clockLogFont, out var clockFont))
-			{
-				return new DeskbandAppearance(clockFont, GetDefaultTextColor(theme), "clock:" + GetLogFontSignature(clockLogFont));
-			}
-
-			if (TryGetSystemMessageLogFont(out var messageLogFont)
-				&& TryCreateFontFromLogFont(messageLogFont, out var messageFont))
-			{
-				return new DeskbandAppearance(messageFont, GetDefaultTextColor(theme), "message:" + GetLogFontSignature(messageLogFont));
-			}
-
+			var font = CreateDefaultDeskbandFont();
 			return new DeskbandAppearance(
-				CreateFallbackDefaultFont(),
+				font,
 				GetDefaultTextColor(theme),
-				"fallback:Segoe UI:9:Regular");
+				theme,
+				"default:" + font.FontFamily.Name + ":" + font.SizeInPoints + ":" + font.Style);
+		}
+
+		private static Font CreateDefaultDeskbandFont()
+		{
+			var logFont = CreateLogFont(
+				GeneralSettings.TaskbarDeskbandFontFamilyDefaultValue,
+				GeneralSettings.TaskbarDeskbandFontSizeDefaultValue,
+				FontStyle.Regular,
+				_regularFontWeight);
+			if (TryCreateFontFromLogFont(logFont, out var logFontFont))
+			{
+				return logFontFont;
+			}
+
+			try
+			{
+				return new Font(
+					GeneralSettings.TaskbarDeskbandFontFamilyDefaultValue,
+					GeneralSettings.TaskbarDeskbandFontSizeDefaultValue,
+					FontStyle.Regular,
+					GraphicsUnit.Point);
+			}
+			catch
+			{
+				return CreateFallbackDefaultFont();
+			}
 		}
 
 		private static bool TryGetTaskbarClockLogFont(IntPtr taskbarHandle, out NativeMethods.LogFont logFont)
@@ -1111,6 +1133,323 @@ namespace SylphyHorn.Services
 			return $"{numberText}/{totalText}";
 		}
 
+		private static Size MeasureLayeredSingleLineText(string text, Font font)
+		{
+			if (UseDirectWriteFontRendering())
+			{
+				return MeasureLayeredSingleLineTextDirectWrite(text, font);
+			}
+
+			if (UseGdiPlusFontRendering())
+			{
+				return MeasureLayeredSingleLineTextGdiPlus(text, font);
+			}
+
+			return TextRenderer.MeasureText(
+				text ?? string.Empty,
+				font,
+				new Size(int.MaxValue, int.MaxValue),
+				TextFormatFlags.SingleLine | TextFormatFlags.NoPadding);
+		}
+
+		private static void DrawLayeredSingleLineText(Graphics graphics, string text, Font font, Color color, Rectangle bounds)
+		{
+			if (UseDirectWriteFontRendering())
+			{
+				DrawLayeredSingleLineTextDirectWrite(graphics, text, font, color, bounds);
+				return;
+			}
+
+			if (UseGdiPlusFontRendering())
+			{
+				DrawLayeredSingleLineTextGdiPlus(graphics, text, font, color, bounds);
+				return;
+			}
+
+			DrawLayeredTextMask(
+				graphics,
+				text,
+				font,
+				color,
+				bounds,
+				TextFormatFlags.HorizontalCenter
+					| TextFormatFlags.VerticalCenter
+					| TextFormatFlags.SingleLine
+					| TextFormatFlags.NoPadding
+					| TextFormatFlags.NoPrefix
+					| TextFormatFlags.EndEllipsis);
+		}
+
+		private static Size MeasureLayeredTextBlock(string text, Font font, int maxWidth)
+		{
+			if (UseDirectWriteFontRendering())
+			{
+				return MeasureLayeredTextBlockDirectWrite(text, font, maxWidth);
+			}
+
+			if (UseGdiPlusFontRendering())
+			{
+				return MeasureLayeredTextBlockGdiPlus(text, font, maxWidth);
+			}
+
+			return TextRenderer.MeasureText(
+				text ?? string.Empty,
+				font,
+				new Size(maxWidth, int.MaxValue),
+				TextFormatFlags.NoPadding | TextFormatFlags.WordBreak | TextFormatFlags.NoPrefix);
+		}
+
+		private static void DrawLayeredTextBlock(Graphics graphics, string text, Font font, Color color, Rectangle bounds)
+		{
+			if (UseDirectWriteFontRendering())
+			{
+				DrawLayeredTextBlockDirectWrite(graphics, text, font, color, bounds);
+				return;
+			}
+
+			if (UseGdiPlusFontRendering())
+			{
+				DrawLayeredTextBlockGdiPlus(graphics, text, font, color, bounds);
+				return;
+			}
+
+			DrawLayeredTextMask(
+				graphics,
+				text,
+				font,
+				color,
+				bounds,
+				TextFormatFlags.NoPadding | TextFormatFlags.WordBreak | TextFormatFlags.NoPrefix);
+		}
+
+		private static bool UseGdiPlusFontRendering()
+			=> Settings.General.TaskbarDeskbandFontRenderingMode.Value == GeneralSettings.TaskbarDeskbandFontRenderingModeGdiPlusValue;
+
+		private static bool UseDirectWriteFontRendering()
+			=> Settings.General.TaskbarDeskbandFontRenderingMode.Value == GeneralSettings.TaskbarDeskbandFontRenderingModeDirectWriteValue;
+
+		private static Size MeasureLayeredSingleLineTextDirectWrite(string text, Font font)
+		{
+			var formattedText = CreateDirectWriteText(text, font, Color.White);
+			return new Size(
+				Math.Max(1, (int)Math.Ceiling(formattedText.WidthIncludingTrailingWhitespace)),
+				Math.Max(1, (int)Math.Ceiling(formattedText.Height)));
+		}
+
+		private static void DrawLayeredSingleLineTextDirectWrite(Graphics graphics, string text, Font font, Color color, Rectangle bounds)
+		{
+			if (bounds.Width <= 0 || bounds.Height <= 0) return;
+
+			var formattedText = CreateDirectWriteText(text, font, color);
+			formattedText.MaxTextWidth = bounds.Width;
+			formattedText.MaxTextHeight = bounds.Height;
+			formattedText.TextAlignment = System.Windows.TextAlignment.Center;
+			formattedText.Trimming = System.Windows.TextTrimming.CharacterEllipsis;
+
+			var y = bounds.Y + Math.Max(0, (bounds.Height - formattedText.Height) / 2.0);
+			DrawDirectWriteText(graphics, formattedText, bounds, new System.Windows.Point(0, y - bounds.Y));
+		}
+
+		private static Size MeasureLayeredTextBlockDirectWrite(string text, Font font, int maxWidth)
+		{
+			var formattedText = CreateDirectWriteText(text, font, Color.White);
+			formattedText.MaxTextWidth = Math.Max(1, maxWidth);
+			return new Size(
+				Math.Max(1, (int)Math.Ceiling(formattedText.WidthIncludingTrailingWhitespace)),
+				Math.Max(1, (int)Math.Ceiling(formattedText.Height)));
+		}
+
+		private static void DrawLayeredTextBlockDirectWrite(Graphics graphics, string text, Font font, Color color, Rectangle bounds)
+		{
+			if (bounds.Width <= 0 || bounds.Height <= 0) return;
+
+			var formattedText = CreateDirectWriteText(text, font, color);
+			formattedText.MaxTextWidth = bounds.Width;
+			formattedText.MaxTextHeight = bounds.Height;
+			DrawDirectWriteText(graphics, formattedText, bounds, new System.Windows.Point(0, 0));
+		}
+
+		private static System.Windows.Media.FormattedText CreateDirectWriteText(string text, Font font, Color color)
+		{
+			var typeface = new System.Windows.Media.Typeface(
+				new System.Windows.Media.FontFamily(font.FontFamily.Name),
+				font.Italic ? System.Windows.FontStyles.Italic : System.Windows.FontStyles.Normal,
+				font.Bold ? System.Windows.FontWeights.Bold : System.Windows.FontWeights.Regular,
+				System.Windows.FontStretches.Normal);
+			var brush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+			var formattedText = new System.Windows.Media.FormattedText(
+				text ?? string.Empty,
+				CultureInfo.CurrentUICulture,
+				System.Windows.FlowDirection.LeftToRight,
+				typeface,
+				font.SizeInPoints * 96.0 / 72.0,
+				brush,
+				1.0);
+
+			if (font.Underline)
+			{
+				formattedText.SetTextDecorations(System.Windows.TextDecorations.Underline);
+			}
+
+			return formattedText;
+		}
+
+		private static void DrawDirectWriteText(Graphics graphics, System.Windows.Media.FormattedText formattedText, Rectangle bounds, System.Windows.Point origin)
+		{
+			var visual = new System.Windows.Media.DrawingVisual();
+			using (var context = visual.RenderOpen())
+			{
+				context.DrawText(formattedText, origin);
+			}
+
+			var bitmap = new System.Windows.Media.Imaging.RenderTargetBitmap(
+				bounds.Width,
+				bounds.Height,
+				96,
+				96,
+				System.Windows.Media.PixelFormats.Pbgra32);
+			bitmap.Render(visual);
+
+			var stride = bounds.Width * 4;
+			var pixels = new byte[stride * bounds.Height];
+			bitmap.CopyPixels(pixels, stride, 0);
+
+			using (var renderedText = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppPArgb))
+			{
+				var data = renderedText.LockBits(
+					new Rectangle(0, 0, bounds.Width, bounds.Height),
+					ImageLockMode.WriteOnly,
+					PixelFormat.Format32bppPArgb);
+				try
+				{
+					Marshal.Copy(pixels, 0, data.Scan0, pixels.Length);
+				}
+				finally
+				{
+					renderedText.UnlockBits(data);
+				}
+
+				graphics.DrawImageUnscaled(renderedText, bounds.X, bounds.Y);
+			}
+		}
+
+		private static Size MeasureLayeredSingleLineTextGdiPlus(string text, Font font)
+		{
+			using (var bitmap = new Bitmap(1, 1))
+			using (var graphics = Graphics.FromImage(bitmap))
+			using (var format = CreateSingleLineStringFormat())
+			{
+				graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+				var size = graphics.MeasureString(text ?? string.Empty, font, int.MaxValue, format);
+				return new Size((int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height));
+			}
+		}
+
+		private static void DrawLayeredSingleLineTextGdiPlus(Graphics graphics, string text, Font font, Color color, Rectangle bounds)
+		{
+			graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+			using (var brush = new SolidBrush(color))
+			using (var format = CreateSingleLineStringFormat())
+			{
+				format.Alignment = StringAlignment.Center;
+				format.LineAlignment = StringAlignment.Center;
+				graphics.DrawString(text ?? string.Empty, font, brush, bounds, format);
+			}
+		}
+
+		private static Size MeasureLayeredTextBlockGdiPlus(string text, Font font, int maxWidth)
+		{
+			using (var bitmap = new Bitmap(1, 1))
+			using (var graphics = Graphics.FromImage(bitmap))
+			using (var format = CreateTextBlockStringFormat())
+			{
+				graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+				var size = graphics.MeasureString(text ?? string.Empty, font, maxWidth, format);
+				return new Size((int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height));
+			}
+		}
+
+		private static void DrawLayeredTextBlockGdiPlus(Graphics graphics, string text, Font font, Color color, Rectangle bounds)
+		{
+			graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+			using (var brush = new SolidBrush(color))
+			using (var format = CreateTextBlockStringFormat())
+			{
+				graphics.DrawString(text ?? string.Empty, font, brush, bounds, format);
+			}
+		}
+
+		private static StringFormat CreateSingleLineStringFormat()
+		{
+			var format = new StringFormat(StringFormat.GenericTypographic);
+			format.FormatFlags |= StringFormatFlags.NoWrap;
+			format.Trimming = StringTrimming.EllipsisCharacter;
+			return format;
+		}
+
+		private static StringFormat CreateTextBlockStringFormat()
+		{
+			var format = new StringFormat(StringFormat.GenericTypographic);
+			format.Trimming = StringTrimming.Word;
+			return format;
+		}
+
+		private static void DrawLayeredTextMask(Graphics graphics, string text, Font font, Color color, Rectangle bounds, TextFormatFlags flags)
+		{
+			if (bounds.Width <= 0 || bounds.Height <= 0) return;
+
+			using (var mask = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppArgb))
+			using (var maskGraphics = Graphics.FromImage(mask))
+			{
+				maskGraphics.Clear(Color.Black);
+				TextRenderer.DrawText(
+					maskGraphics,
+					text ?? string.Empty,
+					font,
+					new Rectangle(0, 0, bounds.Width, bounds.Height),
+					Color.White,
+					Color.Black,
+					flags);
+
+				ApplyTextColorToMask(mask, color);
+				graphics.DrawImageUnscaled(mask, bounds.X, bounds.Y);
+			}
+		}
+
+		private static void ApplyTextColorToMask(Bitmap mask, Color color)
+		{
+			var bounds = new Rectangle(0, 0, mask.Width, mask.Height);
+			var data = mask.LockBits(bounds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			try
+			{
+				var stride = Math.Abs(data.Stride);
+				var buffer = new byte[stride * mask.Height];
+				Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
+
+				for (var y = 0; y < mask.Height; y++)
+				{
+					var row = y * stride;
+					for (var x = 0; x < mask.Width; x++)
+					{
+						var index = row + x * 4;
+						var coverage = Math.Max(buffer[index + 2], Math.Max(buffer[index + 1], buffer[index]));
+						var alpha = coverage * color.A / 255;
+
+						buffer[index] = color.B;
+						buffer[index + 1] = color.G;
+						buffer[index + 2] = color.R;
+						buffer[index + 3] = (byte)alpha;
+					}
+				}
+
+				Marshal.Copy(buffer, 0, data.Scan0, buffer.Length);
+			}
+			finally
+			{
+				mask.UnlockBits(data);
+			}
+		}
+
 		private static string ToRomanNumber(int value)
 		{
 			if (value <= 0 || value > 3999) return value.ToString();
@@ -1305,12 +1644,15 @@ namespace SylphyHorn.Services
 
 			public Color TextColor { get; }
 
+			public Theme Theme { get; }
+
 			public string Signature { get; }
 
-			public DeskbandAppearance(Font textFont, Color textColor, string signature)
+			public DeskbandAppearance(Font textFont, Color textColor, Theme theme, string signature)
 			{
 				this.TextFont = textFont;
 				this.TextColor = textColor;
+				this.Theme = theme;
 				this.Signature = signature;
 			}
 		}
@@ -1350,6 +1692,7 @@ namespace SylphyHorn.Services
 			private readonly Timer _modernTooltipHideTimer = new Timer { Interval = 5000 };
 			private ModernTooltipForm _modernTooltip;
 			private Color _textColor;
+			private Theme _theme;
 			private string _appearanceSignature;
 			private int _lastLoggedUpdateError;
 
@@ -1480,6 +1823,7 @@ namespace SylphyHorn.Services
 					this._modernTooltip = new ModernTooltipForm();
 				}
 
+				this._modernTooltip.SetTheme(this._theme);
 				this._modernTooltip.SetText(this._tooltipValue);
 				this.PositionModernTooltip();
 				this._modernTooltip.ShowNoActivate();
@@ -1518,7 +1862,8 @@ namespace SylphyHorn.Services
 					&& this._textFont.FontFamily.Name == appearance.TextFont.FontFamily.Name
 					&& Math.Abs(this._textFont.SizeInPoints - appearance.TextFont.SizeInPoints) < 0.01f
 					&& this._textFont.Style == appearance.TextFont.Style
-					&& this._textColor == appearance.TextColor)
+					&& this._textColor == appearance.TextColor
+					&& this._theme == appearance.Theme)
 				{
 					appearance.TextFont.Dispose();
 					return this.RenderLayered();
@@ -1532,11 +1877,7 @@ namespace SylphyHorn.Services
 			{
 				if (string.IsNullOrEmpty(this._textValue)) return minWidth;
 
-				var textSize = TextRenderer.MeasureText(
-					this._textValue,
-					this._textFont,
-					new Size(int.MaxValue, int.MaxValue),
-					TextFormatFlags.SingleLine | TextFormatFlags.NoPadding);
+				var textSize = MeasureLayeredSingleLineText(this._textValue, this._textFont);
 				var width = textSize.Width + TaskbarDeskbandService.Scale(_horizontalTextPadding);
 				return Math.Max(minWidth, Math.Min(maxWidth, width));
 			}
@@ -1548,6 +1889,8 @@ namespace SylphyHorn.Services
 				this._appearanceSignature = appearance.Signature;
 				oldFont?.Dispose();
 				this._textColor = appearance.TextColor;
+				this._theme = appearance.Theme;
+				this._modernTooltip?.SetTheme(appearance.Theme);
 			}
 
 			public bool RenderLayered()
@@ -1561,18 +1904,12 @@ namespace SylphyHorn.Services
 				{
 					graphics.Clear(Color.FromArgb(1, 0, 0, 0));
 					graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-					TextRenderer.DrawText(
+					DrawLayeredSingleLineText(
 						graphics,
 						this._textValue,
 						this._textFont,
-						new Rectangle(0, 0, width, height),
 						this._textColor,
-						TextFormatFlags.HorizontalCenter
-							| TextFormatFlags.VerticalCenter
-							| TextFormatFlags.SingleLine
-							| TextFormatFlags.NoPadding
-							| TextFormatFlags.NoPrefix
-							| TextFormatFlags.EndEllipsis);
+						new Rectangle(0, 0, width, height));
 
 					return this.UpdateLayeredBitmap(bitmap, width, height);
 				}
@@ -1803,6 +2140,8 @@ namespace SylphyHorn.Services
 			private const int _paddingX = 10;
 			private const int _paddingY = 7;
 			private readonly Font _font = new Font("Segoe UI", 9.0f, FontStyle.Regular, GraphicsUnit.Point);
+			private Color _backgroundColor;
+			private Color _foregroundColor;
 			private string _text = string.Empty;
 
 			protected override bool ShowWithoutActivation => true;
@@ -1824,17 +2163,25 @@ namespace SylphyHorn.Services
 				this.FormBorderStyle = FormBorderStyle.None;
 				this.ShowInTaskbar = false;
 				this.StartPosition = FormStartPosition.Manual;
-				this.ForeColor = Color.White;
+				this.SetTheme(WindowsTheme.SystemTheme.Current);
+			}
+
+			public void SetTheme(Theme theme)
+			{
+				this._backgroundColor = theme == Theme.Light
+					? Color.FromArgb(242, 242, 242)
+					: Color.FromArgb(43, 43, 43);
+				this._foregroundColor = theme == Theme.Light
+					? Color.FromArgb(32, 32, 32)
+					: Color.White;
+
+				if (this.Visible) this.RenderLayered();
 			}
 
 			public void SetText(string text)
 			{
 				this._text = text ?? string.Empty;
-				var textSize = TextRenderer.MeasureText(
-					this._text,
-					this._font,
-					new Size(420, int.MaxValue),
-					TextFormatFlags.NoPadding | TextFormatFlags.WordBreak | TextFormatFlags.NoPrefix);
+				var textSize = MeasureLayeredTextBlock(this._text, this._font, 420);
 				this.Size = new Size(
 					Math.Max(1, textSize.Width + TaskbarDeskbandService.Scale(_paddingX * 2)),
 					Math.Max(1, textSize.Height + TaskbarDeskbandService.Scale(_paddingY * 2)));
@@ -1873,23 +2220,22 @@ namespace SylphyHorn.Services
 					graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 					graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
 
-					using (var brush = new SolidBrush(Color.FromArgb(43, 43, 43)))
+					using (var brush = new SolidBrush(this._backgroundColor))
 					using (var path = CreateRoundedRectanglePath(new Rectangle(0, 0, width, height), TaskbarDeskbandService.Scale(_cornerRadius)))
 					{
 						graphics.FillPath(brush, path);
 					}
 
-					TextRenderer.DrawText(
+					DrawLayeredTextBlock(
 						graphics,
 						this._text,
 						this._font,
+						this._foregroundColor,
 						new Rectangle(
 							TaskbarDeskbandService.Scale(_paddingX),
 							TaskbarDeskbandService.Scale(_paddingY),
 							width - TaskbarDeskbandService.Scale(_paddingX * 2),
-							height - TaskbarDeskbandService.Scale(_paddingY * 2)),
-						this.ForeColor,
-						TextFormatFlags.NoPadding | TextFormatFlags.WordBreak | TextFormatFlags.NoPrefix);
+							height - TaskbarDeskbandService.Scale(_paddingY * 2)));
 
 					return this.UpdateLayeredBitmap(bitmap, width, height);
 				}

@@ -5,13 +5,13 @@
     <OutputType>WinExe</OutputType>
     <Title>SylphyHornPlus</Title>
     <Product>SylphyHornPlus</Product>
-    <Version>4.2.0</Version>
+    <Version>4.3.0</Version>
     <Authors>Asteski</Authors>
     <Company>Asteski</Company>
     <Copyright>Copyright © 2015 - 2018 Manato KAMEYA, 2021 - 2022 hwtnb, 2026 Asteski</Copyright>
     <Description>Virtual Desktop Tools for Windows 11 and 10</Description>
     <AssemblyTitle>SylphyHornPlus</AssemblyTitle>
-    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.3.0.0</AssemblyVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>

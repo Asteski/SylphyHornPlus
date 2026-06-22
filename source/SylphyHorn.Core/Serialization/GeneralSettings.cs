@@ -125,6 +125,8 @@ namespace SylphyHorn.Serialization
 
 		public SerializableProperty<bool> TaskbarDeskbandFontUnderline => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandFontUnderlineDefaultValue));
 
+		public SerializableProperty<uint> TaskbarDeskbandFontRenderingMode => this.Cache(key => new SerializableProperty<uint>(key, this._provider, TaskbarDeskbandFontRenderingModeDefaultValue));
+
 		public SerializableProperty<bool> TaskbarDeskbandTooltipEnabled => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandTooltipEnabledDefaultValue));
 
 		public SerializableProperty<bool> TaskbarDeskbandTooltipNumberOnly => this.Cache(key => new SerializableProperty<bool>(key, this._provider, TaskbarDeskbandTooltipNumberOnlyDefaultValue));
@@ -285,7 +287,7 @@ namespace SylphyHorn.Serialization
 
 		public static string TaskbarDeskbandFontFamilyDefaultValue { get; } = "Segoe UI Variable Text";
 
-		public static int TaskbarDeskbandFontSizeDefaultValue { get; } = 11;
+		public static int TaskbarDeskbandFontSizeDefaultValue { get; } = 9;
 
 		public static string TaskbarDeskbandFontColorDefaultValue { get; } = "#FFFFFF";
 
@@ -306,6 +308,14 @@ namespace SylphyHorn.Serialization
 		public static bool TaskbarDeskbandFontItalicDefaultValue { get; } = false;
 
 		public static bool TaskbarDeskbandFontUnderlineDefaultValue { get; } = false;
+
+		public static uint TaskbarDeskbandFontRenderingModeGdiValue { get; } = 0;
+
+		public static uint TaskbarDeskbandFontRenderingModeGdiPlusValue { get; } = 1;
+
+		public static uint TaskbarDeskbandFontRenderingModeDirectWriteValue { get; } = 2;
+
+		public static uint TaskbarDeskbandFontRenderingModeDefaultValue { get; } = TaskbarDeskbandFontRenderingModeGdiPlusValue;
 
 		public static bool TaskbarDeskbandTooltipEnabledDefaultValue { get; } = true;
 

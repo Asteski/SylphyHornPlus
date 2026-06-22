@@ -60,6 +60,8 @@ namespace SylphyHorn.UI.Bindings
 
 		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandFontWeights { get; }
 
+		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandFontRenderingModes { get; }
+
 		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandTooltipLooks { get; }
 
 		public IReadOnlyCollection<DisplayViewModel<uint>> TaskbarDeskbandTooltipWindowStyles { get; }
@@ -901,6 +903,13 @@ namespace SylphyHorn.UI.Bindings
 				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Weight_Bold, Value = GeneralSettings.TaskbarDeskbandFontWeightBoldValue, },
 			}.ToList();
 
+			this.TaskbarDeskbandFontRenderingModes = new[]
+			{
+				new DisplayViewModel<uint> { Display = "GDI (MacType compatible)", Value = GeneralSettings.TaskbarDeskbandFontRenderingModeGdiValue, },
+				new DisplayViewModel<uint> { Display = "GDI+", Value = GeneralSettings.TaskbarDeskbandFontRenderingModeGdiPlusValue, },
+				new DisplayViewModel<uint> { Display = "DirectWrite", Value = GeneralSettings.TaskbarDeskbandFontRenderingModeDirectWriteValue, },
+			}.ToList();
+
 			this.TaskbarDeskbandTooltipLooks = new[]
 			{
 				new DisplayViewModel<uint> { Display = Resources.Settings_Desktop_TaskbarDeskband_Mode_Disabled, Value = _taskbarDeskbandTooltipLookDisabledValue, },
@@ -1182,6 +1191,24 @@ namespace SylphyHorn.UI.Bindings
 				{
 					Settings.General.TaskbarDeskbandPositionOffset.Value = offset;
 					this.RaisePropertyChanged();
+					this.RaisePropertyChanged(nameof(this.TaskbarDeskbandPositionOffsetText));
+				}
+			}
+		}
+
+		public string TaskbarDeskbandPositionOffsetText
+		{
+			get => this.TaskbarDeskbandPositionOffset.ToString();
+			set
+			{
+				if (string.IsNullOrWhiteSpace(value))
+				{
+					return;
+				}
+
+				if (int.TryParse(value, out var offset))
+				{
+					this.TaskbarDeskbandPositionOffset = offset;
 				}
 			}
 		}
@@ -1196,6 +1223,24 @@ namespace SylphyHorn.UI.Bindings
 				{
 					Settings.General.TaskbarDeskbandVerticalPositionOffset.Value = offset;
 					this.RaisePropertyChanged();
+					this.RaisePropertyChanged(nameof(this.TaskbarDeskbandVerticalPositionOffsetText));
+				}
+			}
+		}
+
+		public string TaskbarDeskbandVerticalPositionOffsetText
+		{
+			get => this.TaskbarDeskbandVerticalPositionOffset.ToString();
+			set
+			{
+				if (string.IsNullOrWhiteSpace(value))
+				{
+					return;
+				}
+
+				if (int.TryParse(value, out var offset))
+				{
+					this.TaskbarDeskbandVerticalPositionOffset = offset;
 				}
 			}
 		}

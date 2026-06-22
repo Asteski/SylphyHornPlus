@@ -1,4 +1,7 @@
 using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 using SylphyHorn.Interop;
 using SylphyHorn.Properties;
@@ -12,6 +15,7 @@ namespace SylphyHorn.UI
 
 		public SettingsWindow()
 		{
+			ApplyWindows11ControlStyles();
 			this.InitializeComponent();
 		}
 
@@ -30,6 +34,37 @@ namespace SylphyHorn.UI
 		{
 			base.OnContentRendered(e);
 			this.Pin();
+		}
+
+		private void NumberTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key != Key.Up && e.Key != Key.Down) return;
+			if (!(sender is TextBox textBox)) return;
+
+			var value = 0;
+			if (!string.IsNullOrWhiteSpace(textBox.Text))
+			{
+				int.TryParse(textBox.Text, out value);
+			}
+
+			value += e.Key == Key.Up ? 1 : -1;
+			textBox.Text = value.ToString();
+			textBox.SelectAll();
+			textBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+			e.Handled = true;
+		}
+
+		private void NumberTextBoxLostFocus(object sender, RoutedEventArgs e)
+		{
+			if (!(sender is TextBox textBox)) return;
+
+			if (!int.TryParse(textBox.Text, out var value))
+			{
+				value = 0;
+			}
+
+			textBox.Text = value.ToString();
+			textBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
 		}
 
 		private void ApplyWindows11CornerPreference()
@@ -52,6 +87,20 @@ namespace SylphyHorn.UI
 			{
 				// DWM corner preference is cosmetic; settings must still open if Windows rejects it.
 			}
+		}
+
+		private static void ApplyWindows11ControlStyles()
+		{
+			if (!ProductInfo.IsWindows11OrLater) return;
+
+			var dictionaries = Application.Current.Resources.MergedDictionaries;
+			var source = new Uri("pack://application:,,,/SylphyHorn;component/Styles/Windows11SettingsControls.xaml", UriKind.Absolute);
+			foreach (var dictionary in dictionaries)
+			{
+				if (dictionary.Source == source) return;
+			}
+
+			dictionaries.Add(new ResourceDictionary { Source = source });
 		}
 	}
 }
