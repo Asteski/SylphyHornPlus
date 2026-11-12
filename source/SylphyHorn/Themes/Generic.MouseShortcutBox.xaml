@@ -4,9 +4,9 @@
 
 	<Style TargetType="{x:Type controls:MouseShortcutBox}">
 		<Setter Property="Background"
-				Value="Transparent" />
+				Value="{DynamicResource ThemeBrushKey}" />
 		<Setter Property="BorderBrush"
-				Value="Transparent" />
+				Value="{DynamicResource ForegroundBrushKey}" />
 		<Setter Property="Foreground"
 				Value="{DynamicResource ActiveForegroundBrushKey}" />
 		<Setter Property="BorderThickness"
@@ -27,7 +27,7 @@
 					<Border Background="{TemplateBinding Background}"
 							BorderBrush="{TemplateBinding BorderBrush}"
 							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="0">
+							CornerRadius="4">
 						<Grid Margin="{TemplateBinding Padding}">
 							<controls:Keytop x:Name="Dummy"
 											 Visibility="Hidden" />

@@ -49,7 +49,10 @@ namespace SylphyHorn.Services
 		{
 			unchecked
 			{
-				var hashCode = (this.ModifiersInternal ?? this.Modifiers)?.GetHashCode() ?? 0;
+				// A igualdade compara o conteúdo sem considerar a ordem dos modificadores.
+				var hashCode = 0;
+				foreach (var modifier in (this.ModifiersInternal ?? this.Modifiers ?? Array.Empty<VirtualKey>()).OrderBy(key => key))
+					hashCode = (hashCode * 397) ^ (int)modifier;
 				hashCode = (hashCode * 397) ^ (int)this.Key;
 				return hashCode;
 			}
@@ -63,6 +66,48 @@ namespace SylphyHorn.Services
 				.Concat(EnumerableEx.Return(this.Key == VirtualKey.None ? "" : this.Key.ToString()))
 				.JoinString("");
 		}
+
+		/// <summary>
+		/// O atalho gravado pode pedir um modificador de qualquer lado.
+		/// Shift, Control, Menu e o valor de Win genérico aceitam a tecla esquerda ou a direita.
+		/// </summary>
+		public bool MatchesPressed(ShortcutKey pressed)
+		{
+			if (this.Key != pressed.Key) return false;
+
+			var expected = (this.ModifiersInternal ?? this.Modifiers ?? Array.Empty<VirtualKey>()).ToList();
+			var actual = (pressed.ModifiersInternal ?? pressed.Modifiers ?? Array.Empty<VirtualKey>()).ToList();
+			foreach (var modifier in expected)
+			{
+				if (!ConsumeModifier(actual, modifier)) return false;
+			}
+
+			return actual.Count == 0;
+		}
+
+		private static bool ConsumeModifier(List<VirtualKey> actual, VirtualKey expected)
+		{
+			VirtualKey left;
+			VirtualKey right;
+			var anySide = expected == VirtualKey.Shift || expected == VirtualKey.Control || expected == VirtualKey.Menu || expected == AnyWindowsKey;
+			if (anySide)
+			{
+				if (expected == VirtualKey.Shift) { left = VirtualKey.LShiftKey; right = VirtualKey.RShiftKey; }
+				else if (expected == VirtualKey.Control) { left = VirtualKey.LControlKey; right = VirtualKey.RControlKey; }
+				else if (expected == VirtualKey.Menu) { left = VirtualKey.LMenu; right = VirtualKey.RMenu; }
+				else { left = VirtualKey.LWin; right = VirtualKey.RWin; }
+
+				var found = actual.Remove(left) || actual.Remove(right);
+				if (!found) return false;
+				actual.Remove(left);
+				actual.Remove(right);
+				return true;
+			}
+
+			return actual.Remove(expected);
+		}
+
+		public const VirtualKey AnyWindowsKey = (VirtualKey)0x4000005B;
 
 		public static bool operator ==(ShortcutKey key1, ShortcutKey key2)
 		{

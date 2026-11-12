@@ -18,11 +18,12 @@ namespace SylphyHorn.Services
 		public static ResourceService Current { get; } = new ResourceService();
 
 		#endregion
-		
+
 		private readonly string[] _supportedCultureNames =
 		{
 			"en",
 			"ja",
+			"pt-BR",
 		};
 
 		/// <summary>

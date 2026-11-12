@@ -1,17 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net472;net48</TargetFrameworks>
     <OutputType>WinExe</OutputType>
     <Title>SylphyHornPlus</Title>
     <Product>SylphyHornPlus</Product>
-    <Version>4.3.0</Version>
-    <Authors>Asteski</Authors>
+    <Version>4.4.0</Version>
+    <Authors>Asteski; Thomas Nilton de Carvalho Vanini</Authors>
     <Company>Asteski</Company>
-    <Copyright>Copyright © 2015 - 2018 Manato KAMEYA, 2021 - 2022 hwtnb, 2026 Asteski</Copyright>
+    <Copyright>Copyright © 2015 - 2018 Manato KAMEYA, 2021 - 2022 hwtnb, 2026 Asteski, 2026 Thomas Nilton de Carvalho Vanini</Copyright>
     <Description>Virtual Desktop Tools for Windows 11 and 10</Description>
     <AssemblyTitle>SylphyHornPlus</AssemblyTitle>
-    <AssemblyVersion>4.3.0.0</AssemblyVersion>
+    <AssemblyVersion>4.4.0.1</AssemblyVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
@@ -125,6 +125,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SylphyHorn.SchedulerManager\SylphyHorn.SchedulerManager.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\SylphyHorn.Core\SylphyHorn.Core.csproj" />
     <ProjectReference Include="..\VirtualDesktop\source\VirtualDesktop.WPF\VirtualDesktop.WPF.csproj" />
     <ProjectReference Include="..\VirtualDesktop\source\VirtualDesktop\VirtualDesktop.csproj" />
@@ -259,6 +260,18 @@
     </Compile>
   </ItemGroup>
 
+  <!-- Sempre distribuir o auxiliar junto do aplicativo, inclusive em builds do projeto isolado. -->
+  <Target Name="CopySchedulerManager" BeforeTargets="PostBuild">
+    <MSBuild Projects="$(MSBuildProjectDirectory)\..\SylphyHorn.SchedulerManager\SylphyHorn.SchedulerManager.csproj" Targets="GetTargetPath" Properties="Configuration=$(Configuration);TargetFramework=$(TargetFramework)">
+      <Output TaskParameter="TargetOutputs" ItemName="SchedulerBinary" />
+    </MSBuild>
+    <ItemGroup>
+      <SchedulerFiles Include="@(SchedulerBinary)" />
+      <SchedulerFiles Include="@(SchedulerBinary -> '%(FullPath).config')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(SchedulerFiles)" DestinationFolder="$(TargetDir)" />
+    <Error Condition="!Exists('$(TargetDir)SchedulerManager.exe')" Text="SchedulerManager.exe ausente na distribuição." />
+  </Target>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="powershell -ExecutionPolicy RemoteSigned -File &quot;$(ProjectDir).build\post-build.ps1&quot; &quot;$(TargetDir)" />
   </Target>

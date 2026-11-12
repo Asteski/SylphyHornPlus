@@ -15,6 +15,10 @@ namespace SylphyHorn.Serialization
 			this._provider = provider;
 		}
 
+		public SerializableProperty<bool> WhatsAppClickThrough => this.Cache(key => new SerializableProperty<bool>(key, this._provider));
+
+		public SerializableProperty<bool> KeepScreenActive => this.Cache(key => new SerializableProperty<bool>(key, this._provider));
+
 		public SerializableProperty<bool> LoopDesktop => this.Cache(key => new SerializableProperty<bool>(key, this._provider));
 
 		public SerializableProperty<bool> NotificationWhenSwitchedDesktop => this.Cache(key => new SerializableProperty<bool>(key, this._provider, NotificationWhenSwitchedDesktopDefaultValue));

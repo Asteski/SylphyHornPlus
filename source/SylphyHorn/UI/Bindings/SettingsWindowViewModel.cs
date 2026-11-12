@@ -28,8 +28,7 @@ namespace SylphyHorn.UI.Bindings
 	{
 		private const uint _taskbarDeskbandTooltipLookDisabledValue = uint.MaxValue;
 
-		private static bool _restartRequired;
-		private static readonly string _defaultCulture = Settings.General.Culture;
+
 		private static string _exportOrImportFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 		private readonly HookService _hookService;
@@ -75,8 +74,6 @@ namespace SylphyHorn.UI.Bindings
 		public IReadOnlyCollection<DisplayViewModel<uint>> Displays { get; }
 
 		public IReadOnlyCollection<LicenseViewModel> Licenses { get; }
-
-		public bool RestartRequired => _restartRequired;
 
 		public bool IsWindows10OrEarlier => !ProductInfo.IsWallpaperSupportBuild;
 
@@ -152,10 +149,12 @@ namespace SylphyHorn.UI.Bindings
 							this._startupScheduler.Unregister();
 						}
 					}
-					catch (UnauthorizedAccessException)
-					{
-						return;
-					}
+                    catch (Exception ex)
+                    {
+                        LoggingService.Instance.Register("Startup", ex.ToString());
+                        MessageBox.Show(string.Format(Resources.Startup_Failed, ex.Message), Resources.Settings_Startup,
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
 					finally
 					{
 						this._HasStartupScheduler = this._startupScheduler.IsExists;
@@ -186,10 +185,7 @@ namespace SylphyHorn.UI.Bindings
 				if (Settings.General.Culture != value)
 				{
 					Settings.General.Culture.Value = value;
-					_restartRequired = value != _defaultCulture;
-
 					this.RaisePropertyChanged();
-					this.RaisePropertyChanged(nameof(this.RestartRequired));
 				}
 			}
 		}
@@ -706,14 +702,14 @@ namespace SylphyHorn.UI.Bindings
 				{
 					return Settings.General.SimpleNotification
 						? $"{this.CurrentDesktop.NumberText}. {this.CurrentDesktop.Name}"
-						: $"Desktop {this.CurrentDesktop.NumberText}: {this.CurrentDesktop.Name}";
+						: string.Format(Resources.Notification_Desktop, this.CurrentDesktop.NumberText) + ": " + this.CurrentDesktop.Name;
 				}
 				else
 				{
 					var numberText = this.CurrentDesktop != null ? this.CurrentDesktop.NumberText : "1";
 					return Settings.General.SimpleNotification
-						? $"Desktop {numberText}"
-						: $"Current Desktop: Desktop {numberText}";
+						? string.Format(Resources.Notification_Desktop, numberText)
+						: string.Format(Resources.Notification_CurrentDesktop, numberText);
 				}
 			}
 		}
@@ -801,10 +797,10 @@ namespace SylphyHorn.UI.Bindings
 			this._startup = new Startup();
 			this._startupScheduler = new StartupScheduler();
 
-			this.Cultures = new[] { new DisplayViewModel<string> { Display = "(auto)", } }
+			this.Cultures = new[] { new DisplayViewModel<string> { Display = Resources.Common_Automatic, } }
 				.Concat(ResourceService.Current.SupportedCultures
-					.Select(x => new DisplayViewModel<string> { Display = x.NativeName, Value = x.Name, })
-					.OrderBy(x => x.Display))
+					.Select(x => new DisplayViewModel<string> { Display = x.Name == "pt-BR" ? "Português (Brasil)" : x.NativeName, Value = x.Name, })
+					.OrderBy(x => x.Display, System.Collections.Generic.Comparer<string>.Create((a, b) => System.Globalization.CultureInfo.CurrentCulture.CompareInfo.Compare(a, b, System.Globalization.CompareOptions.IgnoreCase | System.Globalization.CompareOptions.IgnoreNonSpace))))
 				.ToList();
 
 			this.WallpaperPositions = new[]
@@ -883,7 +879,7 @@ namespace SylphyHorn.UI.Bindings
 
 			this.TaskbarDeskbandNumberWrappers = new[]
 			{
-				new DisplayViewModel<uint> { Display = "None", Value = GeneralSettings.TaskbarDeskbandNumberWrapperNoneValue, },
+				new DisplayViewModel<uint> { Display = Resources.Common_None, Value = GeneralSettings.TaskbarDeskbandNumberWrapperNoneValue, },
 				new DisplayViewModel<uint> { Display = "[ ]", Value = GeneralSettings.TaskbarDeskbandNumberWrapperSquareValue, },
 				new DisplayViewModel<uint> { Display = "( )", Value = GeneralSettings.TaskbarDeskbandNumberWrapperRoundValue, },
 				new DisplayViewModel<uint> { Display = "{ }", Value = GeneralSettings.TaskbarDeskbandNumberWrapperCurlyValue, },
@@ -905,7 +901,7 @@ namespace SylphyHorn.UI.Bindings
 
 			this.TaskbarDeskbandFontRenderingModes = new[]
 			{
-				new DisplayViewModel<uint> { Display = "GDI (MacType compatible)", Value = GeneralSettings.TaskbarDeskbandFontRenderingModeGdiValue, },
+				new DisplayViewModel<uint> { Display = Resources.Settings_GdiCompatible, Value = GeneralSettings.TaskbarDeskbandFontRenderingModeGdiValue, },
 				new DisplayViewModel<uint> { Display = "GDI+", Value = GeneralSettings.TaskbarDeskbandFontRenderingModeGdiPlusValue, },
 				new DisplayViewModel<uint> { Display = "DirectWrite", Value = GeneralSettings.TaskbarDeskbandFontRenderingModeDirectWriteValue, },
 			}.ToList();
@@ -1365,7 +1361,7 @@ namespace SylphyHorn.UI.Bindings
 		}
 
 		[UsedImplicitly]
-		public void OpenImportPathDialog()
+		public async void OpenImportPathDialog()
 		{
 			var provider = LocalSettingsProvider.Instance;
 			var message = new OpeningFileSelectionMessage("Window.OpenImportPathDialog.Open")
@@ -1380,23 +1376,25 @@ namespace SylphyHorn.UI.Bindings
 
 			if (message.Response != null && message.Response.Length > 0 && !string.IsNullOrEmpty(message.Response[0]))
 			{
-				var hookDisposable = this._hookService?.Suspend();
-
-				var filePath = message.Response[0];
-				_exportOrImportFolder = Path.GetDirectoryName(filePath);
-
-				provider.ImportAsync(filePath).Wait();
-
-				this.SynchronizeDesktopsWithSettingsIfRequired();
-				this.NotifyOfAllPropertiesChanged();
-				hookDisposable?.Dispose();
-
-				provider.SaveAsync().Forget();
+				try
+				{
+					// O using devolve a captura mesmo se a sincronização ou a interface falhar.
+					using (this._hookService?.Suspend())
+					{
+						var filePath = message.Response[0];
+						_exportOrImportFolder = Path.GetDirectoryName(filePath);
+						await provider.ImportAsync(filePath);
+						this.SynchronizeDesktopsWithSettingsIfRequired();
+						this.NotifyOfAllPropertiesChanged();
+						await provider.SaveAsync();
+					}
+				}
+				catch (Exception ex) { LoggingService.Instance.Register(ex); }
 			}
 		}
 
 		[UsedImplicitly]
-		public void ResetSettings()
+		public async void ResetSettings()
 		{
 			var message = new ConfirmationMessage("", "", "Window.ResetSettingsDialog.Confirm")
 			{
@@ -1410,16 +1408,20 @@ namespace SylphyHorn.UI.Bindings
 
 			if (message.Response ?? false)
 			{
-				var hookDisposable = this._hookService?.Suspend();
-
-				var provider = LocalSettingsProvider.Instance;
-				provider.Clear();
-				provider.SaveAsync()
-					.ContinueWith(_ => SettingsService.Synchronize(overrideDesktops: false))
-					.ContinueWith(_ => this._Desktops = VirtualDesktopViewModel.CreateAll())
-					.ContinueWith(_ => this.NotifyOfAllPropertiesChanged())
-					.ContinueWith(_ => hookDisposable?.Dispose())
-					.Forget();
+				try
+				{
+					using (this._hookService?.Suspend())
+					{
+						var provider = LocalSettingsProvider.Instance;
+						provider.Clear();
+						await provider.SaveAsync();
+						// Retomar no dispatcher WPF, sem ContinueWith no pool de threads.
+						SettingsService.Synchronize(overrideDesktops: false);
+						this._Desktops = VirtualDesktopViewModel.CreateAll();
+						this.NotifyOfAllPropertiesChanged();
+					}
+				}
+				catch (Exception ex) { LoggingService.Instance.Register(ex); }
 			}
 		}
 
@@ -1453,7 +1455,7 @@ namespace SylphyHorn.UI.Bindings
 		public void ResizeShortcutListToFit(string propName)
 		{
 			var propList = this.GetShortcutListFromSettings(Settings.ShortcutKey, propName);
-			
+
 			if (propList == null) return;
 
 			var count = VirtualDesktopService.Count;
@@ -1557,7 +1559,7 @@ namespace SylphyHorn.UI.Bindings
 		{
 			var index = VirtualDesktop.Current.Index;
 			if (this._Desktops == null || index >= this._Desktops.Length) this._Desktops = VirtualDesktopViewModel.CreateAll();
-			
+
 			this.CurrentDesktop = this.Desktops[index];
 
 			if (this.CurrentDesktop.HasWallpaper) this.PreviewBackgroundPath = this.CurrentDesktop.WallpaperPath;

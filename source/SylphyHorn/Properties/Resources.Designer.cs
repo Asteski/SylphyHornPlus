@@ -10,8 +10,8 @@
 
 namespace SylphyHorn.Properties {
     using System;
-    
-    
+
+
     /// <summary>
     ///   ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
     /// </summary>
@@ -23,15 +23,15 @@ namespace SylphyHorn.Properties {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-        
+
         /// <summary>
         ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
@@ -45,7 +45,7 @@ namespace SylphyHorn.Properties {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   すべてについて、現在のスレッドの CurrentUICulture プロパティをオーバーライドします
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
@@ -59,7 +59,7 @@ namespace SylphyHorn.Properties {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   default に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -68,7 +68,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Common_Default", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   provided by Windows に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -77,7 +77,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Common_ProvidedByWinows", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Reference に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -86,7 +86,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Common_Reference", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Background に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -95,7 +95,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Change the background for each desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -104,7 +104,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_ChangeBackground", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Desktop background に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -113,7 +113,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Desktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Wallpaper: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -122,7 +122,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Image", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Supported image formats: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -131,7 +131,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Note1", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Note: Please prepare image files with the virtual desktop number as filename (e.g. &quot;1.png&quot;, &quot;2.png&quot;, ...). に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -140,7 +140,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Note2", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Fit: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -149,7 +149,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Position", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Center に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -158,7 +158,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Position_Center", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Fill に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -167,7 +167,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Position_Fill", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Fit に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -176,7 +176,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Position_Fit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Span に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -185,7 +185,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Position_Span", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Stretch に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -194,7 +194,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Position_Stretch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Tile に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -203,7 +203,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_Position_Tile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Select Background Image に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -212,7 +212,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_SelectionDialog", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Source image file path に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -221,7 +221,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_SourceImageFile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Source image folder path に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -230,7 +230,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Background_SourceImageFolder", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Close desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -239,7 +239,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_CloseDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Close and switch to left: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -248,7 +248,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_CloseDesktop_CloseAndSwitchLeft", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Close and switch to right: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -257,7 +257,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_CloseDesktop_CloseAndSwitchRight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -824,7 +824,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_ClickToSwitchDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Close に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -833,7 +833,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_CloseDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Close this desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -842,7 +842,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_CloseDesktop_CloseThisDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   New desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -851,7 +851,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_CreateDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   First に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -860,7 +860,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_MoveDesktopFirst", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Last に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -869,7 +869,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_MoveDesktopLast", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Next に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -878,7 +878,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_MoveDesktopNext", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Previous に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -887,7 +887,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_MoveDesktopPrevious", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Override virtual desktops with settings of SylphyHorn on startup に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -896,7 +896,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_OverrideSettingsOnStartup", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Reorder: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -905,7 +905,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_Reorder", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Desktop settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -914,7 +914,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Desktop_Settings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Desktop names に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -923,7 +923,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_DesktopNames", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Display a desktop name in notification window に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -932,7 +932,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_DesktopNames_UseDesktopName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Desktop switching に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -941,7 +941,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_DesktopSwitching", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Loop virtual desktops に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -950,7 +950,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_DesktopSwitching_Loop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Override OS default key combination (Ctrl+Win+Left and Right) に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -959,7 +959,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_DesktopSwitching_OverrideOS", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   General に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -968,7 +968,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_General", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Language に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -977,7 +977,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Language", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   You must restart app in order for the changes to take all effect. に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -986,7 +986,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Language_RequireRestartMessage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   App log に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -995,7 +995,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Log", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Event viewer に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1004,7 +1004,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_LogViewer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Events that occurred during execution are displayed here. に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1013,7 +1013,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_LogViewer_Description", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Managing settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1022,7 +1022,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Export... に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1031,7 +1031,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_Export", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Export settings to an XML file to make a backup. に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1040,7 +1040,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_ExportDetail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Save Settings As... に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1049,7 +1049,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_ExportDialog", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Import... に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1058,7 +1058,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_Import", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Import settings from an XML file you stored. に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1067,7 +1067,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_ImportDetail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Select Settings to Import に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1076,7 +1076,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_ImportDialog", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Confirm Override Desktops に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1085,7 +1085,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_OverrideDesktopsConfirmationDialog", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Do you override virtual desktops with settings of SylphyHorn? に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1094,7 +1094,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_OverrideDesktopsConfirmationMessage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Reset to default に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1103,7 +1103,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_Reset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Confirm Reset に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1112,7 +1112,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_ResetConfirmationDialog", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   This will delete all settings. Are you sure to reset? に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1121,7 +1121,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_ResetConfirmationMessage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Reset settings to default. This will delete all settings. に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1130,7 +1130,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ManagingSettings_ResetDetail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Mouse に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1139,7 +1139,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MouseShortcut", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Move active window to adjacent desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1148,7 +1148,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToAdjacentDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Left: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1157,7 +1157,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToAdjacentDesktop_Left", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Left (Switch): に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1166,7 +1166,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToAdjacentDesktop_LeftAndSwitch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Right: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1175,7 +1175,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToAdjacentDesktop_Right", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Right (Switch): に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1184,7 +1184,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToAdjacentDesktop_RightAndSwitch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Move active window to created new desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1193,7 +1193,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToCreatedDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Switch only: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1202,7 +1202,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToCreatedDesktop_CreateOnly", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Move: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1211,7 +1211,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToCreatedDesktop_Move", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Move (Switch): に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1220,7 +1220,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToCreatedDesktop_MoveAndSwitch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Move active window to specified desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1229,7 +1229,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToSpecifiedDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Previous: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1238,7 +1238,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToSpecifiedDesktop_Previous", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Move active window to specified desktop and switch to it に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1247,7 +1247,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToSpecifiedDesktopAndSwitch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Previous: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1256,7 +1256,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MoveWindowToSpecifiedDesktopAndSwitch_Previous", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Destination displays に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1265,7 +1265,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MultipleDisplays", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   All displays に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1274,7 +1274,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MultipleDisplays_AllDisplays", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Current display に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1283,7 +1283,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MultipleDisplays_CurrentDisplay", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Display {0}: {1} に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1292,7 +1292,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_MultipleDisplays_EachDisplay", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Notification に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1301,7 +1301,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Notification", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Always show current desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1310,7 +1310,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Notification_AlwaysShowDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Display a notification when switched virtual desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1319,7 +1319,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Notification_Display", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Time Duration for Notification Messages: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1328,7 +1328,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Notification_Display_Duration", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   ms に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1337,7 +1337,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Notification_Display_Duration_Milliseconds", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Other options に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1346,7 +1346,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Notification_Others", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Simple notification mode に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1355,7 +1355,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Notification_SimpleMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Notification corner style に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1364,7 +1364,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationCornerStyle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Not rounded (Windows 10 style) に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1373,7 +1373,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationCornerStyle_NotRounded", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Rounded (Windows 11 style) に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1382,7 +1382,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationCornerStyle_Rounded", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Small rounded に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1391,7 +1391,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationCornerStyle_SmallRounded", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Notification font family に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1400,7 +1400,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationFontFamily", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Notification font size に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1409,7 +1409,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationFontSize", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Body: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1418,7 +1418,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationFontSize_Body", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Header: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1427,7 +1427,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationFontSize_Header", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Line Spacing: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1436,7 +1436,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationFontSize_LineSpacing", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Notification text alignment に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1445,7 +1445,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationTextAlignment", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Body: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1454,7 +1454,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationTextAlignment_Body", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Center に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1463,7 +1463,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationTextAlignment_Center", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Header: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1472,7 +1472,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationTextAlignment_Header", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Left に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1481,7 +1481,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationTextAlignment_Left", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Right に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1490,7 +1490,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationTextAlignment_Right", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Notification window minimum size に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1499,7 +1499,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowMinSize", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Height: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1508,7 +1508,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowMinSize_Height", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Width: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1517,7 +1517,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowMinSize_Width", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Pin: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1526,7 +1526,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowMinSize_Width_PinWindow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Simple: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1535,7 +1535,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowMinSize_Width_SimpleMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Notification offset に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1544,7 +1544,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowOffset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Pin: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1553,7 +1553,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowOffset_PinWindow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Desktop: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1562,7 +1562,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowOffset_SwitchDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Notification placement に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1571,7 +1571,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowPlacement", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Bottom center に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1580,7 +1580,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowPlacement_BottomCenter", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Bottom left に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1589,7 +1589,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowPlacement_BottomLeft", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Bottom right に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1598,7 +1598,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowPlacement_BottomRight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Center に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1607,7 +1607,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowPlacement_Center", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Center left に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1616,7 +1616,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowPlacement_CenterLeft", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Center right に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1625,7 +1625,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowPlacement_CenterRight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Top center に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1634,7 +1634,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowPlacement_TopCenter", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Top left に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1643,7 +1643,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowPlacement_TopLeft", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Top right に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1652,7 +1652,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowPlacement_TopRight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Notification window style に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1661,7 +1661,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowStyle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Accent に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1670,7 +1670,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowStyle_Accent", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Match to Apps に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1679,7 +1679,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowStyle_Apps", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Dark に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1688,7 +1688,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowStyle_Dark", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Light に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1697,7 +1697,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowStyle_Light", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Match to System に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1706,7 +1706,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_NotificationWindowStyle_System", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Operate SylphyHornPlus に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1715,7 +1715,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_OperateSylphyHorn", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Pin window: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1724,7 +1724,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Pin", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Pin/Unpin toggle: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1733,7 +1733,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_PinToggle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Pin window to all desktops に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1742,7 +1742,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_PinWindow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Pin window from app to all desktops に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1751,7 +1751,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_PinWindowFromApp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Placement に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1760,7 +1760,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Placement", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Shortcut key に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1769,7 +1769,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ShortcutKey", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Show only current desktop number (simple mode) に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1796,7 +1796,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ReverseSwitchDesktopWithMouseWheelOverTrayIcon", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Show settings: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1805,7 +1805,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ShowSettings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Startup に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1814,7 +1814,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Startup", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Automaticaly start at logon に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1823,7 +1823,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Startup_Automaticaly", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Automaticaly start as administrator at logon (from Task Scheduler) に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1832,7 +1832,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Startup_Automaticaly_As_Admin", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Swap desktop (Windows 11) に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1841,7 +1841,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwapDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   First: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1850,7 +1850,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwapDesktop_First", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Last: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1859,7 +1859,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwapDesktop_Last", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Left: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1868,7 +1868,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwapDesktop_Left", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Right: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1877,7 +1877,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwapDesktop_Right", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Swap for specified desktop (Windows 11) に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1886,7 +1886,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwapSpecifiedDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Switch to adjacent desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1895,7 +1895,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwitchAdjacentDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Left: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1904,7 +1904,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwitchAdjacentDesktop_SwitchLeft", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Right: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1913,7 +1913,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwitchAdjacentDesktop_SwitchRight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Switch to specified desktop に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1922,7 +1922,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwitchSpecifiedDesktop", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Add に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1931,7 +1931,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwitchSpecifiedDesktop_Add", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Previous: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1940,7 +1940,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwitchSpecifiedDesktop_Previous", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Remove last に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -1949,7 +1949,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_SwitchSpecifiedDesktop_RemoveLast", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Resize to fit desktops に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -2003,7 +2003,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_TaskView", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Show Task View: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -2012,7 +2012,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_TaskView_ShowTaskView", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Switch Window: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -2021,7 +2021,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_TaskView_ShowWindowSwitch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -2030,7 +2030,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Toggle desktop notification: に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -2039,7 +2039,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_ToggleDesktopNotification", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Show current desktop info in tray に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -2066,7 +2066,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Unpin", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Version に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -2075,7 +2075,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("Settings_Version", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Application is running in the background. に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -2084,7 +2084,7 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("TaskTray_FirstTimeMessage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Exit に類似しているローカライズされた文字列を検索します。
         /// </summary>
@@ -2174,5 +2174,41 @@ namespace SylphyHorn.Properties {
                 return ResourceManager.GetString("TaskTray_TooltipText_DesktopCount", resourceCulture);
             }
         }
+        public static string Common_Automatic => ResourceManager.GetString("Common_Automatic", resourceCulture);
+        public static string Common_None => ResourceManager.GetString("Common_None", resourceCulture);
+        public static string Settings_WhatsAppClickThrough => ResourceManager.GetString("Settings_WhatsAppClickThrough", resourceCulture);
+        public static string Settings_PositionAdjustment => ResourceManager.GetString("Settings_PositionAdjustment", resourceCulture);
+        public static string Settings_DesktopIndicator => ResourceManager.GetString("Settings_DesktopIndicator", resourceCulture);
+        public static string Settings_StyleLabel => ResourceManager.GetString("Settings_StyleLabel", resourceCulture);
+        public static string Settings_FontRendering => ResourceManager.GetString("Settings_FontRendering", resourceCulture);
+        public static string Settings_GdiCompatible => ResourceManager.GetString("Settings_GdiCompatible", resourceCulture);
+        public static string About_Version => ResourceManager.GetString("About_Version", resourceCulture);
+        public static string About_Bridge => ResourceManager.GetString("About_Bridge", resourceCulture);
+        public static string About_Source => ResourceManager.GetString("About_Source", resourceCulture);
+        public static string About_OriginalSource => ResourceManager.GetString("About_OriginalSource", resourceCulture);
+        public static string About_OriginalDeveloper => ResourceManager.GetString("About_OriginalDeveloper", resourceCulture);
+        public static string About_Is => ResourceManager.GetString("About_Is", resourceCulture);
+        public static string About_OpenSource => ResourceManager.GetString("About_OpenSource", resourceCulture);
+        public static string About_ReleasedUnder => ResourceManager.GetString("About_ReleasedUnder", resourceCulture);
+        public static string About_Mit => ResourceManager.GetString("About_Mit", resourceCulture);
+        public static string About_ForkContributions => ResourceManager.GetString("About_ForkContributions", resourceCulture);
+        public static string About_Licenses => ResourceManager.GetString("About_Licenses", resourceCulture);
+        public static string Notification_Switched => ResourceManager.GetString("Notification_Switched", resourceCulture);
+        public static string Startup_Failed => ResourceManager.GetString("Startup_Failed", resourceCulture);
+        public static string App_ExplorerRequired => ResourceManager.GetString("App_ExplorerRequired", resourceCulture);
+        public static string App_NotReady => ResourceManager.GetString("App_NotReady", resourceCulture);
+        public static string App_DesktopFailed => ResourceManager.GetString("App_DesktopFailed", resourceCulture);
+        public static string App_DesktopFailedTitle => ResourceManager.GetString("App_DesktopFailedTitle", resourceCulture);
+        public static string App_Unsupported => ResourceManager.GetString("App_Unsupported", resourceCulture);
+        public static string App_UnsupportedTitle => ResourceManager.GetString("App_UnsupportedTitle", resourceCulture);
+        public static string App_RestartQuestion => ResourceManager.GetString("App_RestartQuestion", resourceCulture);
+        public static string Notification_Desktop => ResourceManager.GetString("Notification_Desktop", resourceCulture);
+        public static string Notification_CurrentDesktop => ResourceManager.GetString("Notification_CurrentDesktop", resourceCulture);
+        public static string Settings_NotificationPreview => ResourceManager.GetString("Settings_NotificationPreview", resourceCulture);
+        public static string Settings_KeepScreenActive => ResourceManager.GetString("Settings_KeepScreenActive", resourceCulture);
+        public static string Settings_KeepScreenActiveDescription => ResourceManager.GetString("Settings_KeepScreenActiveDescription", resourceCulture);
+        public static string Settings_KeepScreenActiveFailed => ResourceManager.GetString("Settings_KeepScreenActiveFailed", resourceCulture);
+        public static string Settings_Energy => ResourceManager.GetString("Settings_Energy", resourceCulture);
+        public static string Settings_KeepScreenActiveHint => ResourceManager.GetString("Settings_KeepScreenActiveHint", resourceCulture);
     }
 }
