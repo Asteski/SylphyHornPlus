@@ -58,11 +58,11 @@ namespace SylphyHorn.UI
 				Text = ProductInfo.Title,
 				Icon = this._icon,
 				Visible = true,
-				ContextMenu = new ContextMenu(),
+				ContextMenuStrip = new ContextMenuStrip { ShowItemToolTips = true },
 			};
 
 			this.RebuildContextMenu();
-			this._notifyIcon.ContextMenu.Popup += this.OnContextMenuPopup;
+			this._notifyIcon.ContextMenuStrip.Opening += this.OnContextMenuPopup;
 			this._notifyIcon.MouseClick += this.OnIconClick;
 			this.UpdateTrayMouseWheelHook();
 		}
@@ -72,11 +72,11 @@ namespace SylphyHorn.UI
 		public void ShowContextMenu(System.Windows.Forms.Control owner, System.Drawing.Point location)
 		{
 			if (this._notifyIcon == null) this.Show();
-			if (this._notifyIcon?.ContextMenu == null || owner == null || owner.IsDisposed) return;
+			if (this._notifyIcon?.ContextMenuStrip == null || owner == null || owner.IsDisposed) return;
 
 			this.RebuildContextMenu();
 			NativeMethods.SetForegroundWindow(owner.Handle);
-			this._notifyIcon.ContextMenu.Show(owner, location);
+			this._notifyIcon.ContextMenuStrip.Show(owner, location);
 		}
 
 		internal void ShowBaloon(TaskTrayBaloon baloon)
@@ -322,22 +322,26 @@ namespace SylphyHorn.UI
 
 		private void RebuildContextMenu()
 		{
-			var contextMenu = this._notifyIcon?.ContextMenu;
+			var contextMenu = this._notifyIcon?.ContextMenuStrip;
 			if (contextMenu == null) return;
 
-			contextMenu.MenuItems.Clear();
+			// Descartar os itens antigos também libera seus recursos nativos.
+            foreach (var oldItem in contextMenu.Items.Cast<ToolStripItem>().ToArray()) oldItem.Dispose();
+            contextMenu.Items.Clear();
 			foreach (var item in this._items.Where(x => x.CanDisplay()))
 			{
 				var menuItem = item;
 				if (menuItem.IsSeparator)
 				{
-					contextMenu.MenuItems.Add(new MenuItem("-"));
+					contextMenu.Items.Add(new ToolStripSeparator());
 					continue;
 				}
 
-				contextMenu.MenuItems.Add(new MenuItem(menuItem.Text, (sender, args) => menuItem.ClickAction())
+				contextMenu.Items.Add(new ToolStripMenuItem(menuItem.Text, null, (sender, args) => menuItem.ClickAction())
 				{
 					Enabled = menuItem.CanClick(),
+					Checked = menuItem.IsChecked(),
+                    ToolTipText = menuItem.ToolTip(),
 				});
 			}
 		}
@@ -367,13 +371,14 @@ namespace SylphyHorn.UI
 			VirtualDesktop.Destroyed -= this.OnDesktopDestroyed;
 			if (this._notifyIcon != null)
 			{
-				this._notifyIcon.ContextMenu.Popup -= this.OnContextMenuPopup;
+				this._notifyIcon.ContextMenuStrip.Opening -= this.OnContextMenuPopup;
 				this._notifyIcon.MouseClick -= this.OnIconClick;
 			}
 
 			this.StopTrayMouseWheelHook();
 			this._trayMouseWheelSettingSubscription?.Dispose();
-			this._notifyIcon?.Dispose();
+			this._notifyIcon?.ContextMenuStrip?.Dispose();
+            this._notifyIcon?.Dispose();
 			this._lightIcon?.Dispose();
 			this._icon?.Dispose();
 		}
@@ -390,6 +395,10 @@ namespace SylphyHorn.UI
 		public Func<bool> CanDisplay { get; }
 
 		public Func<bool> CanClick { get; }
+
+		public Func<bool> IsChecked { get; set; } = () => false;
+
+        public Func<string> ToolTip { get; set; } = () => null;
 
 		public bool IsSeparator { get; }
 

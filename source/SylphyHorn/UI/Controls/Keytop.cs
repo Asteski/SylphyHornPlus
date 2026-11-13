@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using SylphyHorn.Services;
 using VirtualKey = System.Windows.Forms.Keys;
 using MouseStroke = SylphyHorn.Services.Mouse.Stroke;
 
@@ -23,7 +24,7 @@ namespace SylphyHorn.UI.Controls
 				typeof(Keytop),
 				new FrameworkPropertyMetadata(typeof(Keytop)));
 		}
-		
+
 		#region Key dependency property
 
 		public static readonly DependencyProperty KeyProperty = DependencyProperty.Register(
@@ -72,7 +73,7 @@ namespace SylphyHorn.UI.Controls
 		}
 
 		#endregion
-		
+
 		private static Tuple<string, KeyKind> GetKeyString(VirtualKey key)
 		{
 			string text;
@@ -80,6 +81,31 @@ namespace SylphyHorn.UI.Controls
 
 			switch (key)
 			{
+				case VirtualKey.PageUp:
+					text = "Page Up";
+					kind = KeyKind.Normal;
+					break;
+				case VirtualKey.PageDown:
+					text = "Page Down";
+					kind = KeyKind.Normal;
+					break;
+				case VirtualKey.Shift:
+					text = "Shift";
+					kind = KeyKind.Normal;
+					break;
+				case VirtualKey.Control:
+					text = "Ctrl";
+					kind = KeyKind.Normal;
+					break;
+				case VirtualKey.Menu:
+					text = "Alt";
+					kind = KeyKind.Normal;
+					break;
+				case ShortcutKey.AnyWindowsKey:
+					text = "Win";
+					kind = KeyKind.Normal;
+					break;
+
 				case VirtualKey.LShiftKey:
 					text = "Shift";
 					kind = KeyKind.Left;
@@ -116,11 +142,6 @@ namespace SylphyHorn.UI.Controls
 					kind = KeyKind.Right;
 					break;
 
-				case VirtualKey.Control:
-					text = "Ctrl";
-					kind = KeyKind.Normal;
-					break;
-				
 				case VirtualKey.NoName:
 					// shoddy construction :(
 					text = "Win";

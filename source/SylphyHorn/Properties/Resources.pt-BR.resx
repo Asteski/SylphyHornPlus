@@ -1,0 +1,856 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string" />
+              <xs:attribute name="type" type="xsd:string" />
+              <xs:attribute name="mimetype" type="xsd:string" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string" />
+              <xs:attribute name="name" type="xsd:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common_Default" xml:space="preserve">
+    <value>padrão</value>
+  </data>
+  <data name="Common_ProvidedByWinows" xml:space="preserve">
+    <value>fornecido pelo Windows</value>
+  </data>
+  <data name="Common_Reference" xml:space="preserve">
+    <value>Referência</value>
+  </data>
+  <data name="Settings_Background" xml:space="preserve">
+    <value>Plano de fundo</value>
+  </data>
+  <data name="Settings_Background_ChangeBackground" xml:space="preserve">
+    <value>Alterar o plano de fundo de cada área de trabalho</value>
+  </data>
+  <data name="Settings_Background_Desktop" xml:space="preserve">
+    <value>Plano de fundo da área de trabalho</value>
+  </data>
+  <data name="Settings_Background_Image" xml:space="preserve">
+    <value>Papel de parede:</value>
+  </data>
+  <data name="Settings_Background_Note1" xml:space="preserve">
+    <value>Formatos de imagem aceitos:</value>
+  </data>
+  <data name="Settings_Background_Note2" xml:space="preserve">
+    <value>Observação: prepare as imagens usando o número da área de trabalho como nome do arquivo (por exemplo: "1.png", "2.png", ...).</value>
+  </data>
+  <data name="Settings_Background_Position" xml:space="preserve">
+    <value>Ajuste:</value>
+  </data>
+  <data name="Settings_Background_Position_Center" xml:space="preserve">
+    <value>Centralizar</value>
+  </data>
+  <data name="Settings_Background_Position_Fill" xml:space="preserve">
+    <value>Preencher</value>
+  </data>
+  <data name="Settings_Background_Position_Fit" xml:space="preserve">
+    <value>Ajustar</value>
+  </data>
+  <data name="Settings_Background_Position_Span" xml:space="preserve">
+    <value>Estender entre monitores</value>
+  </data>
+  <data name="Settings_Background_Position_Stretch" xml:space="preserve">
+    <value>Esticar</value>
+  </data>
+  <data name="Settings_Background_Position_Tile" xml:space="preserve">
+    <value>Lado a lado</value>
+  </data>
+  <data name="Settings_Background_SelectionDialog" xml:space="preserve">
+    <value>Selecionar imagem de plano de fundo</value>
+  </data>
+  <data name="Settings_Background_SourceImageFile" xml:space="preserve">
+    <value>Caminho do arquivo de imagem</value>
+  </data>
+  <data name="Settings_Background_SourceImageFolder" xml:space="preserve">
+    <value>Caminho da pasta de imagens</value>
+  </data>
+  <data name="Settings_CloseDesktop" xml:space="preserve">
+    <value>Fechar área de trabalho</value>
+  </data>
+  <data name="Settings_CloseDesktop_CloseAndSwitchLeft" xml:space="preserve">
+    <value>Fechar e ir para a esquerda:</value>
+  </data>
+  <data name="Settings_CloseDesktop_CloseAndSwitchRight" xml:space="preserve">
+    <value>Fechar e ir para a direita:</value>
+  </data>
+  <data name="Settings_Desktop" xml:space="preserve">
+    <value>Áreas de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_AppRouting" xml:space="preserve">
+    <value>Abrir aplicativos e janelas na área de trabalho especificada</value>
+  </data>
+  <data name="Settings_Desktop_AppRouting_CreateMissingDesktop" xml:space="preserve">
+    <value>Criar a área de trabalho ausente quando um aplicativo correspondente abrir</value>
+  </data>
+  <data name="Settings_Desktop_AppRouting_CloseWhenEmpty" xml:space="preserve">
+    <value>Fechar a área de trabalho quando não houver aplicativos abertos</value>
+  </data>
+  <data name="Settings_Desktop_AppRouting_ProcessName" xml:space="preserve">
+    <value>Nome do processo ou executável</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband" xml:space="preserve">
+    <value>Indicador na barra de tarefas</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Enable" xml:space="preserve">
+    <value>Mostrar o número da área de trabalho atual na barra de tarefas do Windows 10</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode" xml:space="preserve">
+    <value>Modo:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode_Disabled" xml:space="preserve">
+    <value>Desativado</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode_ModernTaskbar" xml:space="preserve">
+    <value>Barra de tarefas moderna (Windows 11)</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Mode_LegacyTaskbar" xml:space="preserve">
+    <value>Barra de tarefas clássica (Windows 10)</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_PlaceOnLeft" xml:space="preserve">
+    <value>Posicionar o indicador no lado esquerdo da barra de tarefas</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Position" xml:space="preserve">
+    <value>Posição:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Position_Right" xml:space="preserve">
+    <value>Lado direito</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Position_Left" xml:space="preserve">
+    <value>Lado esquerdo</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_PositionOffset" xml:space="preserve">
+    <value>Horizontal:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_VerticalPositionOffset" xml:space="preserve">
+    <value>Vertical:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display" xml:space="preserve">
+    <value>Exibição:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_NumberOnly" xml:space="preserve">
+    <value>Número da área de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_RomanNumber" xml:space="preserve">
+    <value>Número em algarismos romanos</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_DesktopNumber" xml:space="preserve">
+    <value>Área de trabalho + número</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_NameOnly" xml:space="preserve">
+    <value>Nome da área de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Display_NameWithNumber" xml:space="preserve">
+    <value>Nome e número da área de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_CustomNumberStyle" xml:space="preserve">
+    <value>Personalizar o estilo do número da área de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_NumberWrapper" xml:space="preserve">
+    <value>Delimitadores:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_NumberWrapperSpaces" xml:space="preserve">
+    <value>Adicionar espaços dentro dos delimitadores</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_RomanNumber" xml:space="preserve">
+    <value>Usar algarismos romanos</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_ShowTotalDesktopCount" xml:space="preserve">
+    <value>Mostrar a quantidade total de áreas de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_NumberBeforeName" xml:space="preserve">
+    <value>Mostrar o número antes do nome</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_CustomAppearance" xml:space="preserve">
+    <value>Usar fonte personalizada</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Font" xml:space="preserve">
+    <value>Fonte:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Size" xml:space="preserve">
+    <value>Tamanho:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Style" xml:space="preserve">
+    <value>Estilo:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight" xml:space="preserve">
+    <value>Espessura:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight_Regular" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight_Light" xml:space="preserve">
+    <value>Leve</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight_SemiLight" xml:space="preserve">
+    <value>Semileve</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight_SemiBold" xml:space="preserve">
+    <value>Seminegrito</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Weight_Bold" xml:space="preserve">
+    <value>Negrito</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Bold" xml:space="preserve">
+    <value>Negrito</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Italic" xml:space="preserve">
+    <value>Itálico</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Underline" xml:space="preserve">
+    <value>Sublinhado</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Color" xml:space="preserve">
+    <value>Cor:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_SelectColor" xml:space="preserve">
+    <value>Selecionar...</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_Tooltip" xml:space="preserve">
+    <value>Mostrar dica ao passar o mouse</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipNumberOnly" xml:space="preserve">
+    <value>Mostrar somente o número da área de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipListWindows" xml:space="preserve">
+    <value>Listar as janelas abertas na área de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipLook" xml:space="preserve">
+    <value>Aparência da dica:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipLook_Windows10" xml:space="preserve">
+    <value>Estilo do Windows 10</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipLook_Windows11" xml:space="preserve">
+    <value>Estilo do Windows 11</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle" xml:space="preserve">
+    <value>Estilo da lista:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_Title" xml:space="preserve">
+    <value>Título da janela</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationName" xml:space="preserve">
+    <value>Nome do aplicativo</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameColonTitle" xml:space="preserve">
+    <value>Nome do aplicativo: título da janela</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_TooltipWindowStyle_ApplicationNameDashTitle" xml:space="preserve">
+    <value>Nome do aplicativo - título da janela</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_MouseWheelSwitch" xml:space="preserve">
+    <value>Trocar de área de trabalho com a roda do mouse sobre o indicador</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_DoubleClickAction" xml:space="preserve">
+    <value>Clique duplo:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_DoubleClickAction_TaskView" xml:space="preserve">
+    <value>Abrir a Visão de Tarefas</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_DoubleClickAction_Disabled" xml:space="preserve">
+    <value>Desativado</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_DoubleClickAction_Settings" xml:space="preserve">
+    <value>Configurações</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_MiddleClickAction" xml:space="preserve">
+    <value>Clique do meio:</value>
+  </data>
+  <data name="Settings_Desktop_TaskbarDeskband_MiddleClickAction_ReturnToDesktop1" xml:space="preserve">
+    <value>Voltar para a área de trabalho 1</value>
+  </data>
+  <data name="Settings_DesktopNames" xml:space="preserve">
+    <value>Nomes das áreas de trabalho</value>
+  </data>
+  <data name="Settings_DesktopNames_UseDesktopName" xml:space="preserve">
+    <value>Mostrar o nome da área de trabalho na notificação</value>
+  </data>
+  <data name="Settings_DesktopSwitching" xml:space="preserve">
+    <value>Troca de áreas de trabalho</value>
+  </data>
+  <data name="Settings_DesktopSwitching_Loop" xml:space="preserve">
+    <value>Alternar ciclicamente entre as áreas de trabalho</value>
+  </data>
+  <data name="Settings_DesktopSwitching_OverrideOS" xml:space="preserve">
+    <value>Substituir os atalhos padrão do Windows (Ctrl+Win+Esquerda e Direita)</value>
+  </data>
+  <data name="Settings_Desktop_ClickToSwitchDesktop" xml:space="preserve">
+    <value>Clique para ir para esta área de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_CloseDesktop" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="Settings_Desktop_CloseDesktop_CloseThisDesktop" xml:space="preserve">
+    <value>Fechar esta área de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_CreateDesktop" xml:space="preserve">
+    <value>Nova área de trabalho</value>
+  </data>
+  <data name="Settings_Desktop_MoveDesktopFirst" xml:space="preserve">
+    <value>Primeira</value>
+  </data>
+  <data name="Settings_Desktop_MoveDesktopLast" xml:space="preserve">
+    <value>Última</value>
+  </data>
+  <data name="Settings_Desktop_MoveDesktopNext" xml:space="preserve">
+    <value>Próxima</value>
+  </data>
+  <data name="Settings_Desktop_MoveDesktopPrevious" xml:space="preserve">
+    <value>Anterior</value>
+  </data>
+  <data name="Settings_Desktop_OverrideSettingsOnStartup" xml:space="preserve">
+    <value>Aplicar as configurações do SylphyHorn às áreas de trabalho ao iniciar</value>
+  </data>
+  <data name="Settings_Desktop_Reorder" xml:space="preserve">
+    <value>Reordenar:</value>
+  </data>
+  <data name="Settings_Desktop_Settings" xml:space="preserve">
+    <value>Configurações das áreas de trabalho</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Geral</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="Settings_Language_RequireRestartMessage" xml:space="preserve">
+    <value>Reinicie o aplicativo para aplicar todas as alterações de idioma.</value>
+  </data>
+  <data name="Settings_Log" xml:space="preserve">
+    <value>Registro do aplicativo</value>
+  </data>
+  <data name="Settings_LogViewer" xml:space="preserve">
+    <value>Visualizador de eventos</value>
+  </data>
+  <data name="Settings_LogViewer_Description" xml:space="preserve">
+    <value>Os eventos ocorridos durante a execução são exibidos aqui.</value>
+  </data>
+  <data name="Settings_ManagingSettings" xml:space="preserve">
+    <value>Gerenciar configurações</value>
+  </data>
+  <data name="Settings_ManagingSettings_Export" xml:space="preserve">
+    <value>Exportar...</value>
+  </data>
+  <data name="Settings_ManagingSettings_ExportDetail" xml:space="preserve">
+    <value>Exportar as configurações para um arquivo XML de backup.</value>
+  </data>
+  <data name="Settings_ManagingSettings_ExportDialog" xml:space="preserve">
+    <value>Salvar configurações como...</value>
+  </data>
+  <data name="Settings_ManagingSettings_Import" xml:space="preserve">
+    <value>Importar...</value>
+  </data>
+  <data name="Settings_ManagingSettings_ImportDetail" xml:space="preserve">
+    <value>Importar configurações de um arquivo XML salvo anteriormente.</value>
+  </data>
+  <data name="Settings_ManagingSettings_ImportDialog" xml:space="preserve">
+    <value>Selecionar configurações para importar</value>
+  </data>
+  <data name="Settings_ManagingSettings_OverrideDesktopsConfirmationDialog" xml:space="preserve">
+    <value>Confirmar substituição das áreas de trabalho</value>
+  </data>
+  <data name="Settings_ManagingSettings_OverrideDesktopsConfirmationMessage" xml:space="preserve">
+    <value>Deseja substituir as configurações das áreas de trabalho pelas configurações do SylphyHorn?</value>
+  </data>
+  <data name="Settings_ManagingSettings_Reset" xml:space="preserve">
+    <value>Restaurar padrões</value>
+  </data>
+  <data name="Settings_ManagingSettings_ResetConfirmationDialog" xml:space="preserve">
+    <value>Confirmar restauração</value>
+  </data>
+  <data name="Settings_ManagingSettings_ResetConfirmationMessage" xml:space="preserve">
+    <value>Todas as configurações serão apagadas. Deseja restaurar os padrões?</value>
+  </data>
+  <data name="Settings_ManagingSettings_ResetDetail" xml:space="preserve">
+    <value>Restaurar as configurações padrão. Todas as configurações atuais serão apagadas.</value>
+  </data>
+  <data name="Settings_MouseShortcut" xml:space="preserve">
+    <value>Mouse</value>
+  </data>
+  <data name="Settings_MoveWindowToAdjacentDesktop" xml:space="preserve">
+    <value>Mover a janela ativa para uma área de trabalho adjacente</value>
+  </data>
+  <data name="Settings_MoveWindowToAdjacentDesktop_Left" xml:space="preserve">
+    <value>Esquerda:</value>
+  </data>
+  <data name="Settings_MoveWindowToAdjacentDesktop_LeftAndSwitch" xml:space="preserve">
+    <value>Esquerda e acompanhar:</value>
+  </data>
+  <data name="Settings_MoveWindowToAdjacentDesktop_Right" xml:space="preserve">
+    <value>Direita:</value>
+  </data>
+  <data name="Settings_MoveWindowToAdjacentDesktop_RightAndSwitch" xml:space="preserve">
+    <value>Direita e acompanhar:</value>
+  </data>
+  <data name="Settings_MoveWindowToCreatedDesktop" xml:space="preserve">
+    <value>Mover a janela ativa para uma nova área de trabalho</value>
+  </data>
+  <data name="Settings_MoveWindowToCreatedDesktop_CreateOnly" xml:space="preserve">
+    <value>Somente criar e acessar:</value>
+  </data>
+  <data name="Settings_MoveWindowToCreatedDesktop_Move" xml:space="preserve">
+    <value>Mover:</value>
+  </data>
+  <data name="Settings_MoveWindowToCreatedDesktop_MoveAndSwitch" xml:space="preserve">
+    <value>Mover e acompanhar:</value>
+  </data>
+  <data name="Settings_MoveWindowToSpecifiedDesktop" xml:space="preserve">
+    <value>Mover a janela ativa para uma área de trabalho específica</value>
+  </data>
+  <data name="Settings_MoveWindowToSpecifiedDesktopAndSwitch" xml:space="preserve">
+    <value>Mover a janela ativa para uma área de trabalho específica e acompanhá-la</value>
+  </data>
+  <data name="Settings_MoveWindowToSpecifiedDesktopAndSwitch_Previous" xml:space="preserve">
+    <value>Anterior:</value>
+  </data>
+  <data name="Settings_MoveWindowToSpecifiedDesktop_Previous" xml:space="preserve">
+    <value>Anterior:</value>
+  </data>
+  <data name="Settings_MultipleDisplays" xml:space="preserve">
+    <value>Monitores de destino</value>
+  </data>
+  <data name="Settings_MultipleDisplays_AllDisplays" xml:space="preserve">
+    <value>Todos os monitores</value>
+  </data>
+  <data name="Settings_MultipleDisplays_CurrentDisplay" xml:space="preserve">
+    <value>Monitor atual</value>
+  </data>
+  <data name="Settings_MultipleDisplays_EachDisplay" xml:space="preserve">
+    <value>Monitor {0}: {1}</value>
+  </data>
+  <data name="Settings_Notification" xml:space="preserve">
+    <value>Notificação</value>
+  </data>
+  <data name="Settings_NotificationCornerStyle" xml:space="preserve">
+    <value>Estilo dos cantos da notificação</value>
+  </data>
+  <data name="Settings_NotificationCornerStyle_NotRounded" xml:space="preserve">
+    <value>Retos (estilo do Windows 10)</value>
+  </data>
+  <data name="Settings_NotificationCornerStyle_Rounded" xml:space="preserve">
+    <value>Arredondados (estilo do Windows 11)</value>
+  </data>
+  <data name="Settings_NotificationCornerStyle_SmallRounded" xml:space="preserve">
+    <value>Pouco arredondados</value>
+  </data>
+  <data name="Settings_NotificationFontFamily" xml:space="preserve">
+    <value>Fonte da notificação</value>
+  </data>
+  <data name="Settings_NotificationFontSize" xml:space="preserve">
+    <value>Tamanho da fonte da notificação</value>
+  </data>
+  <data name="Settings_NotificationFontSize_Body" xml:space="preserve">
+    <value>Corpo:</value>
+  </data>
+  <data name="Settings_NotificationFontSize_Header" xml:space="preserve">
+    <value>Cabeçalho:</value>
+  </data>
+  <data name="Settings_NotificationFontSize_LineSpacing" xml:space="preserve">
+    <value>Espaçamento entre linhas:</value>
+  </data>
+  <data name="Settings_NotificationTextAlignment" xml:space="preserve">
+    <value>Alinhamento do texto da notificação</value>
+  </data>
+  <data name="Settings_NotificationTextAlignment_Body" xml:space="preserve">
+    <value>Corpo:</value>
+  </data>
+  <data name="Settings_NotificationTextAlignment_Center" xml:space="preserve">
+    <value>Centralizado</value>
+  </data>
+  <data name="Settings_NotificationTextAlignment_Header" xml:space="preserve">
+    <value>Cabeçalho:</value>
+  </data>
+  <data name="Settings_NotificationTextAlignment_Left" xml:space="preserve">
+    <value>À esquerda</value>
+  </data>
+  <data name="Settings_NotificationTextAlignment_Right" xml:space="preserve">
+    <value>À direita</value>
+  </data>
+  <data name="Settings_NotificationWindowMinSize" xml:space="preserve">
+    <value>Tamanho mínimo da janela de notificação</value>
+  </data>
+  <data name="Settings_NotificationWindowMinSize_Height" xml:space="preserve">
+    <value>Altura:</value>
+  </data>
+  <data name="Settings_NotificationWindowMinSize_Width" xml:space="preserve">
+    <value>Largura:</value>
+  </data>
+  <data name="Settings_NotificationWindowMinSize_Width_PinWindow" xml:space="preserve">
+    <value>Fixação:</value>
+  </data>
+  <data name="Settings_NotificationWindowMinSize_Width_SimpleMode" xml:space="preserve">
+    <value>Modo simples:</value>
+  </data>
+  <data name="Settings_NotificationWindowOffset" xml:space="preserve">
+    <value>Deslocamento da notificação</value>
+  </data>
+  <data name="Settings_NotificationWindowOffset_PinWindow" xml:space="preserve">
+    <value>Fixação:</value>
+  </data>
+  <data name="Settings_NotificationWindowOffset_SwitchDesktop" xml:space="preserve">
+    <value>Área de trabalho:</value>
+  </data>
+  <data name="Settings_NotificationWindowPlacement" xml:space="preserve">
+    <value>Posição da notificação</value>
+  </data>
+  <data name="Settings_NotificationWindowPlacement_BottomCenter" xml:space="preserve">
+    <value>Embaixo, ao centro</value>
+  </data>
+  <data name="Settings_NotificationWindowPlacement_BottomLeft" xml:space="preserve">
+    <value>Embaixo, à esquerda</value>
+  </data>
+  <data name="Settings_NotificationWindowPlacement_BottomRight" xml:space="preserve">
+    <value>Embaixo, à direita</value>
+  </data>
+  <data name="Settings_NotificationWindowPlacement_Center" xml:space="preserve">
+    <value>Centro</value>
+  </data>
+  <data name="Settings_NotificationWindowPlacement_CenterLeft" xml:space="preserve">
+    <value>Centro, à esquerda</value>
+  </data>
+  <data name="Settings_NotificationWindowPlacement_CenterRight" xml:space="preserve">
+    <value>Centro, à direita</value>
+  </data>
+  <data name="Settings_NotificationWindowPlacement_TopCenter" xml:space="preserve">
+    <value>Em cima, ao centro</value>
+  </data>
+  <data name="Settings_NotificationWindowPlacement_TopLeft" xml:space="preserve">
+    <value>Em cima, à esquerda</value>
+  </data>
+  <data name="Settings_NotificationWindowPlacement_TopRight" xml:space="preserve">
+    <value>Em cima, à direita</value>
+  </data>
+  <data name="Settings_NotificationWindowStyle" xml:space="preserve">
+    <value>Estilo da janela de notificação</value>
+  </data>
+  <data name="Settings_NotificationWindowStyle_Accent" xml:space="preserve">
+    <value>Cor de destaque</value>
+  </data>
+  <data name="Settings_NotificationWindowStyle_Apps" xml:space="preserve">
+    <value>Seguir os aplicativos</value>
+  </data>
+  <data name="Settings_NotificationWindowStyle_Dark" xml:space="preserve">
+    <value>Escuro</value>
+  </data>
+  <data name="Settings_NotificationWindowStyle_Light" xml:space="preserve">
+    <value>Claro</value>
+  </data>
+  <data name="Settings_NotificationWindowStyle_System" xml:space="preserve">
+    <value>Seguir o sistema</value>
+  </data>
+  <data name="Settings_Notification_AlwaysShowDesktop" xml:space="preserve">
+    <value>Sempre mostrar a área de trabalho atual</value>
+  </data>
+  <data name="Settings_Notification_Display" xml:space="preserve">
+    <value>Exibir uma notificação ao trocar de área de trabalho</value>
+  </data>
+  <data name="Settings_Notification_Display_Duration" xml:space="preserve">
+    <value>Duração das notificações:</value>
+  </data>
+  <data name="Settings_Notification_Display_Duration_Milliseconds" xml:space="preserve">
+    <value>ms</value>
+  </data>
+  <data name="Settings_Notification_Others" xml:space="preserve">
+    <value>Outras opções</value>
+  </data>
+  <data name="Settings_Notification_SimpleMode" xml:space="preserve">
+    <value>Modo de notificação simples</value>
+  </data>
+  <data name="Settings_OperateSylphyHorn" xml:space="preserve">
+    <value>Controlar o SylphyHornPlus</value>
+  </data>
+  <data name="Settings_Pin" xml:space="preserve">
+    <value>Fixar janela:</value>
+  </data>
+  <data name="Settings_PinToggle" xml:space="preserve">
+    <value>Alternar fixação:</value>
+  </data>
+  <data name="Settings_PinWindow" xml:space="preserve">
+    <value>Fixar a janela em todas as áreas de trabalho</value>
+  </data>
+  <data name="Settings_PinWindowFromApp" xml:space="preserve">
+    <value>Fixar as janelas do aplicativo em todas as áreas de trabalho</value>
+  </data>
+  <data name="Settings_Placement" xml:space="preserve">
+    <value>Posicionamento</value>
+  </data>
+  <data name="Settings_ShortcutKey" xml:space="preserve">
+    <value>Atalhos de teclado</value>
+  </data>
+  <data name="Settings_ShowOnlyCurrentNumberInTray" xml:space="preserve">
+    <value>Mostrar somente o número da área de trabalho atual (modo simples)</value>
+  </data>
+  <data name="Settings_SwitchDesktopWithMouseWheelOverTrayIcon" xml:space="preserve">
+    <value>Trocar de área de trabalho com a roda do mouse sobre o ícone da bandeja</value>
+  </data>
+  <data name="Settings_ReverseSwitchDesktopWithMouseWheelOverTrayIcon" xml:space="preserve">
+    <value>Inverter o sentido da rolagem</value>
+  </data>
+  <data name="Settings_ShowSettings" xml:space="preserve">
+    <value>Abrir configurações:</value>
+  </data>
+  <data name="Settings_Startup" xml:space="preserve">
+    <value>Inicialização</value>
+  </data>
+  <data name="Settings_Startup_Automaticaly" xml:space="preserve">
+    <value>Iniciar automaticamente ao entrar no Windows</value>
+  </data>
+  <data name="Settings_Startup_Automaticaly_As_Admin" xml:space="preserve">
+    <value>Iniciar automaticamente como administrador ao entrar no Windows (Agendador de Tarefas)</value>
+  </data>
+  <data name="Settings_SwapDesktop" xml:space="preserve">
+    <value>Reordenar áreas de trabalho (Windows 11)</value>
+  </data>
+  <data name="Settings_SwapDesktop_First" xml:space="preserve">
+    <value>Primeira:</value>
+  </data>
+  <data name="Settings_SwapDesktop_Last" xml:space="preserve">
+    <value>Última:</value>
+  </data>
+  <data name="Settings_SwapDesktop_Left" xml:space="preserve">
+    <value>Esquerda:</value>
+  </data>
+  <data name="Settings_SwapDesktop_Right" xml:space="preserve">
+    <value>Direita:</value>
+  </data>
+  <data name="Settings_SwapSpecifiedDesktop" xml:space="preserve">
+    <value>Trocar de posição com uma área de trabalho específica (Windows 11)</value>
+  </data>
+  <data name="Settings_SwitchAdjacentDesktop" xml:space="preserve">
+    <value>Ir para uma área de trabalho adjacente</value>
+  </data>
+  <data name="Settings_SwitchAdjacentDesktop_SwitchLeft" xml:space="preserve">
+    <value>Esquerda:</value>
+  </data>
+  <data name="Settings_SwitchAdjacentDesktop_SwitchRight" xml:space="preserve">
+    <value>Direita:</value>
+  </data>
+  <data name="Settings_SwitchSpecifiedDesktop" xml:space="preserve">
+    <value>Ir para uma área de trabalho específica</value>
+  </data>
+  <data name="Settings_SwitchSpecifiedDesktop_Add" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="Settings_SwitchSpecifiedDesktop_Previous" xml:space="preserve">
+    <value>Anterior:</value>
+  </data>
+  <data name="Settings_SwitchSpecifiedDesktop_RemoveLast" xml:space="preserve">
+    <value>Remover a última</value>
+  </data>
+  <data name="Settings_SwitchSpecifiedDesktop_ResizeToFit" xml:space="preserve">
+    <value>Ajustar à quantidade de áreas de trabalho</value>
+  </data>
+  <data name="Settings_Taskbar" xml:space="preserve">
+    <value>Barra de tarefas</value>
+  </data>
+  <data name="Settings_Taskbar_DeskbandCustomFont" xml:space="preserve">
+    <value>Estilo da fonte</value>
+  </data>
+  <data name="Settings_Taskbar_MouseClickActions" xml:space="preserve">
+    <value>Ações do mouse</value>
+  </data>
+  <data name="Settings_Taskbar_MouseTooltip" xml:space="preserve">
+    <value>Dica ao passar o mouse</value>
+  </data>
+  <data name="Settings_TaskView" xml:space="preserve">
+    <value>Visão de Tarefas</value>
+  </data>
+  <data name="Settings_TaskView_ShowTaskView" xml:space="preserve">
+    <value>Abrir a Visão de Tarefas:</value>
+  </data>
+  <data name="Settings_TaskView_ShowWindowSwitch" xml:space="preserve">
+    <value>Alternar janela:</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Configurações</value>
+  </data>
+  <data name="Settings_ToggleDesktopNotification" xml:space="preserve">
+    <value>Alternar notificação da área de trabalho:</value>
+  </data>
+  <data name="Settings_ToggleTrayIconInfo" xml:space="preserve">
+    <value>Mostrar informações da área de trabalho atual na bandeja</value>
+  </data>
+  <data name="Settings_TrayIcon" xml:space="preserve">
+    <value>Ícone da bandeja</value>
+  </data>
+  <data name="Settings_Unpin" xml:space="preserve">
+    <value>Desafixar janela:</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>Versão</value>
+  </data>
+  <data name="TaskTray_FirstTimeMessage" xml:space="preserve">
+    <value>O aplicativo está sendo executado em segundo plano.</value>
+  </data>
+  <data name="TaskTray_Menu_Exit" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="TaskTray_Menu_About" xml:space="preserve">
+    <value>Sobre</value>
+  </data>
+  <data name="TaskTray_Menu_Elevate" xml:space="preserve">
+    <value>Executar como administrador</value>
+  </data>
+  <data name="TaskTray_Menu_Elevated" xml:space="preserve">
+    <value>Executando como administrador</value>
+  </data>
+  <data name="TaskTray_Menu_HideDeskband" xml:space="preserve">
+    <value>Ocultar indicador</value>
+  </data>
+  <data name="TaskTray_Menu_Reload" xml:space="preserve">
+    <value>Recarregar</value>
+  </data>
+  <data name="TaskTray_Menu_Settings" xml:space="preserve">
+    <value>Configurações</value>
+  </data>
+  <data name="TaskTray_Menu_OpenSettingsFile" xml:space="preserve">
+    <value>Abrir XML das configurações</value>
+  </data>
+  <data name="TaskTray_Menu_ShowDeskband" xml:space="preserve">
+    <value>Mostrar indicador</value>
+  </data>
+  <data name="TaskTray_TooltipText_DesktopCount" xml:space="preserve">
+    <value>Área de trabalho {0}/{1}</value>
+  </data>
+  <data name="Common_Automatic" xml:space="preserve">
+    <value>Automático (idioma do sistema)</value>
+  </data>
+  <data name="Common_None" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="Settings_WhatsAppClickThrough" xml:space="preserve">
+    <value>Corrigir bloqueio de cliques do WhatsApp entre áreas de trabalho</value>
+  </data>
+  <data name="Settings_PositionAdjustment" xml:space="preserve">
+    <value>Ajuste de posição</value>
+  </data>
+  <data name="Settings_DesktopIndicator" xml:space="preserve">
+    <value>Indicador da área de trabalho</value>
+  </data>
+  <data name="Settings_StyleLabel" xml:space="preserve">
+    <value>Estilo:</value>
+  </data>
+  <data name="Settings_FontRendering" xml:space="preserve">
+    <value>Renderização da fonte:</value>
+  </data>
+  <data name="Settings_GdiCompatible" xml:space="preserve">
+    <value>GDI (compatível com MacType)</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>versão</value>
+  </data>
+  <data name="About_Bridge" xml:space="preserve">
+    <value>Criado com o Desktop Bridge.</value>
+  </data>
+  <data name="About_Source" xml:space="preserve">
+    <value>Código-fonte:</value>
+  </data>
+  <data name="About_OriginalSource" xml:space="preserve">
+    <value>Código-fonte original:</value>
+  </data>
+  <data name="About_OriginalDeveloper" xml:space="preserve">
+    <value>Desenvolvedor original:</value>
+  </data>
+  <data name="About_Is" xml:space="preserve">
+    <value>é</value>
+  </data>
+  <data name="About_OpenSource" xml:space="preserve">
+    <value>software de código aberto</value>
+  </data>
+  <data name="About_ReleasedUnder" xml:space="preserve">
+    <value>distribuído sob</value>
+  </data>
+  <data name="About_Mit" xml:space="preserve">
+    <value>a licença MIT.</value>
+  </data>
+  <data name="About_Licenses" xml:space="preserve">
+    <value>Licenças</value>
+  </data>
+  <data name="Notification_Switched" xml:space="preserve">
+    <value>Área de trabalho alterada</value>
+  </data>
+  <data name="Startup_Failed" xml:space="preserve">
+    <value>Não foi possível alterar a inicialização automática. Detalhes: {0}</value>
+  </data>
+  <data name="App_ExplorerRequired" xml:space="preserve">
+    <value>Este aplicativo precisa ser iniciado depois do Explorador do Windows.</value>
+  </data>
+  <data name="App_NotReady" xml:space="preserve">
+    <value>Inicialização indisponível</value>
+  </data>
+  <data name="App_DesktopFailed" xml:space="preserve">
+    <value>Não foi possível inicializar as áreas de trabalho virtuais.</value>
+  </data>
+  <data name="App_DesktopFailedTitle" xml:space="preserve">
+    <value>Falha ao inicializar áreas de trabalho</value>
+  </data>
+  <data name="App_Unsupported" xml:space="preserve">
+    <value>Este aplicativo exige o Windows 10 Anniversary Update (compilação 14393) ou posterior.</value>
+  </data>
+  <data name="App_UnsupportedTitle" xml:space="preserve">
+    <value>Sistema não compatível</value>
+  </data>
+  <data name="App_RestartQuestion" xml:space="preserve">
+    <value>Deseja reiniciar o {0} agora?</value>
+  </data>
+  <data name="Notification_Desktop" xml:space="preserve"><value>Área de trabalho {0}</value></data>
+  <data name="Notification_CurrentDesktop" xml:space="preserve"><value>Área atual: {0}</value></data>
+  <data name="Settings_NotificationPreview" xml:space="preserve"><value>Prévia</value></data>
+  <data name="Settings_KeepScreenActive" xml:space="preserve"><value>Manter Tela Ativa</value></data>
+  <data name="Settings_KeepScreenActiveDescription" xml:space="preserve"><value>Mantém a tela e o computador ativos e impede a proteção de tela automática enquanto este aplicativo estiver em execução. Não altera o plano de energia; o bloqueio manual continua funcionando.</value></data>
+  <data name="Settings_KeepScreenActiveFailed" xml:space="preserve"><value>A opção Manter Tela Ativa foi desativada porque o Windows recusou a solicitação.</value></data>
+  <data name="Settings_Energy" xml:space="preserve"><value>Energia e tela</value></data>
+  <data name="Settings_KeepScreenActiveHint" xml:space="preserve"><value>Mantém a tela ligada e impede a proteção de tela automática enquanto estiver ativado.</value></data>
+  <data name="About_ForkContributions" xml:space="preserve"><value>Fork mantido por Thomas Nilton de Carvalho Vanini: Português do Brasil, reorganização das configurações, correções de atalhos e inicialização, compatibilidade com WhatsApp, Manter Tela Ativa e verificações de regressão.</value></data>
+</root>

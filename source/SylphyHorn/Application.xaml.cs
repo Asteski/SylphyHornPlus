@@ -50,7 +50,7 @@ namespace SylphyHorn
 
 			if (!this.WaitUntilExplorerStarts())
 			{
-				MessageBox.Show("This application must start after Explorer is launched.", "Not ready", MessageBoxButton.OK, MessageBoxImage.Stop);
+				MessageBox.Show(global::SylphyHorn.Properties.Resources.App_ExplorerRequired, global::SylphyHorn.Properties.Resources.App_NotReady, MessageBoxButton.OK, MessageBoxImage.Stop);
 				this.Shutdown();
 				return;
 			}
@@ -74,6 +74,23 @@ namespace SylphyHorn
 					ThemeService.Current.Register(this, Theme.Windows, Accent.Windows);
 
 					this.HookService = new HookService().AddTo(this);
+					var whatsAppCompatibility = new WhatsAppClickThroughService(
+						ex => VisualHelper.InvokeOnUIDispatcher(() => LoggingService.Instance.Register(ex))).AddTo(this);
+					Settings.General.WhatsAppClickThrough.Subscribe(whatsAppCompatibility.SetEnabled).AddTo(this);
+					var keepScreenActive = new KeepScreenActiveService(ex =>
+						this.Dispatcher.BeginInvoke(new Action(() =>
+						{
+							LoggingService.Instance.Register("Manter tela ativa", ex.ToString());
+							Settings.General.KeepScreenActive.Value = false;
+							MessageBox.Show(global::SylphyHorn.Properties.Resources.Settings_KeepScreenActiveFailed + "\n\n" + ex.Message,
+								ProductInfo.Title, MessageBoxButton.OK, MessageBoxImage.Warning);
+						}))).AddTo(this);
+					Settings.General.KeepScreenActive.Subscribe(enabled =>
+					{
+						keepScreenActive.SetEnabled(enabled);
+						LocalSettingsProvider.Instance.SaveAsync().Forget();
+					}).AddTo(this);
+
 
 					var preparation = new ApplicationPreparation(this.HookService, this.Shutdown, this);
 					this.TaskTrayIcon = preparation.CreateTaskTrayIcon().AddTo(this);
@@ -117,7 +134,7 @@ namespace SylphyHorn
 								LoggingService.Instance.Register(ex2);
 							}
 						}
-						this.RestartOrShutdown("Virtual desktop initialization is failed.", "Virtual Desktop Initialization Failed");
+						this.RestartOrShutdown(global::SylphyHorn.Properties.Resources.App_DesktopFailed, global::SylphyHorn.Properties.Resources.App_DesktopFailedTitle);
 					};
 					preparation.PrepareVirtualDesktop();
 
@@ -137,7 +154,7 @@ namespace SylphyHorn
 				}
 				else
 				{
-					MessageBox.Show("This application is supported on Windows 10 Anniversary Update (build 14393) or later.", "Not supported", MessageBoxButton.OK, MessageBoxImage.Stop);
+					MessageBox.Show(global::SylphyHorn.Properties.Resources.App_Unsupported, global::SylphyHorn.Properties.Resources.App_UnsupportedTitle, MessageBoxButton.OK, MessageBoxImage.Stop);
 					this.Shutdown();
 				}
 			}
@@ -221,7 +238,7 @@ namespace SylphyHorn
 		private void RestartOrShutdown(string message, string caption)
 		{
 			var result = MessageBox.Show(
-				$"{message}\n\nDo you want to restart {ProductInfo.Title} now?",
+				message + "\n\n" + string.Format(global::SylphyHorn.Properties.Resources.App_RestartQuestion, ProductInfo.Title),
 				caption,
 				MessageBoxButton.YesNo,
 				MessageBoxImage.Stop

@@ -5,7 +5,7 @@ Param ( $TargetDir )
 
 $targets = $TargetDir
 $lib = ($TargetDir + "lib\")
-$excludes = ".assets", "AppxManifest.xml", "SylphyHorn.exe*", "SylphyHorn.pdb", "SchedulerManager.exe*", "SchedulerManager.pdb"
+$excludes = ".assets", "ja", "pt-BR", "AppxManifest.xml", "SylphyHorn.exe*", "SylphyHorn.pdb", "SchedulerManager.exe*", "SchedulerManager.pdb"
 
 if ( Test-Path $lib ) {
     Remove-Item $lib -Recurse

@@ -52,7 +52,8 @@ namespace SylphyHorn.UI.Controls
 		private ShortcutKey? CurrentAsKeys
 		{
 			get { return this.Current?.ToShortcutKey(); }
-			set { this.Current = value?.ToSerializable(); }
+			// Atualizações internas não podem substituir o binding que salva o atalho.
+			set { this.SetCurrentValue(CurrentProperty, value?.ToSerializable()); }
 		}
 
 		#endregion
@@ -77,9 +78,71 @@ namespace SylphyHorn.UI.Controls
 
 		protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
 		{
-			base.OnGotKeyboardFocus(e);
+			base.OnLostKeyboardFocus(e);
 
 			this._hookDisposable?.Dispose();
+			this._hookDisposable = null;
+		}
+
+		protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+		{
+			var keytop = FindAncestor<Keytop>(e.OriginalSource as DependencyObject);
+			if (this.IsEnabled && !this.IsReadOnly && keytop != null && !ReferenceEquals(keytop, this._keyPresenter) && IsSideModifier(keytop.Key))
+			{
+				// O clique no modificador troca o lado sem entrar no modo de captura.
+				this.CycleModifier(keytop.Key);
+				e.Handled = true;
+				return;
+			}
+
+			base.OnPreviewMouseLeftButtonDown(e);
+		}
+
+		private void CycleModifier(VirtualKey key)
+		{
+			var current = this.CurrentAsKeys ?? ShortcutKey.None;
+			var modifiers = (current.ModifiersInternal ?? current.Modifiers ?? Array.Empty<VirtualKey>()).ToArray();
+			for (var index = 0; index < modifiers.Length; index++)
+			{
+				if (modifiers[index] == key) modifiers[index] = NextModifierSide(key);
+			}
+
+			this.CurrentAsKeys = new ShortcutKey(current.Key, modifiers.Distinct().ToArray());
+			this.UpdateText();
+		}
+
+		private static bool IsSideModifier(VirtualKey key)
+		{
+			return key == VirtualKey.LShiftKey || key == VirtualKey.RShiftKey || key == VirtualKey.Shift
+				|| key == VirtualKey.LControlKey || key == VirtualKey.RControlKey || key == VirtualKey.Control
+				|| key == VirtualKey.LMenu || key == VirtualKey.RMenu || key == VirtualKey.Menu
+				|| key == VirtualKey.LWin || key == VirtualKey.RWin || key == ShortcutKey.AnyWindowsKey;
+		}
+
+		private static VirtualKey NextModifierSide(VirtualKey key)
+		{
+			switch (key)
+			{
+				case VirtualKey.LShiftKey: return VirtualKey.RShiftKey;
+				case VirtualKey.RShiftKey: return VirtualKey.Shift;
+				case VirtualKey.Shift: return VirtualKey.LShiftKey;
+				case VirtualKey.LControlKey: return VirtualKey.RControlKey;
+				case VirtualKey.RControlKey: return VirtualKey.Control;
+				case VirtualKey.Control: return VirtualKey.LControlKey;
+				case VirtualKey.LMenu: return VirtualKey.RMenu;
+				case VirtualKey.RMenu: return VirtualKey.Menu;
+				case VirtualKey.Menu: return VirtualKey.LMenu;
+				case VirtualKey.LWin: return VirtualKey.RWin;
+				case VirtualKey.RWin: return ShortcutKey.AnyWindowsKey;
+				case ShortcutKey.AnyWindowsKey: return VirtualKey.LWin;
+				default: return key;
+			}
+		}
+
+		private static T FindAncestor<T>(DependencyObject source) where T : DependencyObject
+		{
+			while (source != null && !(source is T)) source = System.Windows.Media.VisualTreeHelper.GetParent(source);
+			return source as T;
 		}
 
 		protected override void OnPreviewKeyDown(KeyEventArgs e)

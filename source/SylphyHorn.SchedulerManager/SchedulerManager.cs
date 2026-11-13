@@ -6,10 +6,11 @@ using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Threading;
-using TaskScheduler;
+
 
 namespace SylphyHorn
 {
+	// COM por IDispatch evita depender de um assembly Interop gerado pelo Visual Studio.
 	class SchedulerManager
 	{
 		static void Main(string[] args)
@@ -61,7 +62,7 @@ namespace SylphyHorn
 
 		public bool HasTask => this.FindStartupTask() != null;
 
-		public bool IsRunning => this.FindStartupTask()?.State == _TASK_STATE.TASK_STATE_RUNNING;
+		public bool IsRunning => this.FindStartupTask()?.State == 4;
 
 		public bool IsAdministrator => _principal.IsInRole(WindowsBuiltInRole.Administrator);
 
@@ -76,7 +77,7 @@ namespace SylphyHorn
 			{
 				throw new ArgumentNullException($"Error: app path ({appPath}) is invalid.");
 			}
-			this._appPath = $"\"{appPath}\"";
+			this._appPath = Path.GetFullPath(appPath);
 			this._appName = Path.GetFileNameWithoutExtension(appPath);
 			this._taskName = this._appName + " Startup";
 			this._schedulerPath = _schedulerDir + this._taskName;
@@ -89,12 +90,12 @@ namespace SylphyHorn
 				return -1;
 			}
 
-			ITaskService taskService = null;
+			dynamic taskService = null;
 			try
 			{
-				taskService = new TaskScheduler.TaskScheduler();
+				taskService = Activator.CreateInstance(Type.GetTypeFromProgID("Schedule.Service", true));
 				taskService.Connect(null, null, null, null);
-				ITaskFolder rootfolder = null;
+				dynamic rootfolder = null;
 				try
 				{
 					rootfolder = taskService.GetFolder(_schedulerDir);
@@ -104,10 +105,10 @@ namespace SylphyHorn
 						rootfolder.RegisterTaskDefinition(
 							this._schedulerPath,
 							taskDefinition,
-							(int)_TASK_CREATION.TASK_CREATE_OR_UPDATE,
+							(int)6,
 							null,
 							null,
-							_TASK_LOGON_TYPE.TASK_LOGON_NONE,
+							3,
 							null
 						);
 					}
@@ -144,12 +145,12 @@ namespace SylphyHorn
 				return 0;
 			}
 
-			ITaskService taskService = null;
+			dynamic taskService = null;
 			try
 			{
-				taskService = new TaskScheduler.TaskScheduler();
+				taskService = Activator.CreateInstance(Type.GetTypeFromProgID("Schedule.Service", true));
 				taskService.Connect(null, null, null, null);
-				ITaskFolder rootfolder = null;
+				dynamic rootfolder = null;
 				try
 				{
 					rootfolder = taskService.GetFolder(_schedulerDir);
@@ -204,21 +205,21 @@ namespace SylphyHorn
 		public int Restart()
 		{
 			var task = this.FindStartupTask();
-			if (task == null || task.State == _TASK_STATE.TASK_STATE_DISABLED)
+			if (task == null || task.State == 1)
 			{
 				return -1;
 			}
 
 			var taskActions = task.Definition.Actions;
 			var appPath = taskActions.Count > 0
-				? ((IExecAction)taskActions[1])?.Path ?? this._appPath
+				? (taskActions[1])?.Path ?? this._appPath
 				: this._appPath;
 			appPath = Regex.Replace(appPath, @"^""(.+)""$", "$1");
 			if (string.IsNullOrEmpty(appPath) || !File.Exists(appPath))
 			{
 				throw new FileNotFoundException($"Error: app path ({appPath}) is invalid.");
 			}
-			else if (task.State == _TASK_STATE.TASK_STATE_RUNNING)
+			else if (task.State == 4)
 			{
 				task.Stop(0);
 			}
@@ -241,18 +242,18 @@ namespace SylphyHorn
 			return 0;
 		}
 
-		private ITaskDefinition CreateTaskDefinition(ITaskService taskService)
+		private dynamic CreateTaskDefinition(dynamic taskService)
 		{
 			var taskDefinition = taskService.NewTask(0);
 			var registrationInfo = taskDefinition.RegistrationInfo;
 
 			// Actions Property
 			var actionCollection = taskDefinition.Actions;
-			var execAction = (IExecAction)actionCollection.Create(_TASK_ACTION_TYPE.TASK_ACTION_EXEC);
+			var execAction = actionCollection.Create(0);
 
 			// Triggers Property
 			var triggerCollection = taskDefinition.Triggers;
-			var trigger = (ILogonTrigger)triggerCollection.Create(_TASK_TRIGGER_TYPE2.TASK_TRIGGER_LOGON);
+			var trigger = triggerCollection.Create(9);
 
 			// Settings Property
 			var taskSettings = taskDefinition.Settings;
@@ -261,12 +262,15 @@ namespace SylphyHorn
 			registrationInfo.Author = "";
 			registrationInfo.Description = "";
 			var principal = taskDefinition.Principal;
-			//principal.UserId = Environment.UserDomainName + "\\" + Environment.UserName;
-			principal.LogonType = _TASK_LOGON_TYPE.TASK_LOGON_INTERACTIVE_TOKEN;
-			principal.RunLevel = _TASK_RUNLEVEL.TASK_RUNLEVEL_HIGHEST;
+			// A tarefa pertence ao usuário atual e executa somente em sua sessão interativa.
+			principal.UserId = WindowsIdentity.GetCurrent().User.Value;
+			trigger.UserId = principal.UserId;
+			principal.LogonType = 3;
+			principal.RunLevel = 1;
 			taskSettings.DisallowStartIfOnBatteries = false;
+			taskSettings.StopIfGoingOnBatteries = false;
 			taskSettings.ExecutionTimeLimit = "PT0S";
-			taskSettings.Compatibility = _TASK_COMPATIBILITY.TASK_COMPATIBILITY_V2;
+			taskSettings.Compatibility = 2;
 			taskSettings.Hidden = false;
 			taskSettings.Priority = 6;
 
@@ -275,19 +279,20 @@ namespace SylphyHorn
 
 			/* Operation Settings */
 			execAction.Path = this._appPath;
+			execAction.WorkingDirectory = Path.GetDirectoryName(this._appPath);
 			//execAction.Arguments = "";
 
 			return taskDefinition;
 		}
 
-		private IRegisteredTask FindStartupTask()
+		private dynamic FindStartupTask()
 		{
-			ITaskService taskService = null;
+			dynamic taskService = null;
 			try
 			{
-				taskService = new TaskScheduler.TaskScheduler();
+				taskService = Activator.CreateInstance(Type.GetTypeFromProgID("Schedule.Service", true));
 				taskService.Connect(null, null, null, null);
-				ITaskFolder rootfolder = null;
+				dynamic rootfolder = null;
 				try
 				{
 					rootfolder = taskService.GetFolder(_schedulerDir);

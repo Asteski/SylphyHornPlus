@@ -142,7 +142,7 @@ namespace SylphyHorn.Interop
 				? SetWindowLongPtr64(hWnd, nIndex, dwNewLong)
 				: new IntPtr(SetWindowLong32(hWnd, nIndex, dwNewLong.ToInt32()));
 		}
-		
+
 		[DllImport("user32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetCursorPos(out POINT lpPoint);
@@ -226,7 +226,10 @@ namespace SylphyHorn.Interop
 
 		public static class GlobalHook
 		{
-			[DllImport("user32.dll")]
+			[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+			public static extern IntPtr GetModuleHandle(string moduleName);
+
+			[DllImport("user32.dll", SetLastError = true)]
 			public static extern IntPtr SetWindowsHookEx(int idHook, HookDelegate lpfn, IntPtr hMod, uint dwThreadId);
 
 			[DllImport("user32.dll")]

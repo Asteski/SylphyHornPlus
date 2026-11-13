@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using MetroTrilithon.Lifetime;
 
 namespace SylphyHorn.Services
@@ -13,6 +14,7 @@ namespace SylphyHorn.Services
 		private readonly List<HookAction> _keyHookActions = new List<HookAction>();
 		private readonly List<HookAction> _mouseHookActions = new List<HookAction>();
 		private int _suspendRequestCount;
+		private bool _disposed;
 		private Action _reloadAction;
 
 		public Action Reload
@@ -47,10 +49,41 @@ namespace SylphyHorn.Services
 			this._detector.ButtonPressed += this.MouseHookOnPressed;
 			this._detector.ButtonUp += this.MouseHookOnUp;
 			this._detector.Start();
+			SystemEvents.SessionSwitch += this.OnSessionSwitch;
+			SystemEvents.PowerModeChanged += this.OnPowerModeChanged;
+		}
+
+		private void OnSessionSwitch(object sender, SessionSwitchEventArgs args)
+		{
+			if (args.Reason == SessionSwitchReason.SessionUnlock
+				|| args.Reason == SessionSwitchReason.RemoteConnect
+				|| args.Reason == SessionSwitchReason.ConsoleConnect)
+				this.QueueHookRecovery();
+		}
+
+		private void OnPowerModeChanged(object sender, PowerModeChangedEventArgs args)
+		{
+			if (args.Mode == PowerModes.Resume) this.QueueHookRecovery();
+		}
+
+		private void QueueHookRecovery()
+		{
+			// Hooks pertencem à thread com o loop de mensagens que os instalou.
+			VisualHelper.InvokeOnUIDispatcher(() =>
+			{
+				if (this._disposed) return;
+				try
+				{
+					this._detector.Restart();
+					LoggingService.Instance.Register("Atalhos", "Hooks reinstalados após retomada da sessão ou suspensão do Windows.");
+				}
+				catch (Exception ex) { LoggingService.Instance.Register(ex); }
+			});
 		}
 
 		public IDisposable Suspend()
 		{
+			if (this._disposed) throw new ObjectDisposedException(nameof(HookService));
 			this._suspendRequestCount++;
 			this._detector.Stop();
 
@@ -58,11 +91,12 @@ namespace SylphyHorn.Services
 
 			return Disposable.Create(() =>
 			{
+				if (this._disposed) return;
 				this._suspendRequestCount--;
 				if (this._suspendRequestCount == 0)
 				{
-					this.Reload();
-					this._detector.Start();
+					try { this.Reload(); }
+					finally { this._detector.Start(); }
 				}
 			});
 		}
@@ -121,10 +155,20 @@ namespace SylphyHorn.Services
 		{
 			if (args.ShortcutKey == ShortcutKey.None) return;
 
-			var target = hookActions.FirstOrDefault(x => x.GetShortcutKey() == args.ShortcutKey);
+			var target = hookActions.FirstOrDefault(x => x.GetShortcutKey().MatchesPressed(args.ShortcutKey));
 			if (target != null && target.CanExecute())
 			{
-				VisualHelper.InvokeOnUIDispatcher(() => target.Action(InteropHelper.GetForegroundWindowEx()));
+				// Capturar o destino agora: o foco pode mudar antes de executar a ação agendada.
+				var foreground = InteropHelper.GetForegroundWindowEx();
+				var shortcutDescription = args.ShortcutKey.ToString();
+				VisualHelper.InvokeOnUIDispatcher(() =>
+				{
+					if (!this._disposed && this._suspendRequestCount == 0)
+					{
+						LoggingService.Instance.Register("Atalho recebido", shortcutDescription);
+						target.Action(foreground);
+					}
+				});
 				args.Handled = true;
 			}
 		}
@@ -133,7 +177,7 @@ namespace SylphyHorn.Services
 		{
 			if (args.ShortcutKey == ShortcutKey.None) return;
 
-			var target = hookActions.FirstOrDefault(x => x.GetShortcutKey() == args.ShortcutKey);
+			var target = hookActions.FirstOrDefault(x => x.GetShortcutKey().MatchesPressed(args.ShortcutKey));
 			if (target != null && target.CanExecute())
 			{
 				args.Handled = true;
@@ -142,7 +186,13 @@ namespace SylphyHorn.Services
 
 		public void Dispose()
 		{
-			this._detector.Stop();
+			if (this._disposed) return;
+			this._disposed = true;
+			SystemEvents.SessionSwitch -= this.OnSessionSwitch;
+			SystemEvents.PowerModeChanged -= this.OnPowerModeChanged;
+			this._detector.Dispose();
+			this._keyHookActions.Clear();
+			this._mouseHookActions.Clear();
 		}
 
 		private class HookAction

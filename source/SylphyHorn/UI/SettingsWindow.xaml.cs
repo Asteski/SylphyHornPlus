@@ -12,12 +12,40 @@ namespace SylphyHorn.UI
 	partial class SettingsWindow
 	{
 		public static SettingsWindow Instance { get; set; }
+		internal bool IsClosed { get; private set; }
 
 		public SettingsWindow()
 		{
 			ApplyWindows11ControlStyles();
 			this.InitializeComponent();
+			// A janela deve caber na área útil, inclusive com escala de exibição elevada.
+			var workArea = SystemParameters.WorkArea;
+			this.MinWidth = Math.Min(this.MinWidth, workArea.Width);
+			this.MinHeight = Math.Min(this.MinHeight, workArea.Height);
+			this.Width = Math.Min(this.Width, workArea.Width);
+			this.Height = Math.Min(this.Height, workArea.Height);
 		}
+
+		protected override void OnClosed(EventArgs e)
+		{
+			// Limpa a referência antes dos callbacks de Closed, que podem reentrar pela bandeja.
+			this.IsClosed = true;
+			if (ReferenceEquals(Instance, this)) Instance = null;
+			base.OnClosed(e);
+		}
+
+        private void CultureSelectorLoaded(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is Bindings.SettingsWindowViewModel vm)
+                this.CultureSelector.SelectedValue = vm.Culture;
+        }
+
+        private void CultureSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.CultureSelector.SelectedItem is MetroTrilithon.Mvvm.DisplayViewModel<string> item
+                && this.DataContext is Bindings.SettingsWindowViewModel vm)
+                vm.Culture = item.Value;
+        }
 
 		public void SelectAboutSection()
 		{
@@ -91,7 +119,7 @@ namespace SylphyHorn.UI
 
 		private static void ApplyWindows11ControlStyles()
 		{
-			if (!ProductInfo.IsWindows11OrLater) return;
+			// O seletor com busca usa este template também no Windows 10.
 
 			var dictionaries = Application.Current.Resources.MergedDictionaries;
 			var source = new Uri("pack://application:,,,/SylphyHorn;component/Styles/Windows11SettingsControls.xaml", UriKind.Absolute);

@@ -4,9 +4,9 @@
 
 	<Style TargetType="{x:Type controls:ShortcutKeyBox}">
 		<Setter Property="Background"
-				Value="Transparent" />
+				Value="{DynamicResource ThemeBrushKey}" />
 		<Setter Property="BorderBrush"
-				Value="Transparent" />
+				Value="{DynamicResource ForegroundBrushKey}" />
 		<Setter Property="Foreground"
 				Value="{DynamicResource ActiveForegroundBrushKey}" />
 		<Setter Property="BorderThickness"
@@ -27,7 +27,7 @@
 					<Border Background="{TemplateBinding Background}"
 							BorderBrush="{TemplateBinding BorderBrush}"
 							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="0">
+							CornerRadius="4">
 						<Grid Margin="{TemplateBinding Padding}">
 							<controls:Keytop x:Name="Dummy"
 											 Visibility="Hidden" />
@@ -49,7 +49,7 @@
 									</ItemsControl.Template>
 									<ItemsControl.ItemTemplate>
 										<DataTemplate>
-											<controls:Keytop Key="{Binding}" />
+											<controls:Keytop Key="{Binding}" Cursor="Hand" ToolTip="Clique para alternar esquerda, direita ou qualquer lado" />
 										</DataTemplate>
 									</ItemsControl.ItemTemplate>
 								</ItemsControl>

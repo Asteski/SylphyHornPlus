@@ -24,6 +24,14 @@ namespace SylphyHorn.Services
 		public void Register(ILog log)
 		{
 			this.Logs.Add(log);
+			// Diagnósticos de atalhos são frequentes. Limitar o histórico em memória.
+			while (this.Logs.Count > 1000) this.Logs.RemoveAt(0);
+		}
+
+		public void Register(string header, string content)
+		{
+			// Diagnóstico local, sem encaminhar eventos de teclado à telemetria.
+			this.Register(new Log(header, content));
 		}
 
 		public void Register(Exception exception)
@@ -50,6 +58,12 @@ namespace SylphyHorn.Services
 			public string Header { get; }
 
 			public string Content { get; }
+
+			public Log(string header, string content)
+			{
+				this.Header = header;
+				this.Content = content;
+			}
 
 			public Log(Exception ex)
 			{

@@ -47,11 +47,13 @@ namespace SylphyHorn
 			try
 			{
 				using (var process = Process.Start(processInfo))
-				{ 
+				{
 					process.WaitForExit(_waitingTime);
 					if (!process.HasExited)
 					{
 						process.Kill();
+						process.WaitForExit();
+						throw new TimeoutException("SchedulerManager timeout.");
 					}
 					var exitCode = process.ExitCode;
 					if (exitCode == -1)
@@ -64,7 +66,7 @@ namespace SylphyHorn
 					}
 				}
 			}
-			catch (System.ComponentModel.Win32Exception)
+			catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
 			{
 				return;
 			}
@@ -83,11 +85,13 @@ namespace SylphyHorn
 			try
 			{
 				using (var process = Process.Start(processInfo))
-				{ 
+				{
 					process.WaitForExit(_waitingTime);
 					if (!process.HasExited)
 					{
 						process.Kill();
+						process.WaitForExit();
+						throw new TimeoutException("SchedulerManager timeout.");
 					}
 					var exitCode = process.ExitCode;
 					if (exitCode == -1)
@@ -100,7 +104,7 @@ namespace SylphyHorn
 					}
 				}
 			}
-			catch (System.ComponentModel.Win32Exception)
+			catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
 			{
 				return;
 			}
@@ -119,11 +123,13 @@ namespace SylphyHorn
 			try
 			{
 				using (var process = Process.Start(processInfo))
-				{ 
+				{
 					process.WaitForExit(_waitingTime);
 					if (!process.HasExited)
 					{
 						process.Kill();
+						process.WaitForExit();
+						throw new TimeoutException("SchedulerManager timeout.");
 					}
 					var exitCode = process.ExitCode;
 					if (exitCode == -1)
@@ -136,7 +142,7 @@ namespace SylphyHorn
 					}
 				}
 			}
-			catch (System.ComponentModel.Win32Exception)
+			catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
 			{
 				return;
 			}
@@ -155,14 +161,14 @@ namespace SylphyHorn
 			try
 			{
 				using (var process = Process.Start(processInfo))
-				{ 
+				{
 					process.WaitForExit(_waitingTime);
 					if (!process.HasExited)
 					{
 						process.Kill();
 						return false;
 					}
-					return Convert.ToBoolean(process.ExitCode);
+					return process.ExitCode == 1;
 				}
 			}
 			catch (System.ComponentModel.Win32Exception)
@@ -191,7 +197,7 @@ namespace SylphyHorn
 						process.Kill();
 						return false;
 					}
-					return Convert.ToBoolean(process.ExitCode);
+					return process.ExitCode == 1;
 				}
 			}
 			catch (System.ComponentModel.Win32Exception)
