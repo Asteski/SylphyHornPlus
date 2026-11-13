@@ -33,6 +33,11 @@ internal static class Program
                 return File.Exists(path) ? Assembly.LoadFrom(path) : null;
             };
             App = Assembly.LoadFrom(executable);
+            if (args.Length > 1 && args[1] == "--screenshot")
+            {
+                SaveLocalizedSettings(args[2], Path.GetFullPath(args[3]));
+                return 0;
+            }
             if (args.Length > 1 && args[1] == "--awake")
             {
                 TestKeepScreenActive();
@@ -413,6 +418,29 @@ internal static class Program
         application.Startup += (_, __) => timer.Start();
         application.Run();
         if (failure != null) throw failure;
+    }
+
+    // Renderiza o XAML real sem iniciar hooks, serviços ou persistir configurações do usuário.
+    private static void SaveLocalizedSettings(string culture, string path)
+    {
+        var application = (System.Windows.Application)Activator.CreateInstance(App.GetType("SylphyHorn.Application"), true);
+        application.GetType().GetMethod("InitializeComponent").Invoke(application, null);
+        App.GetType("SylphyHorn.Properties.Resources").GetProperty("Culture").SetValue(null, System.Globalization.CultureInfo.GetCultureInfo(culture));
+        var window = (System.Windows.Window)Activator.CreateInstance(App.GetType("SylphyHorn.UI.SettingsWindow"), true);
+        var content = (System.Windows.FrameworkElement)window.Content;
+        content.Measure(new System.Windows.Size(window.Width, window.Height));
+        content.Arrange(new System.Windows.Rect(0, 0, window.Width, window.Height));
+        content.UpdateLayout();
+        var bitmap = new System.Windows.Media.Imaging.RenderTargetBitmap((int)window.Width, (int)window.Height, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
+        var background = new System.Windows.Media.DrawingVisual();
+        using (var drawing = background.RenderOpen()) drawing.DrawRectangle(window.Background ?? System.Windows.Media.Brushes.White, null, new System.Windows.Rect(0, 0, window.Width, window.Height));
+        bitmap.Render(background);
+        bitmap.Render(content);
+        var encoder = new System.Windows.Media.Imaging.PngBitmapEncoder();
+        encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bitmap));
+        using (var stream = File.Create(path)) encoder.Save(stream);
+        window.Close();
+        Console.WriteLine("SCREENSHOT: " + culture + " " + path);
     }
 
     private static void Pump(System.Windows.Window window)

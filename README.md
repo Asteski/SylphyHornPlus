@@ -2,7 +2,7 @@
 
 ## English
 
-<img src="source/SylphyHorn/.assets/Square150x150Logo.scale-200.png" alt="SylphyHornPlus logo" width="96">
+<img src="docs/images/logo.png" alt="SylphyHornPlus logo" width="96">
 
 # SylphyHornPlus
 
@@ -42,9 +42,9 @@ This independent fork extends [Asteski/SylphyHornPlus](https://github.com/Astesk
 
 <div align="center">
 
-<img src="docs/images/settings-pt-br.png" alt="Actual General settings in Brazilian Portuguese, organized into cards" width="830">
+<img src="docs/images/settings-en.png" alt="General settings in English, organized into cards" width="830">
 
-*Actual settings interface in Brazilian Portuguese.*
+*Settings interface in English.*
 
 </div>
 
@@ -156,7 +156,7 @@ docs/images/                     # README screenshots
 
 ## Português (Brasil)
 
-<img src="source/SylphyHorn/.assets/Square150x150Logo.scale-200.png" alt="Logotipo do SylphyHornPlus" width="96">
+<img src="docs/images/logo.png" alt="Logotipo do SylphyHornPlus" width="96">
 
 # SylphyHornPlus
 
